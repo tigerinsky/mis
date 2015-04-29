@@ -1,0 +1,99 @@
+<{include file="../common/header.html"}>
+<script src="<{$sys_config['exten_pub_path']}>js/uploadify/jquery.uploadify.min.js?ver=<{$random_version}>" type="text/javascript"></script>
+<link href="<{$sys_config['exten_pub_path']}>js/swfupload/swfupload.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/uploadify.css" rel="stylesheet" type="text/css" />
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+    .common-form>li{ float:left;display:inline; }
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#content").formValidator({onshow:"请输出信息内容",onfocus:"信息不能为空",tipcss:{width:'300px'},empty:false}).inputValidator({min:1,onerror:"信息内容不能为空"});
+	    $("#mask").formValidator({onshow:"请选择马甲",onfocus:"马甲不能为空",empty:false}).inputValidator({min:1,onerror:"马甲不能为空"}); 
+})
+$(function() {                                                                                                                       
+        $('#img').uploadify({
+            //'formData'     : {
+                //'room_id' : '<{$room_id}>',
+            //},
+            'fileObjName':'pic',
+            'debug'    : false,
+            //'fileTypeExts':'*.jpg;*.png;*.gif',
+            'fileSizeLimit':300, 
+			'sizeLimit':300, 
+            'width':'75',//选择文件按钮的宽度
+            'height':'23',//选择文件按钮的高度
+            'buttonText':'上传图片',
+            'swf'      : '<{$sys_config['exten_pub_path']}>images/uploadify/uploadify.swf',
+            'uploader' : '/common/upload/uploadify',
+            onUploadError:function(file,errorCode,errorMsg){
+                alert('上传错误：错误代码：'+obj2string(errorCode)+'错误消息：'+obj2string(errorMsg));
+            },
+			onUploadError:function(file, errorCode, errorMsg, errorString){
+				alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+			},
+            onUploadSuccess:function(file,r,response){
+				eval("var obj="+r);
+				console.log(r);
+                if (response && obj.ret==1) {
+                $("#fsUploadProgress").append('<li><input type="checkbox" name="pic[]" value="'+obj.data.pic+'" checked><img  width=90 src="'+obj.data.pic+'"/></li>');  
+                } else {
+                    alert(obj.msg);
+                }
+            }
+        });
+    });
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" enctype="multipart/form-data" action="<{site_url url='/mis/tweet/tweet_edit_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">信息标题</td> 
+<td><input type="text" name="info[title]"  class="input-text wid300" id="title" value="<{$info['title']}>"></td>
+</tr>
+<tr>
+<td width="80">信息内容</td> 
+<td>
+	<textarea name="info[content]" cols="45" rows="5" id="content"><{$info['content']}></textarea></td>
+</tr>
+<tr>
+<td>属性设置</td> 
+<td>
+	<input type="checkbox" value="1" name="info[is_essence]" <{if $info['is_essence']==1}>checked<{/if}>> 推荐	行业：<{$industry_sel}> 马甲：<{$mask_sel}>
+</td>
+</tr>
+<tr>
+<td width="80">上传图片</td> 
+<td><input type="file" name="img" id="img"></td>
+</tr>
+<tr>
+<td width="80">图片</td> 
+<td>
+<div class="bk10"></div>
+<fieldset class="blue pad-10" id="swfupload">
+    <legend>列表</legend>
+    <ul class="attachment-list"  id="fsUploadProgress">
+<{if $info['img']}>
+<{foreach from=$info['img'] item=item}>
+<li><input type="checkbox" name="pic[]" value="<{$item}>" checked><img  width=90 src="<{$item}>"/></li>
+<{/foreach}>
+<{/if}>
+    </ul>
+</fieldset>
+</td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="hidden" value="<{$info['tid']}>" name="id">
+    <input type="hidden" value="<{$info['uid']}>" name="uid">
+    <input type="hidden" value="<{$info['online_tid']}>" name="info[online_tid]">
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

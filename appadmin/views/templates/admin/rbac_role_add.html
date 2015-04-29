@@ -1,0 +1,56 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style><script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#role_name").formValidator({onshow:"请输入角色名称",onfocus:"角色名称应该在4-20个字符之间"}).inputValidator({min:4,max:20,onerror:"角色名称应该在4-20个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_filed_have_ajax/'}>",
+		data :"field=role_name&tb=C",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "角色名称重复",
+		onwait : "请稍后..."
+	});
+	
+	$("#listorder").formValidator({onshow:"请输入序号",onfocus:"序号应该为数字"}).inputValidator({min:1,max:5,onerror:"需要长度应该在在1-5之间"}).regexValidator({regexp:"^[0-9]{1,5}$",onerror:"序号必须为数字"}).defaultPassed();
+})
+//-->
+</script>
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/admin/rbac_role/rbac_role_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">角色名称</td> 
+<td><input type="text" name="info[role_name]"  class="input-text" id="role_name"></input></td>
+</tr>
+<tr>
+<td>默认菜单</td> 
+<td><input type="text" name="info[menu_guide]" class="input-text" id="menu_guide" value="0"></input></td>
+</tr>
+<tr>
+<td>左侧菜单</td> 
+<td><input type="text" name="info[menu_left]" class="input-text" id="menu_left" value="0"></input></td>
+</tr>
+<tr>
+<td>排序编号</td> 
+<td><input type="text" name="info[listorder]" class="input-text" id="listorder" value="0"></input></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交" />
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

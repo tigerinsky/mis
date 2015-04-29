@@ -1,0 +1,125 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+    <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/common/tips/tips_add/'}>?', title:'增加标签', width:'650', height:'350', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>增加标签</em></a> <a href="<{site_url url='/common/tips/index/'}>" class="on"><em>标签列表</em></a></div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/common/tips/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">	
+				<{$kind_sel}>
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<input type="checkbox" value="1" name="status" <{if $search_arr['status']==1}>checked<{/if}>> 审核
+				<input type="checkbox" value="1" name="top" <{if $search_arr['top']==1}>checked<{/if}>> 置顶
+				<input type="checkbox" value="1" name="flag" <{if $search_arr['flag']==1}>checked<{/if}>> 推荐
+				<input type="submit" name="search" class="button" value="搜索" />
+				注:上线状态的活动无法删除
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="1" name="show">
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="37">排序</th>
+            <th width="80">ID</th>
+            <th width="120">所属分类</th>
+            <th width="150">标签名称</th>
+            <th>绑定值</th>
+            <th width="60">审核</th>
+            <th width="60">置顶</th>
+            <th width="60">推荐</th>
+            <th width="200">管理操作</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+            <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
+            <td align='center'><input name='listorders[<{$row['id']}>]' type='text' size='3' value='<{$row['listorder']}>' class='input-text-c'></td>
+            <td width="80" align="center"><{$row['id']}></td>
+            <td align="center"><{$conf_tips[$row['kind']]}></td>
+            <td align="center"><{$row['tips_name']}></td>
+            <td align="center"><{$row['bind_val']}></td>
+            <td align="center"><a href="<{site_url url='/common/tips/tips_status_one/'}>?id=<{$row['id']}>"><{if $row['status']==1}><font color="#008000">是</font><{else}><font color="#D75145">否</font><{/if}></a></td>
+            <td align="center"><a href="<{site_url url='/common/tips/tips_top_one/'}>?id=<{$row['id']}>"><{if $row['top']==1}><font color="#008000">是</font><{else}><font color="#D75145">否</font><{/if}></a></td>
+            <td align="center"><a href="<{site_url url='/common/tips/tips_flag_one/'}>?id=<{$row['id']}>"><{if $row['flag']==1}><font color="#008000">是</font><{else}><font color="#D75145">否</font><{/if}></a></td>
+            <td align="center">
+            <a href="javascript:edit(<{$row['id']}>,'<{$row['tips_name']}>')">修改</a> | 
+            </td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+		<input type="button" class="button" value="排序" onclick="myform.action='<{site_url url='/common/tips/tips_order/'}>';myform.submit();"/>
+		<input type="button" class="button" value="审核" onclick="myform.action='<{site_url url='/common/tips/tips_status/'}>';return change_more_status();"/>
+		<input type="button" class="button" value="置顶" onclick="myform.action='<{site_url url='/common/tips/tips_top/'}>';return change_more_top();"/>
+		<input type="button" class="button" value="推荐" onclick="myform.action='<{site_url url='/common/tips/tips_flag/'}>';return change_more_flag();"/>
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+
+function delete_one(obj,aid){
+	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+	function(){
+	$.get('<{site_url url='/common/tips/tips_del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+				if(data == 1) $(obj).parent().parent().fadeOut("slow");
+			})
+		 },
+	function(){});
+};
+
+function delete_more(){
+	if(confirm('确认删除吗？')) $('#myform').submit();
+}
+
+function change_more_status(){
+	if(confirm('确认对所选记录审核状态变更吗？')) $('#myform').submit();
+}
+
+function change_more_top(){
+	if(confirm('确认对所选记录置顶状态变更吗？')) $('#myform').submit();
+}
+
+function change_more_flag(){
+	if(confirm('确认对所选记录推荐状态变更吗？')) $('#myform').submit();
+}
+
+function edit(id, name) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑标签《'+name+'》',id:'edit',iframe:'<{site_url url='/common/tips/tips_edit/'}>?id='+id,width:'650',height:'350'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

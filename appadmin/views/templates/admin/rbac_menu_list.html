@@ -1,0 +1,101 @@
+<{include file="../common/header.html"}>
+
+<link href="<{$sys_config['exten_pub_path']}>css/jquery.treeTable.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/jquery.treetable.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+		//$("#dnd-example").treeTable({
+			//indent: 20
+		//});
+  });
+</script>
+
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+    <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/admin/rbac_menu/rbac_menu_add/'}>?', title:'添加菜单', width:'600', height:'350', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>添加菜单</em></a> <a href="<{site_url url='/admin/rbac_menu/index/'}>" class="on"><em>菜单列表</em></a>    </div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/admin/rbac_menu/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">	
+				<select name="search_field_id">
+					<option value='1' <{if $search_arr['search_field_id']==1}>selected<{/if}>>菜单名称</option>
+					<option value='2' <{if $search_arr['search_field_id']==2}>selected<{/if}>>英文名称</option>
+				</select>
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="search" name="showby">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<div class="table-list" id="load_priv">
+<form name="myform" action="" method="post">
+<input type="hidden" value="1" name="dosubmit">
+<table width="100%" cellspacing="0" id="dnd-example">
+        <thead>
+            <tr>
+            <th width="80">排序</th>
+            <th width="100">ID</th>
+            <th>导航菜单名称</th>
+			<th>管理操作</th>
+            </tr>
+        </thead>
+		<tbody>
+		<{if $list_menu !=''}>
+			<{$list_menu}>
+		<{else}>
+			<tr>
+				<td style='padding-left:30px;'>系统菜目前没有信息</td>
+			</tr>
+		<{/if}>
+		</tbody>
+</table>
+<div class="btn">
+<input type="button" class="button" value="排序" onclick="myform.action='<{site_url url='/admin/rbac_menu/rbac_menu_order/'}>';myform.submit();"/>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$(".del_menu").click(function(){
+		aid=$(this).attr('aid');
+		$parent_tr=$(this).parents("tr");
+		window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+		function(){
+		$.get('<{site_url url='/admin/rbac_menu/rbac_menu_del_one_ajax/'}>?&aid='+aid+'&wb_hash='+wb_hash,function(data){
+					if(data == 1) {
+						$parent_tr.fadeOut("slow");
+					};
+				})
+			 },
+		function(){});
+	});
+})
+
+function add(parentid,name) {
+	window.top.art.dialog({id:'add'}).close();
+	window.top.art.dialog({title:'设置权限《'+name+'》',id:'add',iframe:'<{site_url url='/admin/rbac_menu/rbac_menu_add/'}>?parentid='+parentid,width:'600',height:'500'}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});
+}
+
+function edit(id,name) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑菜单《'+name+'》',id:'edit',iframe:'<{site_url url='/admin/rbac_menu/rbac_menu_edit/'}>?menu_id='+id,width:'600',height:'350'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

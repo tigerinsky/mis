@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script language="javascript" type="text/javascript" src="/public/js/jquery.min.js"></script>
+	<script language="javascript" type="text/javascript" src="/public/js/jquery.form.js"></script>
+</head>
+<body>
+	<form action="" id="test_form" method="post" enctype="multipart/form-data" onSubmit="return false;">
+		<input type="file" name="pic">
+		<input type="hidden" name="category" value="user"/>
+		<input type="submit" id="up" name="" value="提交"/>
+	</form>
+	<div id="show_img"></div>
+	<script type="text/javascript">
+		$(function(){
+			$("#up").click(function(){
+				var ajax_option={url:"http://api.lanjinger.com/1/common/upload?bw_token=c4ca4238a0b923820dcc509a6f75849bNTUwZTNkYzA4YzI2OTQuNzk4MzI0NjQ",success:face_loading,dataType:"json"}
+				$('#test_form').ajaxSubmit(ajax_option);	
+			})		
+		})
+		function face_loading(result){
+			if(result.errno==0){
+				$("#show_img").html('<img src="'+result.data.pic+'" />');
+			}	
+		}
+	</script>
+</body>
+</html>

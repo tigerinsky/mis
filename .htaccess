@@ -1,0 +1,5 @@
+RewriteEngine on
+   
+RewriteCond %{HTTP_HOST} ^mis.lanjinger.com$ [NC]
+RewriteCond $1 !^(admin\.php|public|statics|uploads|robots\.txt|sitemaps\.txt)
+RewriteRule ^(.*)$ /admin.php/$1 [L]

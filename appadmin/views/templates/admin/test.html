@@ -1,0 +1,30 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="#" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">上传图片</td> 
+<td><{$kongjian}></td>
+</tr>
+<tr>
+<td>上传文件</td> 
+<td><{$fliebox}></td>
+</tr>
+<tr>
+<td>网页编辑器</td> 
+<td>
+<textarea name="info[content]" id="content">aa</textarea>
+<{$editorbox}>
+</td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="button" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

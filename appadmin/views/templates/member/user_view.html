@@ -1,0 +1,54 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+
+<div class="pad_10">
+<div class="common-form">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">用户名</td> 
+<td><input type="text" name="info[uname]" disabled class="input-text" id="uname" value="<{$info['uname']}>"></td>
+</tr>
+<tr>
+<td>用户昵称</td> 
+<td><input type="text" name="info[sname]" disabled class="input-text" id="sname" value="<{$info['sname']}>"></td>
+</tr>
+<tr>
+<td>用户头像</td> 
+<td><{if $info['avatar']}><img src="<{$info['avatar']}>"><{/if}></td>
+</tr>
+<tr>
+<td>手机号</td> 
+<td><input type="text" name="umobile" disabled class="input-text" id="umobile" value="<{$info['umobile']}>"></td>
+</tr>
+<tr>
+<td>邮箱</td> 
+<td><input type="text" name="info[uemail]" disabled class="input-text" id="uemail" value="<{$info['uemail']}>" ></td>
+</tr>
+<tr>
+<td>性别</td> 
+<td><{$sex_radio}></td>
+</tr>
+<tr>
+<td>年龄</td> 
+<td><input type="text" name="info[age]" disabled class="input-text" id="age" value="<{$info['age']}>" ></td>
+</tr>
+<tr>
+<td>审核状态</td> 
+<td><{$status_radio}></td>
+</tr>
+<tr>
+<td>积分</td> 
+<td><input type="text" name="info[integral]" disabled class="input-text" id="integral" value="<{$info['integral']}>" ></td>
+</tr>
+<tr>
+<td>蓝鲸币</td> 
+<td><input type="text" name="info[gold]" disabled class="input-text" id="integral" value="<{$info['integral']}>" ></td>
+</tr>
+
+</table>
+<div class="bk15"></div>
+</div>
+</div>
+<{include file="../common/footer.html"}>

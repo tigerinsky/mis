@@ -1,0 +1,69 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style><script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#title").formValidator({onshow:"请输入应用名称",onfocus:"应用名称应该在4-30个字符之间"}).inputValidator({min:4,max:30,onerror:"应用名称应该在4-30个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_filed_have_ajax/'}>",
+		data :"field=title&tb=E&id=<{$info['id']}>",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "应用名称重复",
+		onwait : "请稍后..."
+	}).defaultPassed();
+	$("#kind").formValidator({onshow:"请输入应用名称",onfocus:"应用名称应该在4-20个字符之间"}).inputValidator({min:4,max:20,onerror:"应用名称应该在4-20个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_filed_have_ajax/'}>",
+		data :"field=kind&tb=E&id=<{$info['id']}>",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "应用名称重复",
+		onwait : "请稍后..."
+	}).defaultPassed();
+	$("#url").formValidator({onshow:"请输入访问地址",onfocus:"访问地址必须为http://形式",tipcss:{width:'300px'},empty:false}).inputValidator({onerror:"地址格式输入错误"}).regexValidator({regexp:"http:\/\/(.+)$",onerror:"访问地址必须为http://形式"}).defaultPassed();
+})
+//-->
+</script>
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/admin/app/app_edit_do/'}>" method="post" id="myform">
+<input type="hidden" value="<{$info['id']}>" name="app_id">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">应用名称</td> 
+<td><input type="text" name="info[title]"  class="input-text" id="title" value="<{$info['title']}>"></td>
+</tr>
+<tr>
+<td width="80">应用类型</td> 
+<td><input type="checkbox" name="info[mobile]"  id="mobile" value="1" <{if $info['mobile']==1}> checked <{/if}>> 手机端应用请勾选此项</td>
+</tr>
+<tr>
+<td>访问地址</td> 
+<td><input type="text" name="info[url]" class="input-text" id="url" value="<{$info['url']}>" style="width:350px;"></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交" />
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

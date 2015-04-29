@@ -1,0 +1,28 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#data_num").formValidator({onshow:"请输入邀请码数量",onfocus:"数值区间为10-50"}).inputValidator({min:1,max:2,onerror:"长度应该在1-2之间"}).regexValidator({regexp:"(^[1-4]+[0-9]+$)|50",onerror:"数值区间为10-50"}).defaultPassed();
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/tool/invite/invite_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td>记录条数</td> 
+<td><input type="text" name="data_num" class="input-text" id="data_num" value="10"></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

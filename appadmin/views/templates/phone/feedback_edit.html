@@ -1,0 +1,56 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/phone/feedback/feedback_edit_do/'}>" method="post" id="myform">
+<input type="hidden" value="<{$info['id']}>" name="id">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td>通讯录ID</td>
+<td><input type="text" name="info[phone_id]" class="input-text" id="phone_id" value="<{$info['phone_id']}>"></td></tr>
+<tr>
+<td>反馈类型</td> 
+<td><{$feedback_type_sel}></td>
+</tr>
+<tr>
+<td>反馈内容</td> 
+<td>
+<textarea name="info[comment]" class="input-text" id="comment"><{$info['comment']}></textarea>
+</td>
+</tr>
+<tr>
+<td>内容审核</td> 
+<td>
+<{$status_radio}>
+</td>
+</tr>
+<tr>
+<td>手机号</td>
+<td><input type="text" name="info[contact]" class="input-text" id="contact" value="<{$info['contact']}>"></td></tr>
+<tr>
+<td>手机号审核</td> 
+<td>
+<{$contact_status_radio}>
+</td>
+</tr>
+<tr>
+<td>操作用户</td>
+<td><input type="text" name="info[uid]" class="input-text" id="uid" value="<{$info['uid']}>"></td></tr>
+<tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

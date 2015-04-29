@@ -1,0 +1,59 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#tips_name").formValidator({onshow:"请输入标签名称",onfocus:"标签名称应该在2-12个汉字之间"}).inputValidator({min:4,max:36,onerror:"标签名称应该在2-12个汉字之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/common/tips/check_filed_have_ajax/'}>",
+		data :"field=tips_name&tb=A&id=<{$info['id']}>",
+		moreadd:"kind",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "标签名称重复",
+		onwait : "请稍后..."
+	}).defaultPassed();
+	$("#listorder").formValidator({onshow:"请输入序号",onfocus:"序号应该为数字"}).inputValidator({min:1,max:5,onerror:"需要长度应该在在1-5之间"}).regexValidator({regexp:"^[0-9]{1,5}$",onerror:"序号必须为数字"}).defaultPassed();	
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/common/tips/tips_edit_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">所属分类</td> 
+<td><{$kind_sel}></td>
+</tr>
+<tr>
+<td>标签名称</td> 
+<td><input type="text" name="info[tips_name]"  class="input-text wid200" id="tips_name" value="<{$info['tips_name']}>"></td>
+</tr>
+<tr>
+<td>绑 定 值</td> 
+<td><input type="text" name="info[bind_val]" class="input-text wid200" id="bind_val" value="<{$info['bind_val']}>"></input></td>
+</tr>
+<tr>
+<td>排序编号</td> 
+<td><input type="text" name="info[listorder]" class="input-text" id="listorder" value="<{$info['listorder']}>"></input></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="hidden" value="<{$info['id']}>" name="id">
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

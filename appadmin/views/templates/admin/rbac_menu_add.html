@@ -1,0 +1,75 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#cname").formValidator({onshow:"请输入菜单名称",onfocus:"菜单名称应该在4-30个字符之间"}).inputValidator({min:4,max:30,onerror:"菜单名称应该为4-30位英文字符"});
+	$("#ename").formValidator({onshow:"请输入英文名称",onfocus:"英文名称应该为4-30位英文字符"}).regexValidator({regexp:"^[a-z_0-9]{4,30}$",onerror:"英文名称应该为4-30位英文字符"});	
+	$("#listorder").formValidator({onshow:"请输入序号",onfocus:"序号应该为数字"}).inputValidator({min:1,max:5,onerror:"需要长度应该在在1-5之间"}).regexValidator({regexp:"^[0-9]{1,5}$",onerror:"序号必须为数字"}).defaultPassed();
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/admin/rbac_menu/rbac_menu_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">上级菜单</td> 
+<td>
+<select name="info[parentid]" >
+<option value="0">作为一级菜单</option>
+<{$select_menu}>
+</select></td>
+</tr>
+<tr>
+<td>中文名称</td> 
+<td><input type="text" name="info[cname]" class="input-text" id="cname" value=""></td>
+</tr>
+<tr>
+<td>英文名称</td> 
+<td><input type="text" name="info[ename]" class="input-text" id="ename" value=""></td>
+</tr>
+<tr>
+<td>扩展参数</td> 
+<td><input type="text" name="info[exturl]" class="input-text" id="exturl" value=""></td>
+</tr>
+<tr>
+<td>关联权限</td> 
+<td><input type="hidden" name="ace_id" class="input-text" id="ace_id" value="0"><input type="button" class="button" value="选择分组" onclick="select_ace('ace_id');"><font color="red">此项为必选</font></td>
+</tr>
+<tr>
+<td>是否显示</td> 
+<td><input type="checkbox" name="info[display]" class="input-text" id="display" value="1" checked> 如此菜单暂时不显示，请取消此项</td>
+</tr>
+<tr>
+<td>菜单类型</td> 
+<td><input type="checkbox" name="info[real]" class="input-text" id="real" value="1"> 如该菜单无功能对应，请勾选此项</td>
+</tr>
+<tr>
+<td>弹窗方式</td> 
+<td><input type="checkbox" name="info[target]" class="input-text" id="target" value="1"> 如需在顶层窗口打开，请勾选此项</td>
+</tr>
+<tr>
+<td>排序编号</td>
+<td><input type="text" name="info[listorder]" class="input-text" id="listorder" value="0"></td>
+</tr>
+
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+function select_ace(name) {
+	window.top.art.dialog({id:'ace_id'}).close();
+	window.top.art.dialog({title:'选择菜单对应权限',id:'ace_id',iframe:'<{site_url url='/admin/rbac_access/rbac_access_select/'}>?name='+name,width:'700',height:'530'}, function(){var d = window.top.art.dialog({id:'ace_id'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'dosubmit'}).close()});
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

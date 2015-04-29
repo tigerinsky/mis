@@ -1,0 +1,60 @@
+<{include file="../common/header.html"}>
+<link href="<{$sys_config['exten_pub_path']}>js/swfupload/swfupload.css" rel="stylesheet" type="text/css" />
+<form name="myform" action="" method="get" >
+<div class="lh26" style="padding:10px 0 0">
+<label>名称</label>
+<input type="text" value="<{$search_arr['keywords']}>" class="input-text" name="keywords"> 
+<label>时间</label>
+<{$search_arr['inputtime']}>
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$file_upload_limit}>" name="file_upload_limit">
+<input type="submit" value="搜索" class="button" name="dosubmit">
+</div>
+</form>
+<div class="bk20 hr"></div>
+<ul class="attachment-list"  id="fsUploadProgress">
+
+<{foreach from=$list_data item=row}>
+<li>
+	<div class="img-wrap">
+		<a href="javascript:;" onclick="javascript:album_cancel(this,'<{$row['id']}>','<{$row['httpurl']}>')"><div class="icon"></div><img src="<{$row['httpurl']}>" width="80" path="<{$row['httpurl']}>" title="<{$row['filename']}>"/></a>
+	</div>
+</li>
+<{/foreach}>
+</ul>
+ <div id="pages" class="text-c"><{$pages}></div>
+<script type="text/javascript">
+$(document).ready(function(){
+	set_status_empty();
+});	
+function set_status_empty(){
+	parent.window.$('#att-status').html('');
+	parent.window.$('#att-name').html('');
+}
+function album_cancel(obj,id,source){
+	var src = $(obj).children("img").attr("path");
+	var filename = $(obj).children("img").attr("title");
+	if($(obj).hasClass('on')){
+		$(obj).removeClass("on");
+		var imgstr = parent.window.$("#att-status").html();
+		var length = $("a[class='on']").children("img").length;
+		var strs = filenames = '';
+		//$.get('index.php?m=attachment&c=attachments&a=swfupload_json_del&aid='+id+'&src='+source);
+		for(var i=0;i<length;i++){
+			strs += '|'+$("a[class='on']").children("img").eq(i).attr('path');
+			filenames += '|'+$("a[class='on']").children("img").eq(i).attr('title');
+		}
+		parent.window.$('#att-status').html(strs);
+		parent.window.$('#att-name').html(filenames);
+	} else {
+		var num = parent.window.$('#att-status').html().split('|').length;
+		var file_upload_limit = '<{$file_upload_limit}>';
+		if(num > file_upload_limit) {alert('不能选择超过'+file_upload_limit+'个附件'); return false;}
+		$(obj).addClass("on");
+		$.get('index.php?m=attachment&c=attachments&a=swfupload_json&aid='+id+'&src='+source);
+		parent.window.$('#att-status').append('|'+src);
+		parent.window.$('#att-name').append('|'+filename);
+	}
+}
+</script>
+<{include file="../common/footer.html"}>

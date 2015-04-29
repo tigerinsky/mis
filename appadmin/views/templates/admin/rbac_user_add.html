@@ -1,0 +1,88 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#tname").formValidator({onshow:"请输入管理员姓名",onfocus:"姓名必须在4-20个字符之间"}).inputValidator({min:4,max:20,onerror:"姓名必须在4-20个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_filed_have_ajax/'}>",
+		data :"field=tname&tb=D",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "管理员姓名重复",
+		onwait : "请稍后..."
+	});
+	$("#uname").formValidator({onshow:"请输入用户账号",onfocus:"账号名称需要在4-20个字符之间"}).inputValidator({min:4,max:20,onerror:"账号名称需要在4-20个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_filed_have_ajax/'}>",
+		data :"field=uname&tb=D",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "账号名称重复",
+		onwait : "请稍后..."
+	});
+	$("#pass_word").formValidator({onshow:"请输入用户密码",onfocus:"密码长度在8到20个字符之间"}).inputValidator({min:8,max:20,onerror:"密码长度在8到20个字符之间"});
+	$("#pwdconfirm").formValidator({onshow:"请重复输入密码",onfocus:"两次输入的密码不一致"}).compareValidator({desid:"pass_word",operateor:"=",onerror:"两次输入的密码不一致"});
+	$("#role_id").formValidator({onshow:"请选择所属角色",onfocus:"角色项必须选择"}).inputValidator({min:1,onerror: "所属角色没有选择!"});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/admin/rbac_user/rbac_user_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">管 理 员</td> 
+<td><input type="text" name="info[tname]"  class="input-text" id="tname" value=""></td>
+</tr>
+<tr>
+<td>用 户 名</td> 
+<td><input type="text" name="info[uname]" class="input-text" id="uname" value=""></td>
+</tr>
+<tr>
+<td>账号密码</td> 
+<td><input type="password" name="info[pass_word]" class="input-text" id="pass_word" value=""></td>
+</tr>
+<tr>
+<td>确认密码</td> 
+<td><input type="password" name="pwdconfirm" class="input-text" id="pwdconfirm" value=""></td>
+</tr><br>
+<tr>
+<td>所属角色</td> 
+<td>
+<select name="info[role_id]" id="role_id">
+	<option value='0' selected>请 选 择</option>
+	<{foreach from=$role_list item=role}>
+	<option value='<{$role['id']}>' <{if $search_arr['role_id']==$role['id']}>selected<{/if}>><{$role['role_name']}></option>
+	<{/foreach}>
+</select>
+</td>
+</tr>
+
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

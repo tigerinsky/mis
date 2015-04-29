@@ -1,0 +1,120 @@
+<{include file="../common/header.html"}>
+
+<link href="<{$sys_config['exten_pub_path']}>css/jquery.treeTable.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/jquery.treetable.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+		$("#dnd-example").treeTable({
+			indent: 20
+		});
+  });
+  
+  function checknode(obj){
+	      var chk = $("input[type='checkbox']");
+	      var count = chk.length;
+	      var num = chk.index(obj);
+	      var levelnum = level_top = level_bottom =  chk.eq(num).attr('level')//当前选择元素的 level
+	      var k=1;
+	      if(levelnum==1){
+		      for (var i=num; i>=0; i--)
+		      {
+		          var le = chk.eq(i).attr('level');
+		          if(k==1 && le!=0){
+		          	ace_val=chk.eq(num).attr("value");
+		          	if(chk.eq(num).attr("checked")=='checked') {
+		          		//选择该权限应当执行的操作
+		          		add_access(ace_val);
+		          	}else{
+		          		//取消该权限应当执行的操作
+		          		clear_access(ace_val);
+		          	}
+		          }
+		          k++;
+		          if(eval(le) < eval(level_top)) 
+		          {
+		              chk.eq(i).attr("checked",'checked');
+		              var level_top = level_top-1;
+		              break;
+		          }
+		      }
+	      }else{
+		      for (var j=num+1; j<count; j++)
+		      {
+		          var le = chk.eq(j).attr('level');
+		          if(eval(le) == eval(level_bottom)){break;}
+		          ace_val=chk.eq(j).attr("value");
+		          if(chk.eq(num).attr("checked")=='checked') {
+		          		//选择该权限应当执行的操作
+		          		if(chk.eq(j).attr("checked")!='checked'){
+		          			chk.eq(j).attr("checked",'checked');
+		          			add_access(ace_val);
+		          		}
+		          }else {
+		          		//取消该权限应当执行的操作
+		          		if(chk.eq(j).attr("checked")=='checked'){
+		          			chk.eq(j).attr("checked",false);
+		          			clear_access(ace_val);
+		          		}
+		          }
+		      }
+	      }
+	}
+	
+	//取消或删除对应权限
+	function add_access(ace_val){
+		$.post('<{site_url url='/admin/rbac_role/rbac_role_add_access_ajax/'}>?times='+new Date().getTime()+'&callback=?',{par_str:ace_val,role_id:<{$role_id}>},function(data,status){
+		  });
+	}
+	
+	function clear_access(ace_val){
+		$.post('<{site_url url='/admin/rbac_role/rbac_role_clear_access_ajax/'}>?times='+new Date().getTime()+'&callback=?',{par_str:ace_val,role_id:<{$role_id}>},function(data,status){
+		  });
+	}
+</script>
+
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/admin/rbac_role/rbac_role_give_access/'}>" method="get" >
+<input type="hidden" name="role_id" value="<{$role_id}>"/>
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">	
+				<select name="search_field_id">
+					<option value='1' <{if $search_arr['search_field_id']==1}>selected<{/if}>>分组名称</option>
+					<option value='2' <{if $search_arr['search_field_id']==2}>selected<{/if}>>英文名称</option>
+				</select>
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="search" name="showby">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<div class="table-list" id="load_priv">
+<form name="myform" action="<{site_url url='/admin/rbac_role/rbac_access_give_group_do/'}>" method="post">
+<input type="hidden" name="role_id" value="<{$role_id}>"/>
+<input type="hidden" name="roleid" value=""></input>
+<table width="100%" cellspacing="0" id="dnd-example">
+<tbody>
+<{if $list_data !=''}>
+	<{$list_data}>
+<{else}>
+	<tr>
+		<td style='padding-left:30px;'>权限系统未被初始化</td>
+	</tr>
+<{/if}>
+</tbody>
+</table>
+	<div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交" />
+</form>
+</div>
+
+<{include file="../common/footer.html"}>

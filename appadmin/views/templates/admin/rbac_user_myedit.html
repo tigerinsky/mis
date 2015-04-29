@@ -1,0 +1,38 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#pwd_word").formValidator({onshow:"请输入当前管理密码",onfocus:"密码长度在8到20个字符之间"}).inputValidator({min:8,max:20,onerror:"密码长度在8到20个字符之间"});
+	$("#pass_word").formValidator({onshow:"请输入新的管理密码",onfocus:"密码长度在8到20个字符之间"}).inputValidator({min:8,max:20,onerror:"密码长度在8到20个字符之间"});
+	$("#pwdconfirm").formValidator({onshow:"请重复输入新密码",onfocus:"密码长度在8到20个字符之间"}).compareValidator({desid:"pass_word",operateor:"=",onerror:"两次输入的密码不匹配"});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/admin/rbac_user/rbac_user_myedit_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">旧 密 码</td> 
+<td><input type="password" name="pwd_word" class="input-text" id="pwd_word" value=""></td>
+</tr>
+<tr>
+<td>新 密 码</td> 
+<td><input type="password" name="pass_word" class="input-text" id="pass_word" value=""></td>
+</tr>
+<tr>
+<td>确认密码</td> 
+<td><input type="password" name="pwdconfirm" class="input-text" id="pwdconfirm" value=""></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="button" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

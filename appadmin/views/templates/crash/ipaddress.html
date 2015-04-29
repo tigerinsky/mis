@@ -1,0 +1,132 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+        <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/member/user/user_add/'}>?', title:'添加会员', width:'600', height:'350', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>添加会员</em></a> 
+        <a href="<{site_url url='/member/user/index/'}>" class="on"><em>会员列表</em></a>    </div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/member/user/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">
+				
+				<select name="search_field_id">
+					<option value='1' <{if $search_arr['search_field_id']==1}>selected<{/if}>>用户称谓</option>
+					<option value='2' <{if $search_arr['search_field_id']==2}>selected<{/if}>>账号名称</option>
+				</select>
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<select name="role_id">
+					<option value='0' <{if $search_arr['role_id']==0}>selected<{/if}>>选择角色</option>
+					<{foreach from=$role_list item=role}>
+					<option value='<{$role['id']}>' <{if $search_arr['role_id']==$role['id']}>selected<{/if}>><{$role['role_name']}></option>
+					<{/foreach}>
+				</select>
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="80">ID</th>
+            <th width="80">用户昵称</th>
+            <th width="80">用户头像</th>
+            <th>联系方式</th>
+            <th>年龄</th>
+            <th>审核状态</th>
+            <th>注册方式</th>
+            <th>锁定状态</th>
+            <th>锁定次数</th>
+            <th>锁定时间</th>
+            <th>注册时间</th>
+            <th>地址</th>
+            <th>房屋面积</th>
+            <th width="150">管理操作</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+            <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
+            <td align="center"><{$row['id']}></td>
+            <td align="center"><{$row['tname']}></td>
+            <td align="center"><{$row['uname']}></td>
+            <td align="center"><{$row['role_name']}></td>
+            <td align="center"><{$row['role_name']}></td>
+            <td align="center"><{$row['role_name']}></td>
+            <td align="center"><{$row['role_name']}></td>
+            <td align="center"><{$row['role_name']}></td>
+            <td align="center"><{$row['role_name']}></td>
+            <td align="center"><{if $row['status']==1}>正常<{else}>禁用<{/if}></td>
+            <td align="center"><{if $row['lock']==1}>锁定<{else}>正常<{/if}></td>
+            <td align="center"><{if $row['lock_time']>0}> <{date('Y-m-d',$row['lock_time'])}> <{else}>时间不详<{/if}></td>
+            <td align="center"><{if $row['create_time']>0}> <{date('Y-m-d',$row['create_time'])}> <{else}>时间不详<{/if}></td>
+            <td align="center"><a href="javascript:edit(<{$row['id']}>,'<{$row['uname']}>')">修改</a> | 
+            <{if $row['lock']==1}><font color="#cccccc">删除</font><{else}><a href="javascript:;" onclick="delete_one(this,'<{$row['id']}>')">删除</a><{/if}></td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+		<input type="button" class="button" value="删除" onclick="myform.action='<{site_url url='/member/user/user_del/'}>';return delete_more()"/>
+		<input type="button" class="button" value="锁定" onclick="myform.action='<{site_url url='/member/user/user_change_lock/'}>';myform.submit();"/>
+		<input type="button" class="button" value="禁用" onclick="myform.action='<{site_url url='/member/user/user_change_status/'}>';myform.submit();"/>
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+
+function delete_one(obj,aid){
+	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+	function(){
+	$.get('<{site_url url='/member/user/user_del_one_ajax/'}>?&uid='+aid+'&wb_hash='+wb_hash,function(data){
+				if(data == 1) $(obj).parent().parent().fadeOut("slow");
+			})
+		 },
+	function(){});
+};
+
+function delete_more(){
+	if(confirm('确认删除吗？')) $('#myform').submit();
+}
+
+function delete_more_like(){
+	if(confirm('确认对所选记录伪删除变更吗？')) $('#myform').submit();
+}
+
+function edit(id, name) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑用户《'+name+'》',id:'edit',iframe:'<{site_url url='/member/user/user_edit/'}>?uid='+id,width:'600',height:'350'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+	
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

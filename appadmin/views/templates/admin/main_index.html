@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="off">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>系统管理后台</title>
+<link href="<{$sys_config['exten_pub_path']}>css/reset.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/zh-cn-system.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/dialog.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles1.css" title="styles1" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles2.css" title="styles2" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles3.css" title="styles3" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles4.css" title="styles4" media="screen" />
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/styleswitch.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/dialog.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/hotkeys.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/jquery.sgallery.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/admin_common.js"></script>
+<script type="text/javascript">
+	window.focus();
+		var wb_hash = "<{$admin_session['wb_hash']}>"
+		window.onload = function(){
+		var html_a = document.getElementsByTagName('a');
+		var num = html_a.length;
+		for(var i=0;i<num;i++) {
+			var href = html_a[i].href;
+			if(href && href.indexOf('javascript:') == -1) {
+				if(href.indexOf('?') != -1) {
+					html_a[i].href = href+'&wb_hash='+wb_hash;
+				} else {
+					html_a[i].href = href+'?wb_hash='+wb_hash;
+				}
+			}
+		}
+ 
+		var html_form = document.forms;
+		var num = html_form.length;
+		for(var i=0;i<num;i++) {
+			var newNode = document.createElement("input");
+			newNode.name = 'wb_hash';
+			newNode.type = 'hidden';
+			newNode.value = wb_hash;
+			html_form[i].appendChild(newNode);
+		}
+	}
+</script>
+<style type="text/css">
+.objbody{overflow:hidden}
+.btns{background-color:#666;}
+.btns{position: absolute; top:116px; right:30px; z-index:1000; opacity:0.6;}
+.btns2{background-color:rgba(0,0,0,0.5); color:#fff; padding:2px; border-radius:3px; box-shadow:0px 0px 2px #333; padding:0px 6px; border:1px solid #ddd;}
+.btns:hover{opacity:1;}
+.btns h6{padding:4px; border-bottom:1px solid #666; text-shadow: 0px 0px 2px #000;}
+.btns .pd4{ padding-top:4px; border-top:1px solid #999;}
+.pd4 li{border-radius:0px 6spx 0px 6px; margin-top:2px; margin-bottom:3px; padding:2px 0px;}
+.btns .pd4 li span{padding:0px 6px;}
+.pd{padding:4px;}
+.ac{background-color:#333; color:#fff;}
+.hvs{background-color:#555; cursor: pointer;}
+.bg_btn{background: url(<{$sys_config['exten_pub_path']}>images/admin_img/icon2.jpg) no-repeat; width:32px; height:32px;}
+</style>
+</head>
+<body scroll="no" class="objbody">
+<!--面板切换start-->
+<!--div class="btns btns2" id="btnx">
+    <div class="bg_btn"></div>
+    <h6>面板切换</h6>
+    <ul id="Site_model" class="pd4">
+        <li onclick="_Site_M();" class="ac"><span>全功能</span></li>
+        <li onclick="_Site_M('project1');"><span>精简模式</span></li>
+    </ul>
+</div-->
+<!--end-->
+<!--锁屏效果start-->
+<div id="dvLockScreen" class="ScreenLock" style="display:none;">
+    <div id="dvLockScreenWin" class="inputpwd">
+    <h5><b class="ico ico-info"></b><span id="lock_tips">锁屏状态，请输入密码解锁</span></h5>
+    <div class="input">
+    	<label class="lb">请输入解锁密码：</label><input type="password" id="lock_password" class="input-text" size="24">
+        <input type="submit" class="submit" value="&nbsp;" name="dosubmit" onclick="check_screenlock();return false;">
+    </div></div>
+</div>
+<!--end-->
+
+<div class="header">
+	<div class="logo lf"><a href="/" target="_blank"><span class="invisible">内容管理系统</span></a></div>
+    <div class="rt-col">
+    	<div class="tab_style white cut_line text-r"><!--a href="javascript:;" onclick="lock_screen()"><img src="<{$sys_config['exten_pub_path']}>images/icon/lockscreen.png"> 锁屏</a><span>|</span--><a href="#" target="_blank">帮助</a>
+        <!--系统风格切换-->
+        <ul id="Skin">
+            <li class="s1 styleswitch" rel="styles1"></li>
+            <li class="s2 styleswitch" rel="styles2"></li>
+            <li class="s3 styleswitch" rel="styles3"></li>
+            <li class="s4 styleswitch" rel="styles4"></li>
+        </ul>
+    	</div>
+    </div>
+    <div class="col-auto">
+    	<div class="log white cut_line">您好！  [<{$admin_session['username']}>]<span>|</span>
+    	<a href="<{site_url url='/user/user_out/'}>">[退出]</a><span>|</span>
+    	<a href="<{site_url url='/admin/main/'}>">系统主页</a>
+    	</div>
+        <ul class="nav white" id="top_menu">
+            <li class="tab_web"><a href="javascript:;"><span>默认模块</span></a></li>
+        </ul>
+    </div>
+    
+</div>
+<!--********************************************************-->
+<div id="content">
+	<!--左侧left菜单-->
+	<div class="col-left left_menu">
+    	<div id="Scroll" style="height: 365px;">
+            <div id="leftMain">
+                
+            </div>
+        </div>
+        <!--缓冲菜单控制按钮-->
+        <a href="javascript:;" id="openClose" style="outline-style: none; outline-color: invert; outline-width: medium;" hideFocus="hidefocus" class="open" title="展开与关闭"><span class="hidden">展开</span></a>
+    </div>
+    
+    <!--缓冲菜单页面-->
+	<div class="col-1 lf cat-menu" id="display_center_id" style="display:none" height="100%">
+		<div class="content">
+        <iframe name="center_frame" id="center_frame" src="" frameborder="false" scrolling="auto" style="border:none" width="100%" height="auto" allowtransparency="true"></iframe>
+        </div>
+    </div>
+    
+    <div class="col-auto mr8">
+    	<!--内容顶部导航菜单-->
+        <div class="crumbs">
+            <!--div class="shortcut cu-span">
+            <a href="?m=content&c=create_html&a=public_index&wb_hash=8uuXDx" target="right"><span>生成首页</span></a>
+            <a href="?m=admin&c=cache_all&a=init&wb_hash=8uuXDx" target="right"><span>更新缓存</span></a>
+            <a href="javascript:art.dialog({id:'map',iframe:'?m=admin&c=index&a=public_map', title:'后台地图', width:'700', height:'500', lock:true});void(0);"><span>后台地图</span></a>
+            </div-->
+            当前位置<span id="current_pos"></span>
+       </div>
+       
+    	<div class="col-1">
+        	<div class="content" style="position:relative; overflow:hidden">
+            	<!--主要内容区域-->
+                <iframe name="right" id="rightMain" src="<{site_url url='admin/main/right'}>" frameborder="false" scrolling="auto" style="border:none; margin-bottom:30px" width="100%" height="auto" allowtransparency="true"></iframe>
+                <!--内容底部快捷操作栏-->
+                <div class="fav-nav">
+                
+					<!--div id="panellist">
+						<span><a href="?m=admin&amp;c=module&a=init&menuid=2&wb_hash=diTH2I" target="right" onclick="paneladdclass(this);">模块</a>
+                        <a href="javascript:delete_panel(2);" class="panel-delete"></a></span>
+                        <span><a href="?m=message&c=message&a=init&menuid=1620&wb_hash=diTH2I" target="right" onclick="paneladdclass(this);">短消息</a>
+                        <a href="javascript:delete_panel(1620);" class="panel-delete"></a></span>
+                    </div-->
+                    
+					<!--div id="paneladd"><a href="javascript:add_panel();" class="panel-add"><em>添加</em></a></div>
+					<input type="hidden" id="menuid" value="1">
+					<input type="hidden" id="bigid" value="1"/>
+                    <div class="fav-help" id="help" style="display: none;"><a target="_blank" href="#">短消息</a><a onclick="$('#help').slideUp('slow')" href="javascript:;" class="panel-delete"></a></div-->
+				</div>
+        	</div>
+        </div>
+    </div>
+</div>
+
+<!--站点选择元素-->
+<div class="tab-web-panel hidden" style="position:absolute; z-index:999; background:#fff">
+<ul id="website_list"></ul>
+</div>
+
+<!--当左侧菜单臃肿的情况使用滚轴-->
+<div class="scroll"><a href="javascript:;" class="per" title="使用鼠标滚轴滚动侧栏" onclick="menuScroll(1);"></a><a href="javascript:;" class="next" title="使用鼠标滚轴滚动侧栏" onclick="menuScroll(2);"></a></div>
+
+<script type="text/javascript"> 
+
+//使用js方法让iframe自适应屏幕 start
+//扩展map属性，以增强浏览器支持，使其能多数组进行快速遍历
+if(!Array.prototype.map)
+Array.prototype.map = function(fn,scope) {
+  var result = [],ri = 0;
+  for (var i = 0,n = this.length; i < n; i++){
+	if(i in this){
+	  result[ri++]  = fn.call(scope,this[i],i,this);
+	}
+  }
+	return result;
+};
+
+
+var getWindowSize = function(){
+return ["Height","Width"].map(function(name){
+  return window["inner"+name] ||
+	document.compatMode === "CSS1Compat" && document.documentElement[ "client" + name ] || document.body[ "client" + name ]
+});
+}
+
+window.onload = function (){
+	if(!+"\v1" && !document.querySelector) { // for IE6 IE7
+	  document.body.onresize = resize;
+	} else { 
+	  window.onresize = resize;
+	}
+	function resize() {
+		wSize();
+		return false;
+	}
+}
+
+function wSize(){
+	//这是一字符串
+	var str=getWindowSize();
+	var strs= new Array(); //定义一数组
+	strs=str.toString().split(","); //字符分割
+	var heights = strs[0]-150,Body = $('body');$('#rightMain').height(heights);   
+	//iframe.height = strs[0]-46;
+	if(strs[1]<980){
+		$('.header').css('width',980+'px');
+		$('#content').css('width',980+'px');
+		Body.attr('scroll','');
+		Body.removeClass('objbody');
+	}else{
+		$('.header').css('width','auto');
+		$('#content').css('width','auto');
+		Body.attr('scroll','no');
+		Body.addClass('objbody');
+	}
+	
+	var openClose = $("#rightMain").height()+39;
+	$('#center_frame').height(openClose+9);
+	$("#openClose").height(openClose+30);	
+	$("#Scroll").height(openClose-20);
+	windowW();
+}
+
+wSize();
+/************************end********************************/
+
+
+//提示是否使用滚轴
+function windowW(){
+	if($('#Scroll').height()<$("#leftMain").height()){
+		$(".scroll").show();
+	}else{
+		$(".scroll").hide();
+	}
+}
+
+windowW();
+
+//系统切换下拉菜单
+$(function(){
+	
+	//加载系统切换
+	$.get("<{site_url url='/admin/rbac_menu/get_menu_by_id_ajax/?id=0&type=1'}>",function(result){
+		//console.log(result);
+		if(result.ret==1){
+			$("#website_list").html(result.data);
+			var menu_guide=<{$user_guide_info.menu_guide}>;
+			if(menu_guide>0){
+			    $default_menuli=$("#website_list a[menuid='"+menu_guide+"']");
+			}else{
+			    $default_menuli=$("#website_list").first().find("a");
+			}
+			$menu_id=$default_menuli.attr("menuid");
+			$menu_name=$default_menuli.html();
+			site_select($menu_id,$menu_name);
+		}
+	},'json');
+	
+	//左侧菜单展开和折叠
+	$(".switchs").each(function(i){
+		var ul = $(this).parent().next();
+		$(this).click(
+		function(){
+			if(ul.is(':visible')){
+				ul.hide();
+				$(this).removeClass('on');
+					}else{
+				ul.show();
+				$(this).addClass('on');
+			}
+		})
+	});
+	
+	
+	/****/
+	var offset = $(".tab_web").offset();
+	var tab_web_panel = $(".tab-web-panel");
+	$(".tab_web").mouseover(function(){
+			tab_web_panel.css({ "left": +$(this).offset().left+4, "top": +offset.top+$('.tab_web').height()});
+			tab_web_panel.show();
+			if(tab_web_panel.height() > 200){
+				tab_web_panel.children("ul").addClass("tab-scroll");
+			}
+		});
+	$(".tab_web span").mouseout(function(){hidden_site_list_1()});
+	$(".tab-web-panel").mouseover(function(){clearh();$('.tab_web a').addClass('on')}).mouseout(function(){hidden_site_list_1();$('.tab_web a').removeClass('on')});
+	
+	//默认载入左侧菜单以及顶部导航菜单
+	//$("#leftMain").load("<{site_url url='admin/rbac_menu/get_menu_by_id_ajax'}>/?id=<{$user_guide_info.menu_left}>&type=3&level=4&stop=1&def=1");
+	$("#leftMain").load("<{site_url url='admin/rbac_menu/get_menu_by_id_ajax'}>/?id=<{$user_guide_info.menu_left}>&type=3&level=4&stop=1&def=<{$user_guide_info.def}>");
+
+	//面板切换
+	$("#btnx").removeClass("btns2");
+	$("#Site_model,#btnx h6").css("display","none");
+	$("#btnx").hover(function(){$("#Site_model,#btnx h6").css("display","block");$(this).addClass("btns2");$(".bg_btn").hide();},function(){$("#Site_model,#btnx h6").css("display","none");$(this).removeClass("btns2");$(".bg_btn").show();});
+	$("#Site_model li").hover(function(){$(this).toggleClass("hvs");},function(){$(this).toggleClass("hvs");});
+	$("#Site_model li").click(function(){$("#Site_model li").removeClass("ac"); $(this).addClass("ac");});
+	
+})
+
+//隐藏系统下拉,此处代码不能放在$()之内，具体原因不详
+var s = 0;
+var h;
+function hidden_site_list() {
+	s++;
+	if(s>=3) {
+		$('.tab-web-panel').hide();
+		clearInterval(h);
+		s = 0;
+	}
+}
+function clearh(){
+	if(h)clearInterval(h);
+}
+function hidden_site_list_1() {
+	h = setInterval("hidden_site_list()",1);
+}
+
+//站点选择
+function site_select(id,name) {
+	//当切换到某个系统的时候，需要会初始化顶部导航，左侧导航，以及对应的系统的默认欢迎页面
+	$(".tab_web span").html(name);
+	$tab_box=$(".tab_web");
+	$.get("<{site_url url='/admin/rbac_menu/get_menu_by_id_ajax/'}>/?id="+id+"&type=2",function(result){
+		if(result.ret==1){
+			//window.top.right.location.reload();
+			//window.top.center_frame.location.reload();
+			$('.top_menu').remove();
+			$("#top_menu").prepend(result.data);
+            var menu_tabid=$("#top_menu li:eq(1)").attr("id").replace(/_M/g, '');
+            _M(menu_tabid);
+			if(id==<{$user_guide_info.menu_guide}>){$("#_M<{$user_guide_info.menu_left}>").addClass('on');}
+
+		}
+	},'json');	
+}
+
+//左侧开关
+$("#openClose").click(function(){
+	if($(this).data('clicknum')==1) {
+		$("html").removeClass("on");
+		$(".left_menu").removeClass("left_menu_on");
+		$(this).removeClass("close");
+		$(this).data('clicknum', 0);
+		$(".scroll").show();
+	} else {
+		$(".left_menu").addClass("left_menu_on");
+		$(this).addClass("close");
+		$("html").addClass("on");
+		$(this).data('clicknum', 1);
+		$(".scroll").hide();
+	}
+	return false;
+});
+
+//点击顶部菜单，加载左侧菜单
+function _M(menuid,targetUrl,my) {
+	my=my>0?my:0;
+	$("#menuid").val(menuid);
+	$("#bigid").val(menuid);
+	$("#paneladd").html('<a class="panel-add" href="javascript:add_panel();"><em>添加</em></a>');
+	if(my==1){$my_menu_str='&def=1';}else{$my_menu_str='';}
+	$.get("<{site_url url='admin/rbac_menu/get_menu_by_id_ajax'}>/?id="+menuid+"&type=3&level=4"+$my_menu_str,function(result){
+		if(result.ret==1){
+			$("#leftMain").html(result.data);
+			//左侧菜单展开和折叠
+			$(".switchs").each(function(i){
+				var ul = $(this).parent().next();
+				$(this).click(
+				function(){
+					if(ul.is(':visible')){
+						ul.hide();
+						$(this).removeClass('on');
+							}else{
+						ul.show();
+						$(this).addClass('on');
+					}
+				})
+			});
+			windowW();
+		}
+	},'json');
+	
+	if(targetUrl!=''){ 
+		//$("#rightMain").attr('src',targetUrl);
+	}
+	
+	$('.top_menu').removeClass("on");
+	$('#_M'+menuid).addClass("on");
+	
+	
+	/*
+	//获取当前位置
+	$.get("?m=admin&c=index&a=public_current_pos&menuid="+menuid,function(data){
+		$("#current_pos").html(data);
+	});
+	*/
+	
+	//当点击顶部菜单后，隐藏中间的框架
+	$('#display_center_id').css('display','none');
+	//显示左侧菜单，当点击顶部时，展开左侧
+	$(".left_menu").removeClass("left_menu_on");
+	$("#openClose").removeClass("close");
+	$("html").removeClass("on");
+	$("#openClose").data('clicknum', 0);
+	$("#current_pos").data('clicknum', 1);
+}
+//点击左侧菜单，加载右侧内容
+function _MP(menuid,targetUrl,by) {
+	$("#menuid").val(menuid);
+	$("#paneladd").html('<a class="panel-add" href="javascript:add_panel();"><em>添加</em></a>');
+	targetUrl=targetUrl+'?t='+new Date().getTime();
+    if(by==1){
+        openwinx(targetUrl,'');
+    }else{
+        $("#rightMain").attr('src',targetUrl);
+    }
+	$('.sub_menu').removeClass("on fb blue");
+	$('#_MP'+menuid).addClass("on fb blue");
+	/*
+	$.get("?m=admin&c=index&a=public_current_pos&menuid="+menuid, function(data){
+		$("#current_pos").html(data+'<span id="current_pos_attr"></span>');
+	});
+	$("#current_pos").data('clicknum',1);
+		show_help(targetUrl);
+	*/
+}
+
+//帮助信息右下角提示
+function show_help(targetUrl) {
+	/*
+	$("#help").slideUp("slow");
+	var str = '';
+	$.getJSON("http://www.goitw.com/api.php?jsoncallback=?",{op:'help',targetUrl: targetUrl},
+	function(data){
+		if(data!=null) {
+			$("#help").slideDown("slow");
+			$.each(data, function(i,item){
+				str += '<a href="'+item.url+'" target="_blank">'+item.title+'</a>';
+			});
+			
+			str += '<a class="panel-delete" href="javascript:;" onclick="$(\'#help\').slideUp(\'slow\')"></a>';
+			$('#help').html(str);
+		}
+	});
+	$("#help").data('time', 1);
+	*/
+}
+
+//隐藏帮助菜单
+function hidden_help() {
+	/*
+	var htime = $("#help").data('time')+1;
+	$("#help").data('time', htime);
+	if(htime>2) $("#help").slideUp("slow");
+	*/
+}
+
+//setInterval("hidden_help()", 10000);
+
+//添加快捷操作菜单
+function add_panel() {
+	/*
+	var menuid = $("#menuid").val();
+	$.ajax({
+		type: "POST",
+		url: "?m=admin&c=index&a=public_ajax_add_panel",
+		data: "menuid=" + menuid,
+		success: function(data){
+			if(data) {
+				$("#panellist").html(data);
+			}
+		}
+	});
+	*/
+}
+
+//删除快捷操作菜单
+function delete_panel(menuid, id) {
+	/*
+	$.ajax({
+		type: "POST",
+		url: "?m=admin&c=index&a=public_ajax_delete_panel",
+		data: "menuid=" + menuid,
+		success: function(data){
+			$("#panellist").html(data);
+		}
+	});
+	*/
+}
+
+//修改快捷操作样式
+function paneladdclass(id) {
+	$("#panellist span a[class='on']").removeClass();
+	$(id).addClass('on')
+}
+
+//保持session更新
+setInterval("session_life()", 160000);
+
+function session_life() {
+	//$.get("?m=admin&c=index&a=public_session_life");
+}
+
+function lock_screen() {
+	$.get("?m=admin&c=index&a=public_lock_screen");
+	$('#dvLockScreen').css('display','');
+}
+
+function check_screenlock() {
+	var lock_password = $('#lock_password').val();
+	if(lock_password=='') {
+		$('#lock_tips').html('<font color="red">密码不能为空。</font>');
+		return false;
+	}
+	$.get("?m=admin&c=index&a=public_login_screenlock", { lock_password: lock_password},function(data){
+		if(data==1) {
+			$('#dvLockScreen').css('display','none');
+			$('#lock_password').val('');
+			$('#lock_tips').html('锁屏状态，请输入密码解锁');
+		} else if(data==3) {
+			$('#lock_tips').html('<font color="red">密码重试次数太多</font>');
+		} else {
+			strings = data.split('|');
+			$('#lock_tips').html('<font color="red"><font color="red">密码错误，您还有'+strings[1]+'次尝试机会！</font>');
+		}
+	});
+}
+
+$(document).bind('keydown', 'return', function(evt){check_screenlock();return false;});
+
+(function(){
+    var addEvent = (function(){
+             if (window.addEventListener) {
+                return function(el, sType, fn, capture) {
+                    el.addEventListener(sType, fn, (capture));
+                };
+            } else if (window.attachEvent) {
+                return function(el, sType, fn, capture) {
+                    el.attachEvent("on" + sType, fn);
+                };
+            } else {
+                return function(){};
+            }
+        })(),
+    Scroll = document.getElementById('Scroll');
+    // IE6/IE7/IE8/Opera 10+/Safari5+
+    addEvent(Scroll, 'mousewheel', function(event){
+        event = window.event || event ;  
+		if(event.wheelDelta <= 0 || event.detail > 0) {
+				Scroll.scrollTop = Scroll.scrollTop + 29;
+			} else {
+				Scroll.scrollTop = Scroll.scrollTop - 29;
+		}
+    }, false);
+
+    // Firefox 3.5+
+    addEvent(Scroll, 'DOMMouseScroll',  function(event){
+        event = window.event || event ;
+		if(event.wheelDelta <= 0 || event.detail > 0) {
+				Scroll.scrollTop = Scroll.scrollTop + 29;
+			} else {
+				Scroll.scrollTop = Scroll.scrollTop - 29;
+		}
+    }, false);
+	
+})();
+
+function menuScroll(num){
+	var Scroll = document.getElementById('Scroll');
+	if(num==1){
+		Scroll.scrollTop = Scroll.scrollTop - 60;
+	}else{
+		Scroll.scrollTop = Scroll.scrollTop + 60;
+	}
+}
+
+function _Site_M(project) {
+	//切换菜单金典模式，即是仅仅显示核心功能菜单；或者是显示拥有的全部菜单；
+}
+
+</script>
+</body>
+</html>

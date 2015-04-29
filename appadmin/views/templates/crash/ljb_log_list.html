@@ -1,0 +1,104 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+        <a href="<{site_url url='/member/ljb_log/index/'}>" class="on"><em>蓝鲸币日志列表</em></a>    </div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/member/ljb_log/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">
+            规则：
+			    <!-- 关键词：	
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" /> (姓名、手机号)
+				<input type="submit" name="search" class="button" value="搜索" /> -->
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="">ID</th>
+            <th width="">UID</th>
+            <th width="">KEYID</th>
+            <th width="">操作</th>
+            <th width="">蓝鲸币数</th> 
+            <th width="">操作说明</th> 
+            <th width="">写入时间</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+            <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
+            <td align="center"><{$row['id']}></td>
+            <td align="center"><{$row['uid']}></td>
+            <td align="center"><{$row['keyid']}></td>
+            <td align="center"><{$row['action']}></td>
+            <td align="center"><{$row['gold']}></td>
+            <td align="center"><{$row['rule_intro']}></td>
+            <td align="center"><{$row['time_create']}></td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+
+function delete_one(obj,aid){
+	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+	function(){
+	$.get('<{site_url url='/member/ljb_rule/ljb_rule_del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+				if(data == 1) $(obj).parent().parent().fadeOut("slow");
+			})
+		 },
+	function(){});
+};
+
+function delete_more(){
+	if(confirm('确认删除吗？')) $('#myform').submit();
+}
+
+function delete_more_like(){
+	if(confirm('确认对所选记录删除吗？')) $('#myform').submit();
+}
+
+function edit(id, name) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑反馈内容《'+name+'》',id:'edit',iframe:'<{site_url url='/member/ljb_rule/ljb_rule_edit/'}>?id='+id,width:'600',height:'350'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+	
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

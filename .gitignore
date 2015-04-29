@@ -1,0 +1,7 @@
+/codeigniter
+/.settings
+CLI_LJSRV_CONFIG
+CLI_LJSRV_DEV_CONFIG
+.project
+*.log
+*.out

@@ -1,0 +1,40 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/member/ljb_rule/ljb_rule_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td>KEYID</td>
+<td><input type="text" name="info[keyid]" class="input-text" id="keyid" value=""></td>
+</tr>
+<tr>
+<td>规则名称</td>
+<td><input type="text" name="info[rule_name]" class="input-text" id="rule_name" value=""></td></tr>
+<tr>
+<td>蓝鲸币值</td>
+<td><input type="text" name="info[gold]" class="input-text" id="gold" value=""></td></tr>
+<tr>
+<td>规则说明</td> 
+<td>
+<textarea name="info[rule_intro]" class="input-text" id="rule_intro"><{$info['rule_intro']}></textarea>
+</td>
+</tr>
+
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

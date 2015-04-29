@@ -1,0 +1,73 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+	#select_box span{cursor:pointer;}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/admin/rbac_access/rbac_access_group_select/?close=ok'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">				
+				<select name="search_field_id">
+					<option value='1' <{if $search_arr['search_field_id']==1}>selected<{/if}>>中文名称</option>
+					<option value='2' <{if $search_arr['search_field_id']==2}>selected<{/if}>>英文名称</option>
+				</select>
+				
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="100%">请在检索之后，直接单击对应的值进行选择</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        			
+            <tr>
+            <td align="left">
+            	<div id="select_box">
+            	<{foreach from=$list_data item=row}>
+            		<span onclick="select_group_name('<{$row['group_ename']}>','select_group');" style="margin-left:10px;"><{$row['group_name']}></span> 
+            	<{foreachelse}>
+            		没有数据
+            	<{/foreach}>
+            	</div>
+            </td>
+            </tr>    
+    	</tbody>
+    </table>
+    <input type="button" class="dialog" id="dosubmit" name="dosubmit" value="提交1" onclick="close_dialog('select_group');"/>
+    <div id="pages"><{$pages}></div>
+</div>
+</div>
+<div id="pages"></div>
+<script type="text/javascript"> 
+<!--
+function select_group_name(ename,dialog_name) {
+	window.top.art.dialog({id:'add'}).data.iframe.document.getElementById('ace_group').value=ename;
+	window.top.art.dialog({id:dialog_name}).close();
+}
+
+function close_dialog(dialog_name){
+	window.top.art.dialog({id:dialog_name}).close();
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

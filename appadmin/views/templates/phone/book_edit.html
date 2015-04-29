@@ -1,0 +1,102 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#mobile").formValidator({onshow:"请输入手机号",onfocus:"手机号为11位数字"}).inputValidator({min:11,max:11,onerror:"手机号为11位数字"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/phone/book/check_filed_have_ajax/'}>",
+		data :"field=mobile&tb=A&id=<{$info['id']}>",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "手机号重复",
+		onwait : "请稍后..."
+	});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/phone/book/book_edit_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td>姓 名</td> 
+<td><input type="text" name="info[name]" class="input-text" id="name" value="<{$info['name']}>"></td>
+</tr>
+<tr>
+<td>所属身份</td> 
+<td>
+<{$type_sel}>
+</td>
+</tr>
+<tr>
+<td>所属行业</td> 
+<td><{$industry_sel}></td>
+</tr>
+<tr>
+<td>手机号</td>
+<td><input type="text" name="info[mobile]" class="input-text" id="mobile" value="<{$info['mobile']}>"></td>
+</tr>
+<tr>
+<td>固定电话</td> 
+<td><input type="text" name="info[phone]" class="input-text" id="phone" value="<{$info['phone']}>"></td>
+</tr>
+<tr>
+<td>邮箱</td> 
+<td><input type="text" name="info[email]" class="input-text" id="email" value="<{$info['email']}>"></td>
+</tr>
+<tr>
+<td>职业</td> 
+<td><input type="text" name="info[work]" class="input-text" id="work" value="<{$info['work']}>"></td>
+</tr>
+<tr>
+<td>职务</td> 
+<td><input type="text" name="info[job]" class="input-text" id="job" value="<{$info['job']}>"></td>
+</tr>
+<tr>
+<td>公司单位</td> 
+<td><input type="text" name="info[company]" class="input-text" id="company" value="<{$info['company']}>"></td>
+</tr>
+<td>城市</td> 
+<td><input type="text" name="info[city]" class="input-text" id="city" value="<{$info['city']}>"></td>
+</tr>
+<tr>
+<td>审核状态</td> 
+<td>
+<{$status_radio}>
+</td>
+</tr>
+<tr>
+<td>认证图片</td> 
+<td>
+	<{if $info['card_pic']}>
+	<img src="<{$info['card_pic']}>" />
+	<{/if}>
+</td>
+</tr>
+<tr>
+<td>备注</td> 
+<td><textarea name="info[remark]" class="input-text" id="remark"> <{$info['remark']}></textarea></td>
+</tr>
+
+</table>
+    <div class="bk15"></div>
+	<input type="hidden" value="<{$info['id']}>" name="id">
+	<input type="hidden" value="<{$info['time_create']}>" name="info[time_create]">
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

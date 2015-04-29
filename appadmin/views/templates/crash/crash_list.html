@@ -1,0 +1,116 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+        <!-- <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/member/user/user_add/'}>?', title:'添加会员', width:'600', height:'350', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>添加会员</em></a>  -->
+        <a href="<{site_url url='/crash/crash/index/'}>" class="on"><em>日志列表</em></a>    </div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/crash/crash/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">
+			    关键词：	
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="40">ID</th>
+            <th width="40">UID</th>
+            <th width="60">imei</th>
+            <th width="50">Crash日志链接</th>
+            <th width="50">APP版本</th>
+            <th width="50">手机信息</th>
+            <!--<th width="140">管理操作</th>-->
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+            <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
+            <td align="center"><{$row['id']}></td>
+            <td align="center"><{$row['uid']}></td>
+            <td align="center"><{$row['imei']}></td>
+            <td align="center"><a href="<{$row['url']}>"><{$row['url']}></td>
+            <td align="center"><{$row['app_version']}></td>
+            <td align="center"><{$row['mobile_info']}></td>
+            <!--
+            <td align="center"><a href="javascript:edit(<{$row['id']}>,'<{$row['uname']}>')">修改</a> | <{if $row['status']==1 || $row['status']==-1}><font color="#cccccc">删除</font><{else}><a href="javascript:;" onclick="delete_one(this,'<{$row['id']}>')">删除</a><{/if}> | <a href="javascript:view(<{$row['id']}>,'<{$row['uname']}>')">查看详情</a>
+            </td>
+            -->
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+        <!--
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+		<input type="button" class="button" value="审核已通过" onclick="myform.action='<{site_url url='/member/user/user_status/?status=1'}>';myform.submit();"/>
+        <input type="button" class="button" value="审核未通过" onclick="myform.action='<{site_url url='/member/user/user_status/?status=2'}>';myform.submit();"/>
+        <input type="button" class="button" value="锁定" onclick="myform.action='<{site_url url='/member/user/user_locked/?locked=1'}>';myform.submit();"/>
+        <input type="button" class="button" value="解锁" onclick="myform.action='<{site_url url='/member/user/user_locked/?locked=0'}>';myform.submit();"/>
+        <input type="button" class="button" value="删除" onclick="delete_more();myform.action='<{site_url url='/member/user/user_delete/'}>';"/>
+        -->
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+
+function delete_one(obj,aid){
+	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+	function(){
+	$.get('<{site_url url='/member/user/user_del_one_ajax/'}>?&uid='+aid+'&wb_hash='+wb_hash,function(data){
+				if(data == 1) $("#user_status").html("已删除");
+			})
+	},function(){});
+};
+
+function delete_more(){
+	if(confirm('确认删除吗？')) $('#myform').submit();
+}
+
+function delete_more_like(){
+	if(confirm('确认对所选记录伪删除变更吗？')) $('#myform').submit();
+}
+
+function edit(id, name) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑用户《'+name+'》',id:'edit',iframe:'<{site_url url='/member/user/user_edit/'}>?id='+id,width:'600',height:'350'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+}
+function view(id, name) {
+    window.top.art.dialog({id:'view'}).close();
+    window.top.art.dialog({title:'查看用户《'+name+'》',id:'view',iframe:'<{site_url url='/member/user/user_view/'}>?id='+id,width:'600',height:'350',cancelVal:'关闭',cancel:true}); 
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

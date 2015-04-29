@@ -1,0 +1,133 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+        <a href="<{site_url url='/member/verify/index/'}>" class="on"><em>用户认证列表</em></a>    </div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/member/verify/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">
+			    关键词：	
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="40">ID</th>
+            <th width="40">用户名</th>
+            <th width="60">认证类型</th>
+            <th width="50">认证状态</th>
+            <th width="50">认证资料</th>
+            <th width="90">申请时间</th>
+            <th width="90">操作</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+			<td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['uid']}>-<{$row['verify']}>" type="checkbox"></td>
+            <td align="center"><{$row['id']}></td>
+			<td align="center"><{get_username($row['uid'])}>-<{$row['uid']}></td>
+            <td align="center"><{$identify[$row['verify']]}></td>
+			<td align="center" id="verify_sure_<{$row['id']}>"><{if $row['verify_sure'] == 1}><span style="color:green;">已通过</span><{else}><span style="color:red;">未通过</span><{/if}></td>
+			<td align="center"><a href="javascript:verify_data(<{$row['id']}>)">查看资料</a></td>
+            <td align="center"><{date("Y-m-d H:i:s", $row['time_create'])}></td>
+			<td align="left" id="verify_op_<{$row['id']}>">
+				<a href="javascript:member_view(<{$row['uid']}>)">用户详情</a> | 
+				<{if $row['verify_sure'] == 0}><a href="javascript:;" onclick="verify_status_one(<{$row['uid']}>, 1, <{$row['id']}>)">验证通过</a><{else}><a href="javascript:;" onclick="verify_status_one(<{$row['uid']}>, 0, <{$row['id']}>)">验证未通过</a><{/if}>
+			</td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+	<!--
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+		<input type="button" class="button" value="通过认证" onclick="myform.action='<{site_url url='/member/verify/verify_status/?status=1'}>';myform.submit();"/>
+        <input type="button" class="button" value="认证未通过" onclick="myform.action='<{site_url url='/member/verify/verify_status/?status=2'}>';myform.submit();"/>
+        <input type="button" class="button" value="删除" onclick="myform.action='<{site_url url='/member/verify/verify_delete/'}>';myform.submit();"/>
+		-->
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript">
+<!--
+function delete_one(obj,aid){
+	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+	function(){
+	$.get('<{site_url url='/member/user/user_del_one_ajax/'}>?&uid='+aid+'&wb_hash='+wb_hash,function(data){
+				if(data == 1) $(obj).parent().parent().fadeOut("slow");
+			})
+		 },
+	function(){});
+};
+
+function delete_more(){
+	if(confirm('确认删除吗？')) $('#myform').submit();
+}
+
+function delete_more_like(){
+	if(confirm('确认对所选记录伪删除变更吗？')) $('#myform').submit();
+}
+function verify_data(id) {
+    window.top.art.dialog({id:'verify_data'}).close();
+    window.top.art.dialog({title:'查看',id:'verify_data',iframe:'<{site_url url='/member/verify/verify_data/'}>?id='+id,width:'600',height:'350'}, function(){var d = window.top.art.dialog({id:'verify_data'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'verify_data'}).close()});
+}
+function member_view(id) {
+    window.top.art.dialog({id:'member_view'}).close();
+	window.top.art.dialog({title:'查看',id:'member_view',iframe:'<{site_url url='/member/user/user_view/'}>?id='+id,width:'600',height:'350',cancelVal:'关闭',cancel:true});
+}
+function verify_status_one(uid, status, id) {
+	var tips = '确认该用户通过认证？';
+	if (status == 0) {
+		tips = '确认该用户不能通过认证？';	
+	}
+	window.top.art.dialog({content: tips, fixed:true, style:'confirm',id:'verify_status_one'}, function(){
+			$.get(
+				'<{site_url url='/member/verify/verify_status_one_ajax/'}>?id='+id+'&uid='+uid+'&status='+status+'&wb_hash='+wb_hash,
+				function(data){
+				if(data == 1) {
+					if (status == 0) {
+						$("#verify_sure_"+id).html('<span style="color:red">未通过</span>');
+						$("#verify_op_"+id).html('<a href="javascript:member_view('+uid+')">用户详情</a> |<a href="javascript:;" onclick="verify_status_one('+uid+', 1, '+id+')">验证通过</a>');
+					} else{
+						$("#verify_sure_"+id).html('<span style="color:green">已通过</span>');
+						$("#verify_op_"+id).html('<a href="javascript:member_view('+uid+')">用户详情</a> |<a href="javascript:;" onclick="verify_status_one('+uid+', 0, '+id+')">验证未通过</a>');
+					}
+				}
+			})
+			},function(){});
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

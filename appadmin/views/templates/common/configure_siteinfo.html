@@ -1,0 +1,69 @@
+<{include file="../common/header.html"}>
+<script type="text/javascript">
+<!--
+	$(function(){
+		SwapTab('setting','on','',1);
+		$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+		$("#sitename").formValidator({empty:false,onshow:"请输入站点名称",onfocus:"站点名称不能为空",oncorrect:"输入正确",onempty:"站点名称不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#siteurl").formValidator({onshow:"请输入站点地址",onfocus:"格式：http://www.example.com/"}).inputValidator({onerror:"格式：http://www.example.com/"}).regexValidator({regexp:"^http:\/\/(.+)\/$",onerror:"输入错误"}).defaultPassed();
+		$("#seotitle").formValidator({empty:false,onshow:"请输入网页标题",onfocus:"网页标题不能为空",oncorrect:"输入正确",onempty:"网页标题不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#keyrords").formValidator({empty:false,onshow:"请输入网页关键字",onfocus:"网页关键字不能为空",oncorrect:"输入正确",onempty:"网页关键字不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#description").formValidator({empty:false,onshow:"请输入网页说明",onfocus:"网页说明不能为空",oncorrect:"输入正确",onempty:"网页说明不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+	})
+//-->
+</script>
+<form action="<{site_url url='/common/configure/index/'}>" method="post" id="myform">
+<div class="pad-10">
+<div class="col-tab">
+<ul class="tabBut cu-li">
+    <li id="tab_setting_1" class="on" onclick="SwapTab('setting','on','',1);">站点配置</li>
+</ul>
+<div id="div_setting_1" class="contentList pad-10">
+<table width="100%"  class="table_form">
+  <tr>
+    <th width="120">站点名称</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][sitename]" id="sitename" size="30" value="<{$siteinfo[1]['sitename']}>" /></td>
+  </tr> 	
+  <tr>
+    <th width="120">首页地址</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][siteurl]" id="siteurl" size="50" value="<{$siteinfo[1]['siteurl']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">网页标题</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][seotitle]" id="seotitle" size="75" value="<{$siteinfo[1]['seotitle']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">关 键 字</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][keyrords]" id="keyrords" size="75" value="<{$siteinfo[1]['keyrords']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">网站说明</th>
+    <td class="y-bg">
+    <textarea class="input-text" name="setting[1][description]" id="description" cols="71" rows="5"><{$siteinfo[1]['description']}></textarea>
+    </td>
+  </tr>
+</table>
+</div>
+
+<div class="bk15"></div>
+<input name="dosubmit" type="submit" value="提交" class="button">
+</div>
+</div>
+</form>
+</body>
+<script type="text/javascript">
+//菜单切换效果
+function SwapTab(name,cls_show,cls_hide,cur){
+	cnt=jQuery('[id^=tab_'+name+'_]').length;
+	for(i=0;i<=cnt;i++){
+		if(i==cur){
+			 jQuery('#div_'+name+'_'+i).show();
+			 jQuery('#tab_'+name+'_'+i).attr('class',cls_show);
+		}else{
+			 jQuery('#div_'+name+'_'+i).hide();
+			 jQuery('#tab_'+name+'_'+i).attr('class',cls_hide);
+		}
+	}
+}
+</script>
+<{include file="../common/footer.html"}>

@@ -1,0 +1,76 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#title").formValidator({onshow:"请输入信息标题",onfocus:"信息标题应在2-30汉字之间"}).inputValidator({min:4,max:60,onerror:"信息标题应在2-30汉字之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/mis/mismsg/check_filed_have_ajax/'}>",
+		data :"field=title&tb=A",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "信息标题重复",
+		onwait : "请稍后..."
+	});
+	$("#content").formValidator({onshow:"请输入推送文案",onfocus:"应小于32字"}).inputValidator({max:64,onerror:"应小于32字"});
+	$("#rel_id").formValidator({onshow:"请输入关联ID",onfocus:"ID应该为数字"}).inputValidator({min:1,max:12,onerror:"长度应该在在1-12之间"}).regexValidator({regexp:"^[0-9]{1,12}$",onerror:"ID必须为数字"});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/mis/mismsg/mismsg_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">推送行业</td> 
+<td><{$input_box['industry_sel']}></td>
+</tr>
+<tr>
+<td width="80">推送类型</td> 
+<td><{$input_box['type_sel']}></td>
+</tr>
+<tr>
+<td width="80">推送时间</td> 
+<td><{$input_box['time_push']}></td>
+</tr>
+<tr>
+<td width="80">信息标题</td> 
+<td><input type="text" name="info[title]"  class="input-text wid300" id="title" value=""></td>
+</tr>
+<tr>
+<td width="80">关联ID</td> 
+<td><input type="text" name="info[rel_id]"  class="input-text wid300" id="rel_id" value=""></td>
+</tr>
+<tr>
+<td width="80">落地页url</td> 
+<td><input type="text" name="info[wap_url]"  class="input-text wid300" id="wap_url" value=""></td>
+</tr>
+<tr>
+<td width="80">推送文案</td> 
+<td><textarea name="info[content]"  class="input-text wid300" id="content"></textarea></td>
+</tr>
+<tr>
+<td>属性设置</td> 
+<td>
+	<input type="checkbox" value="1" name="info[status]"> 审核 <font>未审核信息将不会被推送</font>
+</td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

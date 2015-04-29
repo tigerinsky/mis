@@ -1,0 +1,115 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#ace_name").formValidator({onshow:"请输入权限名称",onfocus:"权限名称应该在4-30个字符之间"}).inputValidator({min:4,max:30,onerror:"权限名称应该在4-30个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_filed_have_ajax/'}>",
+		data :"field=ace_name&tb=B",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "权限名称重复",
+		onwait : "请稍后..."
+	});
+	$("#ace_model").formValidator({onshow:"请输入模块名称",onfocus:"模块名称应该为3-50位英文字符"}).regexValidator({regexp:"^[a-z_0-9]{3,50}$",onerror:"模块名称应该为3-50位英文字符"});
+	$("#ace_control").formValidator({onshow:"请输入操作名称",onfocus:"操作名称应该为3-50位英文字符"}).regexValidator({regexp:"^[a-z_0-9]{3,50}$",onerror:"操作名称应该为3-50位英文字符"});
+	$("#ace_action").formValidator({onshow:"请输入方法名称",onfocus:"方法名称应该为3-50位英文字符"}).regexValidator({regexp:"^[a-z_0-9]{3,50}$",onerror:"方法名称应该为3-50英文字符"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_model_to_action_ajax/'}>",
+		data :"field=ace_action",
+		moreadd:"ace_model|ace_control",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "该组权限已经存在",
+		onwait : "请稍后..."
+	});
+	$("#ace_group").formValidator({onshow:"请选择分组标识",onfocus:"分组标识应该在4-30位英文字符"}).regexValidator({regexp:"^[a-z0-9_]{4,30}$",onerror:"分组标识必须为4-30个英文字符"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/admin/rbac_access/check_ace_group_num_ajax/'}>",
+		data :"field=ace_group",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "分组英文标识不合法",
+		onwait : "请稍后..."
+	});
+	
+	$("#listorder").formValidator({onshow:"请输入序号",onfocus:"序号应该为数字"}).inputValidator({min:1,max:5,onerror:"需要长度应该在在1-5之间"}).regexValidator({regexp:"^[0-9]{1,5}$",onerror:"序号必须为数字"}).defaultPassed();
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/admin/rbac_access/rbac_access_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">权限名称</td> 
+<td><input type="text" name="info[ace_name]"  class="input-text" id="ace_name" value=""></td>
+</tr>
+<tr>
+<td>权限模块</td> 
+<td><input type="text" name="info[ace_model]" class="input-text" id="ace_model" value=""></td>
+</tr>
+<tr>
+<td>权限操作</td> 
+<td><input type="text" name="info[ace_control]" class="input-text" id="ace_control" value=""></td>
+</tr>
+<tr>
+<td>权限方法</td> 
+<td><input type="text" name="info[ace_action]" class="input-text" id="ace_action" value=""></td>
+</tr><br>
+<tr>
+<td>权限分组</td> 
+<td><input type="text" name="info[ace_group]" class="input-text" id="ace_group" value=""><input type="button" class="button" value="选择分组" onclick="select_group('ace_group');"></td>
+</tr>
+<tr>
+<td>排序编号</td> 
+<td><input type="text" name="info[listorder]" class="input-text" id="listorder" value="0"></td>
+</tr>
+<tr>
+<td></td> 
+<td>添加仅作菜单权限时，约定如下：模块=>menu 操作=>guide 方法=>action1</td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+function select_group(name) {
+	window.top.art.dialog({id:'select_group'}).close();
+	window.top.art.dialog({title:'选择权限分组',id:'select_group',iframe:'<{site_url url='/admin/rbac_access/rbac_access_group_select/'}>?name='+name,width:'700',height:'530'}, function(){var d = window.top.art.dialog({id:'select_group'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'dosubmit'}).close()});
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

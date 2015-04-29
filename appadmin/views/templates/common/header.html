@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store,must-revalidate">
+<meta http-equiv="expires" content="0"> 
+<title>信息管理中心</title>
+<link href="<{$sys_config['exten_pub_path']}>css/reset.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/zh-cn-system.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/table_form.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles1.css" title="styles1" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles2.css" title="styles2" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles3.css" title="styles3" media="screen" />
+<link rel="alternate stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>css/style/zh-cn-styles4.css" title="styles4" media="screen" />
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/jquery.form.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/admin_common.js"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/styleswitch.js"></script>
+<{if $show_dialog}>
+<link href="<{$sys_config['exten_pub_path']}>css/dialog.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/dialog.js"></script>
+<{/if}>
+<{if $show_validator}>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/formvalidator.js" charset="UTF-8"></script>
+<script language="javascript" type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/formvalidatorregex.js" charset="UTF-8"></script>
+<{/if}>
+<script type="text/javascript">
+	window.focus();
+		var time_str=new Date().getTime();
+		var wb_hash = "<{$admin_session['wb_hash']}>"
+		window.onload = function(){
+		var html_a = $("a[class!=nowb_hash]");
+		//var html_a = document.getElementsByTagName('a');
+		var num = html_a.length;
+		for(var i=0;i<num;i++) {
+			var href = html_a[i].href;
+			if(href && href.indexOf('javascript:') == -1) {
+				if(href.indexOf('?') != -1) {
+					html_a[i].href = href+'&wb_hash='+wb_hash;
+				} else {
+					html_a[i].href = href+'?wb_hash='+wb_hash;
+				}
+			}
+		}
+ 
+		var html_form = document.forms;
+		var num = html_form.length;
+		for(var i=0;i<num;i++) {
+			var newNode = document.createElement("input");
+			newNode.name = 'wb_hash';
+			newNode.type = 'hidden';
+			newNode.value = wb_hash;
+			html_form[i].appendChild(newNode);
+		}
+	}
+</script>
+</head>
+<body>

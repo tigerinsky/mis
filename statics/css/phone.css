@@ -1,0 +1,522 @@
+body{/* width: 320px;  margin: 0 10px;*/background-color:#F5F5F5;}
+
+/*#mobile_box{width: 320px;background-color:#F5F5F5;}*/
+
+/**
+ * 通讯录首页
+ */
+
+header{
+    width: 100%;
+    margin-top: 1em;
+    position: relative;
+}
+#search_box{
+    line-height: 1.5em;
+    text-align: center;
+}
+#keyword{
+    width: 100%;
+    height: 2em;
+}
+#dosearch{
+    position: absolute;
+    height: 2em;
+    right: 0;
+    top: 2px;
+    border: 0;
+}
+.guide_tips{
+    position: absolute;
+    border: 1px solid #9C9C9C;
+    margin: 0.3em 0 0 0.3em;
+    padding: 2px 4px;
+}
+.guide_type{
+    margin: 10px 5px 0 0;
+    text-align: right;
+}
+.guide_type span{
+    line-height: 2em;
+    height: 2em;
+    padding:0.5em 1em;
+    border: 1px solid #9C9C9C;
+    border-left:none;
+}
+.guide_type span.first{
+    border: 1px solid #9C9C9C;
+}
+.guide_type span.on{
+    background-color: #95BCF2;
+}
+.guide_industry{
+    margin: 10px 5px 0 0;
+    text-align: right;
+}
+.guide_industry span{
+    line-height: 1.3em;
+    height: 1.3em;
+    padding:0.2em 0.6em;
+    border: 1px solid #9C9C9C;
+    border-left:none;
+}
+.guide_industry span.first{
+    border: 1px solid #9C9C9C;
+}
+.guide_industry span.on{
+    background-color: #95BCF2;
+}
+
+.phone_item{
+    margin-top: 20px;
+    display: block;
+    clear: both;
+}
+
+.phone_item dt{
+    position: absolute;
+}
+
+.phone_item .uname{
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.phone_item .utype{
+    font-size: 0.8em;
+}
+
+.phone_item dd{
+    margin-left: 4em;
+}
+
+.phone_item p{
+    margin-top:0.3em;
+    font-size: 1em;
+}
+
+footer{ padding:20px 0;}
+footer p{
+    text-align: center;
+}
+/**
+ * 新增通讯录
+ */
+#phone_box{
+    padding-top: 1em;
+}
+
+.item_box{
+    width: 96%;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.item_box span{
+    position: absolute;
+}
+.item_box li{
+    position: relative;
+    margin:0.5em 0;
+    /* border-right: 1px solid #75736E; */
+}
+.item_box li input{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    position: relative;
+    right: 0;
+    width: 95%;
+    border: none;
+    border-bottom: 1px dotted #75736E;
+}
+.item_box .item2{
+    margin-left: 3em;
+}
+.item_box .item3{
+    margin-left: 4em;
+}
+.item_box .item4{
+    margin-left: 5em;
+}
+
+#remark{
+    margin-top: 1em;
+    width: 96%;
+}
+
+#remark textarea{
+    width: 100%;
+    font-size: 0.8em;
+    color: #75714B;
+}
+
+#vcard_box{
+    width: 96%;
+}
+
+#vcard_file{
+    display: none;
+}
+
+#vcard_box .vcard{
+    width: 91px;
+    height: 62px;
+    background-image:('../images/find_vcard.png');
+    margin: 10px 0 0 10px;
+}
+
+#save_btn_box{
+    width: 96%;
+    height: 2.4em;
+    line-height: 2.4em;
+    vertical-align: middle;
+    background-color: #696969;
+    text-align: center;
+}
+
+.save_btn{
+    border: none;
+    background: none;
+    color: #8481FF;
+}
+
+/**
+ * 反馈信息
+ */
+    
+#feedback_box{
+    padding-top: 10px;
+    width: 96%;
+}
+#feedback_box .feedback_item{
+    margin-top: 1em;
+}
+.info_comment{
+    width: 100%;
+}
+.info_phone{
+    margin-top: 0.5em;
+    width: 100%;
+}
+
+#comment_btn_box{
+    margin-top: 1em;
+    height: 2.4em;
+    line-height: 2.4em;
+    vertical-align: middle;
+    background-color: #696969;
+    text-align: center;
+}
+
+#comment_btn{
+    border: none;
+    background: none;
+    color: #8481FF;
+}
+
+/**
+ * 邀请加入
+ */
+    
+#invite_box{
+    padding-top: 10px;
+    width: 96%;
+}
+.invite_item{
+    margin-top: 1em;
+}
+.info_invite{
+    margin-top: 0.5em;
+    width: 100%;
+}
+
+#invite_btn_box{
+    margin-top: 1em;
+    height: 2.4em;
+    line-height: 2.4em;
+    vertical-align: middle;
+    background-color: #696969;
+    text-align: center;
+}
+
+#invite_btn{
+    border: none;
+    background: none;
+    color: #8481FF;
+}
+
+/**
+ * 查看通讯录
+ */
+
+.info_box{
+    padding-top: 1em;
+    width: 96%;
+}
+
+.uhome{
+    position:absolute;
+    top:0;
+    right: 0;
+    width: 6em;
+    height: 1em;
+    background-color: #DDDDDD;
+    text-align: center;
+    padding:0.3em 0.5em;
+}
+
+#phone_info .uname{
+    font-size: 1.5em;
+    margin: 5px 0;
+}
+
+#phone_info li{
+    line-height: 1.5em;
+}
+
+
+.hint_tips{
+    margin:1em 0;
+    padding-bottom: 1em;
+    text-align: center;
+    border-bottom: 1px solid #75736E;
+}
+
+.info_box .feedback_item{
+    padding:5px 0px;
+    border-bottom: 1px solid #75736E;
+    clear: both;
+}
+
+.info_box .feedback_item dt{
+    position: absolute;
+}
+
+.info_box .feedback_item dd{
+    margin-left: 4em;
+}
+
+.feedback_item .uname{
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.feedback_item .utype{
+    font-size: 0.8em;
+}
+
+.feedback_item .utime{
+    font-size: 0.8em;
+}
+
+
+.feedback_item p{
+    margin-top:0.3em;
+    font-size: 1em;
+}
+.show_btn_box{
+    width: 85%;
+    border-radius: 5px;
+    margin-top: 1em;
+    height: 2.4em;
+    line-height: 2.4em;
+    vertical-align: middle;
+    background-color: #696969;
+    text-align: center;
+}
+
+.show_btn{
+    border: none;
+    background: none;
+    color: #8481FF;
+    cursor: pointer;
+}
+
+a.show_btn:link,
+a.show_btn:visited,
+a.show_btn:hover,
+a.show_btn:active{
+    color:#8481FF;
+}
+
+/*用户登录相关*/
+
+/**
+ * 用户登录引导页
+ */ 
+#user_home{
+    padding:2em 0;
+    text-align: center;
+}
+#user_home li{
+    margin-top: 2em;
+    text-align: center;
+}
+/**
+ * 用户登录页
+ */ 
+#user_login{
+    padding:2em 0;
+    text-align: center;
+}
+#user_login li{
+    margin-top: 2em;
+    text-align: center;
+}
+#user_login .find_pwd{
+    font-size: 0.8em;
+    position: absolute;
+    margin:2em 0 0 3em;
+}
+/**
+ * 蓝鲸邮箱登陆页
+ */ 
+#user_elogin{
+    padding:2em 0;
+    text-align: center;
+}
+#user_elogin li{
+    margin-top: 2em;
+    text-align: center;
+}
+
+
+
+/**
+ * 用户密码找回 step1
+ */ 
+#request_mcode_box{
+    padding:2em 0;
+    text-align: center;
+}
+#request_mcode_box li{
+    margin-top: 2em;
+    text-align: center;
+}
+
+
+/**
+ * 用户密码找回 step1
+ */ 
+#user_findpwd_mobile{
+    padding:2em 0;
+    text-align: center;
+}
+#user_findpwd_mobile li{
+    margin-top: 2em;
+    text-align: center;
+}
+
+
+/**
+ * 验证码填写 step2
+ */ 
+#user_findpwd_mcode{
+    padding:2em 0;
+}
+#user_findpwd_mcode li{
+    margin-top: 2em;
+    text-align: left;
+    padding-left: 1em;
+}
+.re_mcode{
+    font-size: 0.8em;
+    position: absolute;
+    margin-left: 0.5em;
+    cursor: pointer;
+    background-color: #5CD9EF;
+}
+
+/**
+ * 设置新密码 step3
+ */ 
+#user_findpwd_new{
+    padding:2em 0;
+}
+#user_findpwd_new li{
+    margin-top: 2em;
+    text-align: left;
+    padding-left: 1em;
+}
+
+/**
+ * 设置关注行业
+ */
+#user_follow_industry{
+    padding: 1em;
+}
+
+#user_follow_industry span{
+    float: left;
+    background: #EFEFEF;
+    margin:1em 0 0 1em;
+    padding: 1em;
+    position: relative;
+    cursor: pointer;
+}
+
+#user_follow_industry b{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-left: 0.5em;
+    background-color: #66D9EF;
+    width: 1em;
+    height: 1em;
+    display: block;
+    text-align: center;
+}
+
+#user_follow_industry .on{
+    background-color: #6AC62E;
+}
+
+
+#btn_box{
+    margin: 1em;
+}
+#btn_box li{
+    margin-top: 1em;
+}
+#btn_box .btn_span a{
+    width: 75%;
+    text-align: center;
+    display: block;
+}
+.btn_box1{
+    text-align: center;
+}
+/**
+ * 公用错误提示框
+ */
+#tips_hidden,#tips_close,#tips_confirm{
+    position:absolute;
+    top:0;
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #efefef;
+}
+#tips_hidden h1,
+#tips_close h1,
+#tips_confirm h1{
+    font-size: 1em;
+}
+#tips_close i{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 1em;
+    height: 1em;
+    font-size: 0.8em;
+    background-color: #5CD9D0;
+    cursor: pointer;
+}
+#tips_close span{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 1em;
+    height: 1em;
+    font-size: 0.8em;
+    background-color: #5CD9D0;
+    cursor: pointer;
+}

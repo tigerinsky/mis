@@ -1,0 +1,19 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+
+<div class="pad_10">
+<div class="common-form">
+<table width="100%" class="table_form contentWrap">
+	<{foreach from=$verify_data['url'] item=item }>
+<tr>
+<td width="80"></td> 
+<td><img width=100 src="<{$item}>"  /></td>
+</tr>
+<{/foreach}>
+</table>
+<div class="bk15"></div>
+</div>
+</div>
+<{include file="../common/footer.html"}>

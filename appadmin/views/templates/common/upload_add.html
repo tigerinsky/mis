@@ -1,0 +1,48 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#name").formValidator({onshow:"请输入图片名称",onfocus:"标签名称应该在2-12个汉字之间"}).inputValidator({min:4,max:36,onerror:"标签名称应该在2-12个汉字之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/common/upload/check_filed_have_ajax/'}>",
+		data :"field=title&tb=A",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "图片标题重复",
+		onwait : "请稍后..."
+	});
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" enctype="multipart/form-data" action="<{site_url url='/common/upload/upload_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td>图片标题</td> 
+<td><input type="text" name="info[title]"  class="input-text wid200" id="name" value=""></td>
+</tr>
+<tr>
+<td>上传图片</td>
+<td><input type="file" name="pic" /></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

@@ -1,0 +1,81 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#title").formValidator({onshow:"请输入广告标题",onfocus:"广告标题应在2-30汉字之间"}).inputValidator({min:4,max:90,onerror:"广告标题应在2-30汉字之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/mis/misad/check_filed_have_ajax/'}>",
+		data :"field=title&tb=A",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "广告标题重复",
+		onwait : "请稍后..."
+	});
+	$("#go_url").formValidator({onshow:"请输入链接地址",onfocus:"链接地址格式应为http://",tipcss:{width:'300px'},empty:false}).inputValidator({onerror:"地址格式输入错误"}).regexValidator({regexp:"http:\/\/(.+)$",onerror:"链接地址格式应为http://"});
+	$("#rel_id").formValidator({onshow:"请输入关联ID",onfocus:"ID应该为数字"}).inputValidator({min:1,max:12,onerror:"长度应该在在1-12之间"}).regexValidator({regexp:"^[0-9]{1,12}$",onerror:"ID必须为数字"});
+	$("#listorder").formValidator({onshow:"请输入序号",onfocus:"序号应该为数字"}).inputValidator({min:1,max:5,onerror:"需要长度应该在在1-5之间"}).regexValidator({regexp:"^[0-9]{1,5}$",onerror:"序号必须为数字"}).defaultPassed();
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/mis/misad/misad_add_do/'}>" enctype="multipart/form-data" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">广告版位</td> 
+<td><{$input_box['postion_sel']}></td>
+</tr>
+<tr>
+<td width="80">上线时间</td> 
+<td><{$input_box['time_line']}></td>
+</tr>
+<tr>
+<td width="80">广告标题</td> 
+<td><input type="text" name="info[title]"  class="input-text wid300" id="title" value=""></td>
+</tr>
+<tr>
+<td width="80">关联ID</td> 
+<td><input type="text" name="info[rel_id]"  class="input-text wid300" id="rel_id" value=""></td>
+</tr>
+<tr>
+<td width="80">广告图片</td> 
+<td><input type="file" name="img" id="img" value="图片上传" /></td>
+</tr>
+<tr>
+<td width="80">链接地址</td> 
+<td><input type="text" name="info[go_url]"  class="input-text wid300" id="go_url" value=""></td>
+</tr>
+<tr>
+<td width="80">备注说明</td> 
+<td><textarea name="info[remark]" cols="45" rows="5" id="remark"></textarea></td>
+</tr>
+<tr>
+<td>属性设置</td> 
+<td>
+	<input type="checkbox" value="1" name="info[flag]"> 推荐
+</td>
+</tr>
+<tr>
+<td>排序编号</td> 
+<td><input type="text" name="info[listorder]" class="input-text" id="listorder" value="0"></input></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

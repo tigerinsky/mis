@@ -1,0 +1,68 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#title").formValidator({onshow:"请输入新闻标题",onfocus:"目的地名称应该在2-30个汉字之间"}).inputValidator({min:4,max:90,onerror:"目的地名称应该在2-30个汉字之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/weibo/news/check_filed_have_ajax/'}>",
+		data :"field=title&tb=A",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "新闻标题重复",
+		onwait : "请稍后..."
+	});
+	$("#url").formValidator({onshow:"请输入链接地址",onfocus:"链接地址格式应为http://",tipcss:{width:'300px'},empty:false}).inputValidator({onerror:"地址格式输入错误"}).regexValidator({regexp:"http:\/\/(.+)$",onerror:"链接地址格式应为http://"});
+	$("#listorder").formValidator({onshow:"请输入序号",onfocus:"序号应该为数字"}).inputValidator({min:1,max:5,onerror:"需要长度应该在在1-5之间"}).regexValidator({regexp:"^[0-9]{1,5}$",onerror:"序号必须为数字"}).defaultPassed();
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" action="<{site_url url='/weibo/news/news_add_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">新闻分类</td> 
+<td><{$kind_sel}></td>
+</tr>
+<tr>
+<td width="80">新闻标题</td> 
+<td><input type="text" name="info[title]"  class="input-text wid200" id="title" value=""></td>
+</tr>
+<tr>
+<td width="80">新闻链接</td> 
+<td><input type="text" name="info[url]"  class="input-text wid200" id="url" value=""></td>
+</tr>
+<tr>
+<td width="80">新闻图片</td> 
+<td><{$input_box['thumb']}></td>
+</tr>
+<tr>
+<td>属性设置</td> 
+<td>
+	<input type="checkbox" value="1" name="info[top]"> 置顶
+</td>
+</tr>
+<tr>
+<td>排序编号</td> 
+<td><input type="text" name="info[listorder]" class="input-text" id="listorder" value="0"></input></td>
+</tr>
+</table>
+    <div class="bk15"></div>
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

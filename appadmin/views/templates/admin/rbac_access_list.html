@@ -1,0 +1,122 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+    <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/admin/rbac_access/rbac_access_add/'}>?', title:'增加权限条目', width:'600', height:'350', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>增加权限条目</em></a> <a href="<{site_url url='/admin/rbac_access/index/'}>" class="on"><em>权限列表</em></a>    </div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/admin/rbac_access/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">	
+				<select name="search_field_id">
+					<option value='1' <{if $search_arr['search_field_id']==1}>selected<{/if}>>分组名称</option>
+					<option value='2' <{if $search_arr['search_field_id']==2}>selected<{/if}>>权限名称</option>
+				</select>
+				<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+				模块
+				<input name="model_val" type="text" value="<{$search_arr['model_val']}>" class="input-text" />
+				操作
+				<input name="control_val" type="text" value="<{$search_arr['control_val']}>" class="input-text" />
+				方法
+				<input name="action_val" type="text" value="<{$search_arr['action_val']}>" class="input-text" />
+				已删除<input type="checkbox" value="1" name="stop" <{if $search_arr['stop']==1}>checked<{/if}>>
+				<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="1" name="show">
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="37">排序</th>
+            <th width="80">ID</th>
+            <th>权限名称</th>
+            <th>权限分组</th>
+            <th>权限模块</th>
+            <th>权限操作</th>
+            <th>权限方法</th>
+            <th>伪删除</th>
+            <th width="150">管理操作</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+            <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
+        	<td align='center'><input name='listorders[<{$row['id']}>]' type='text' size='3' value='<{$row['listorder']}>' class='input-text-c'></td>
+            <td width="80" align="center"><{$row['id']}></td>
+            <td align="center"><{$row['ace_name']}></td>
+            <td align="center"><{$row['ace_group']}></td>
+            <td align="center"><{$row['ace_model']}></td>
+            <td align="center"><{$row['ace_control']}></td>
+            <td align="center"><{$row['ace_action']}></td>
+            <td align="center"><{if $row['stop']==1}>伪删除<{else}>正常<{/if}></td>
+            <td align="center"><a href="javascript:edit(<{$row['id']}>,'<{$row['ace_name']}>')">修改</a> | 
+            <{if $row['lock']==1}><font color="#cccccc">删除</font><{else}><a href="javascript:;" onclick="delete_one(this,'<{$row['id']}>')">删除</a><{/if}></td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+    	<input type="button" class="button" value="排序" onclick="myform.action='<{site_url url='/admin/rbac_access/rbac_access_order/'}>';myform.submit();"/>
+		<input type="button" class="button" value="删除" onclick="myform.action='<{site_url url='/admin/rbac_access/rbac_access_del/'}>';return delete_more()"/>
+		<input type="button" class="button" value="伪删除" onclick="myform.action='<{site_url url='/admin/rbac_access/rbac_access_del_like/'}>';return delete_more_like()"/>
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+
+function delete_one(obj,aid){
+	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+	function(){
+	$.get('<{site_url url='/admin/rbac_access/rbac_access_del_one_ajax/'}>?&aid='+aid+'&wb_hash='+wb_hash,function(data){
+				if(data == 1) $(obj).parent().parent().fadeOut("slow");
+			})
+		 },
+	function(){});
+};
+
+function delete_more(){
+	if(confirm('确认删除吗？')) $('#myform').submit();
+}
+
+function delete_more_like(){
+	if(confirm('确认对所选记录伪删除变更吗？')) $('#myform').submit();
+}
+
+function edit(id, name) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑权限《'+name+'》',id:'edit',iframe:'<{site_url url='/admin/rbac_access/rbac_access_edit/'}>?ace_id='+id,width:'600',height:'350'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+	
+}
+//-->
+</script>
+<{include file="../common/footer.html"}>

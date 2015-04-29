@@ -1,0 +1,100 @@
+<{include file="../common/header.html"}>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<script type="text/javascript"> 
+<!--
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#uname").formValidator({onshow:"请输入用户名",onfocus:"必须在6-20个字符之间"}).inputValidator({min:6,max:20,onerror:"姓名必须在6-20个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/member/user/check_filed_have_ajax/'}>",
+		data :"field=uname&tb=A&id=<{$info['id']}>",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "用户名重复",
+		onwait : "请稍后..."
+	}).defaultPassed();
+	$("#sname").formValidator({onshow:"请用户昵称",onfocus:"用户昵称需要在6-20个字符之间"}).inputValidator({min:6,max:20,onerror:"昵称需要在6-20个字符之间"}).ajaxValidator({
+		type : "get",
+		url : "<{site_url url='/member/user/check_filed_have_ajax/'}>",
+		data :"field=sname&tb=A&id=<{$info['id']}>",
+		datatype : "html",
+		async:'false',
+		success : function(data){
+			if( data == "1" ){
+				return true;
+			}else{
+				return false;
+			}
+		},
+		buttons: $("#dosubmit"),
+		onerror : "昵称重复",
+		onwait : "请稍后..."
+	}).defaultPassed();
+})
+//-->
+</script>
+
+<div class="pad_10">
+<div class="common-form">
+<form name="myform" enctype="multipart/form-data" action="<{site_url url='/member/user/user_edit_do/'}>" method="post" id="myform">
+<table width="100%" class="table_form contentWrap">
+<tr>
+<td width="80">用户名</td> 
+<td><input type="text" name="info[uname]"  class="input-text" id="uname" value="<{$info['uname']}>"></td>
+</tr>
+<tr>
+<td>用户昵称</td> 
+<td><input type="text" name="info[sname]" class="input-text" id="sname" value="<{$info['sname']}>"></td>
+</tr>
+<tr>
+<td>用户头像</td> 
+<td><{if $info['avatar']}><img width=65 src="<{$info['avatar']}>"><{/if}></td>
+</tr>
+<tr>
+<td>上传头像</td> 
+<td><input type="file" name="pic" id="pic"></td>
+</tr>
+<tr>
+<td>邮箱</td> 
+<td><input type="text" name="info[uemail]" class="input-text" id="uemail" value="<{$info['uemail']}>" ></td>
+</tr>
+<tr>
+<td>性别</td> 
+<td><{$sex_radio}></td>
+</tr>
+<tr>
+<td>年龄</td> 
+<td><input type="text" name="info[age]" class="input-text" id="age" value="<{$info['age']}>" ></td>
+</tr>
+<tr>
+<td>审核状态</td> 
+<td><{$status_radio}></td>
+</tr>
+<tr>
+<td>积分</td> 
+<td><input type="text" name="info[integral]" class="input-text" id="integral" value="<{$info['integral']}>" ></td>
+</tr>
+<tr>
+<td>蓝鲸币</td> 
+<td><input type="text" name="info[gold]" class="input-text" id="gold" value="<{$info['gold']}>" ></td>
+</tr>
+
+</table>
+    <div class="bk15"></div>
+    <input type="hidden" value="<{$info['create_time']}>" name="cfg[create_time]">
+    <input type="hidden" value="<{$info['id']}>" name="cfg[id]">
+    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+</form>
+</div>
+</div>
+<{include file="../common/footer.html"}>

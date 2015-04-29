@@ -1,0 +1,72 @@
+<{include file="../common/header.html"}>
+<script type="text/javascript">
+<!--
+	$(function(){
+		SwapTab('setting','on','',1);
+		$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+		$("#tel").formValidator({empty:false,onshow:"请输入联系电话",onfocus:"联系电话不能为空",oncorrect:"输入正确",onempty:"联系电话不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#fax").formValidator({empty:false,onshow:"请输入传真号码",onfocus:"传真号码不能为空",oncorrect:"输入正确",onempty:"传真号码不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#email").formValidator({empty:false,onshow:"请输入邮件地址",onfocus:"邮件地址不能为空",oncorrect:"输入正确",onempty:"邮件地址不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#icp").formValidator({empty:false,onshow:"请输入备案号",onfocus:"备案号不能为空",oncorrect:"输入正确",onempty:"备案号不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#copyright").formValidator({empty:false,onshow:"请输入版权信息",onfocus:"版权信息不能为空",oncorrect:"输入正确",onempty:"版权信息不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+		$("#addre").formValidator({empty:false,onshow:"请输入联系地址",onfocus:"联系地址不能为空",oncorrect:"输入正确",onempty:"联系地址不能为空"}).inputValidator({min:1,onerror:"输入错误"}).defaultPassed();
+	})
+//-->
+</script>
+<form action="<{site_url url='/common/configure/contact/'}>" method="post" id="myform">
+<div class="pad-10">
+<div class="col-tab">
+<ul class="tabBut cu-li">
+    <li id="tab_setting_1" class="on" onclick="SwapTab('setting','on','',1);">联系我们</li>
+</ul>
+<div id="div_setting_1" class="contentList pad-10">
+<table width="100%"  class="table_form">
+  <tr>
+    <th width="120">联系电话</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][tel]" id="tel" size="75" value="<{$siteinfo[1]['tel']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">传真号码</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][fax]" id="fax" size="75" value="<{$siteinfo[1]['fax']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">企业邮箱</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][email]" id="email" size="75" value="<{$siteinfo[1]['email']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">备 案 号</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][icp]" id="icp" size="75" value="<{$siteinfo[1]['icp']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">版权信息</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][copyright]" id="copyright" size="75" value="<{$siteinfo[1]['copyright']}>" /></td>
+  </tr>
+  <tr>
+    <th width="120">联系地址</th>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[1][addre]" id="addre" size="75" value="<{$siteinfo[1]['addre']}>" /></td>
+  </tr>
+</table>
+</div>
+
+<div class="bk15"></div>
+<input name="dosubmit" type="submit" value="提交" class="button">
+</div>
+</div>
+</form>
+</body>
+<script type="text/javascript">
+//菜单切换效果
+function SwapTab(name,cls_show,cls_hide,cur){
+	cnt=jQuery('[id^=tab_'+name+'_]').length;
+	for(i=0;i<=cnt;i++){
+		if(i==cur){
+			 jQuery('#div_'+name+'_'+i).show();
+			 jQuery('#tab_'+name+'_'+i).attr('class',cls_show);
+		}else{
+			 jQuery('#div_'+name+'_'+i).hide();
+			 jQuery('#tab_'+name+'_'+i).attr('class',cls_hide);
+		}
+	}
+}
+</script>
+<{include file="../common/footer.html"}>

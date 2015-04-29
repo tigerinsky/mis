@@ -1,0 +1,95 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+    <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/tool/invite/invite_add/'}>?', title:'产生邀请码', width:'450', height:'150', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>产生邀请码</em></a> <a href="<{site_url url='/tool/invite/index/'}>" class="on"><em>邀请码列表</em></a></div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/tool/invite/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">	
+				<input type="checkbox" value="1" name="valid" <{if $search_arr['valid']==1}>checked<{/if}>> 是否有效
+				<input type="submit" name="search" class="button" value="搜索" />
+				注:选中表示显示有效验证码,即未使用状态
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="1" name="show">
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="80">ID</th>
+            <th width="120">发放用户UID</th>
+            <th width="120">使用用户UID</th>
+            <th width="200">邀请码</th>
+            <th width="120">产生时间</th>
+            <th width="120">当前状态</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>		
+            <tr>
+            <td align="center"><input class="inputcheckbox" name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
+            <td width="80" align="center"><{$row['id']}></td>
+            <td align="center"><{$row['uid']}></td>
+            <td align="center"><{$row['new_uid']}></td>
+            <td align="center" class="invite_code"><{$row['hash_key']}></td>
+            <td align="center"><{date('Y-m-d h:i:s',$row['time_create'])}></td>
+            <td align="center"><{if $row['valid']==1}><font color="#008000">未使用</font><{else}>已使用<{/if}></td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="7">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+        <input type="button" id="copy_input" class="button copy" value="复制到剪切板"/>
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript" src="/public/js/jquery.zclip.min.js"></script>
+<script type="text/javascript"> 
+<!--
+$(function(){
+      $('#copy_input').zclip({ 
+        path: '/public/js/ZeroClipboard.swf', 
+        copy: function(){//复制内容 
+            var invite_text='';
+            $(".inputcheckbox:checked").each(function(){
+                invite_text=invite_text+$(this).parents('tr').find('.invite_code').html()+"\r\n";
+            });
+            return invite_text; 
+        }, 
+        afterCopy: function(){//复制成功 
+            alert('复制成功'); 
+        } 
+    }); 
+});
+//-->
+</script>
+<{include file="../common/footer.html"}>
