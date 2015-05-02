@@ -37,6 +37,7 @@
             <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
             <th width="40">ID</th>
             <th width="60">一级分类图片</th>
+            <th width="40">分组</th>
             <th width="40">排序</th>
             <th width="60">二级分类图片</th>
             <th width="120">图片URL</th>
@@ -50,6 +51,7 @@
             <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['tid']}>" type="checkbox"></td>
             <td width="60" align="center"><{$row['id']}></td>
 			<td align="center"><{$img_type_list[$row['img_type']]}></td>
+            <td align="center"><{$row['cell']}></td>
             <td align="center"><{$row['img_type']}>.<{$row['listorder']}></td>
             <td align="center"><{$row['title']}></td>
 			<td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>

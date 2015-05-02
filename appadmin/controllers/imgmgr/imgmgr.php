@@ -79,6 +79,7 @@ class imgmgr extends MY_Controller{
 
     /**
      * 对外提供的接口
+     * 
      */ 
     function get_img_list(){
         $request = $this->request_array;    
@@ -97,21 +98,72 @@ class imgmgr extends MY_Controller{
         
         $result = array(); 
         $img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
-
-        foreach($list_data as $img_data) {
-            if ($img_data['img_type'] == 1) {
-                $sketch_array[] = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-            } elseif ($img_data['img_type'] == 2) {
-                $color_painting_array[] = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-            } elseif ($img_data['img_type'] == 3) {
-                $quick_sketch_array[] = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-            } elseif ($img_data['img_type'] == 4) {
-                $design_array[] = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-            } elseif ($img_data['img_type'] == 5) {
-                $creation_array[] = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-            } elseif ($img_data['img_type'] == 6) {
-                $photo_array[] = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-            }
+		
+        if (isset($request['devicetype']) && $request['devicetype'] == 'ios') {
+        	foreach($list_data as $img_data) {
+        		$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
+        		if ($img_data['img_type'] == 1) {
+        			if (!isset($sketch_array_tmp[$img_data['cell']])) {
+        				$sketch_array_tmp[$img_data['cell']][] = $tmp_array;
+        			} else {
+        				array_push($sketch_array_tmp[$img_data['cell']], $tmp_array);
+        			}
+        			$sketch_array = array_values($sketch_array_tmp);
+        		} elseif ($img_data['img_type'] == 2) {
+        			if (!isset($color_painting_array_tmp[$img_data['cell']])) {
+        				$color_painting_array_tmp[$img_data['cell']][] = $tmp_array;
+        			} else {
+        				array_push($color_painting_array_tmp[$img_data['cell']], $tmp_array);
+        			}
+        			$color_painting_array = array_values($color_painting_array_tmp);
+        		} elseif ($img_data['img_type'] == 3) {
+        			if (!isset($quick_sketch_array_tmp[$img_data['cell']])) {
+        				$quick_sketch_array_tmp[$img_data['cell']][] = $tmp_array;
+        			} else {
+        				array_push($quick_sketch_array_tmp[$img_data['cell']], $tmp_array);
+        			}
+        			$quick_sketch_array = array_values($quick_sketch_array_tmp);
+        		} elseif ($img_data['img_type'] == 4) {
+        			if (!isset($design_array_tmp[$img_data['cell']])) {
+        				$design_array_tmp[$img_data['cell']][] = $tmp_array;
+        			} else {
+        				array_push($design_array_tmp[$img_data['cell']], $tmp_array);
+        			}
+        			$design_array = array_values($design_array_tmp);
+        		} elseif ($img_data['img_type'] == 5) {
+        			if (!isset($creation_array_tmp[$img_data['cell']])) {
+        				$creation_array_tmp[$img_data['cell']][] = $tmp_array;
+        			} else {
+        				array_push($creation_array_tmp[$img_data['cell']], $tmp_array);
+        			}
+        			$creation_array = array_values($creation_array_tmp);
+        		} elseif ($img_data['img_type'] == 6) {
+        			if (!isset($photo_array_tmp[$img_data['cell']])) {
+        				$photo_array_tmp[$img_data['cell']][] = $tmp_array;
+        			} else {
+        				array_push($photo_array_tmp[$img_data['cell']], $tmp_array);
+        			}
+        			$photo_array = array_values($photo_array_tmp);
+        		}
+        	}
+        } else {
+	        foreach($list_data as $img_data) {
+	        	$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
+	            if ($img_data['img_type'] == 1) {
+	                $sketch_array[] = $tmp_array;
+	            } elseif ($img_data['img_type'] == 2) {
+	                $color_painting_array[] = $tmp_array;
+	            } elseif ($img_data['img_type'] == 3) {
+	                $quick_sketch_array[] = $tmp_array;
+	            } elseif ($img_data['img_type'] == 4) {
+	                $design_array[] = $tmp_array;
+	            } elseif ($img_data['img_type'] == 5) {
+	                $creation_array[] = $tmp_array;
+	            } elseif ($img_data['img_type'] == 6) {
+	                $photo_array[] = $tmp_array;
+	            }
+	        }
+        	
         }
 
         if(count($sketch_array) > 0) {
