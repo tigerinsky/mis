@@ -7,6 +7,9 @@ class imgmgr extends MY_Controller{
     function __construct(){
         parent::__construct();
         $this->dbr=$this->load->database('dbr',TRUE);
+        $this->load->config('mis_imgmgr',TRUE);
+        $this->mis_imgmgr = $this->config->item('mis_imgmgr');
+        // $this->mis_imgmgr['imgmgr_level_1']
         $this->load->library('redis');
         $this->key_img = 'mis_img_timestamp';
         $this->load->model('imgmgr/imgmgr_model','imgmgr_model');
@@ -69,7 +72,8 @@ class imgmgr extends MY_Controller{
         $list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
 
         $this->load->library('form');
-        $img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+        //$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+        $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
         $search_arr['img_type_sel']=$this->form->select($img_type_list,$img_type_id,'name="img_type_id"','选择图片类型');
         $this->smarty->assign('search_arr',$search_arr);
         $this->smarty->assign('img_type_list',$img_type_list);
@@ -117,7 +121,8 @@ class imgmgr extends MY_Controller{
 	    	$limit="LIMIT $row_num";
 	    	$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
 	    
-	    	$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+	    	//$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+	    	$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 	    	
     		foreach($list_data as $img_data) {
     			$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
@@ -210,7 +215,8 @@ class imgmgr extends MY_Controller{
 	    	$limit="LIMIT $row_num";
 	    	$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
 	    
-	    	$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+	    	//$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+	    	$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 	    	
     		foreach($list_data as $img_data) {
 	        	$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
@@ -258,6 +264,27 @@ class imgmgr extends MY_Controller{
     }
     
     
+    /**
+     * ajax调用的函数
+     *
+     */
+    function get_img_title_list_ajax(){
+    	$request = $this->request_array;
+    	$response = $this->response_array;
+    
+    	$img_type = $request['img_type'];
+    
+    	$result = array();
+    	if (isset($this->mis_imgmgr['imgmgr_level_2'][$img_type])) {
+    		$result = $this->mis_imgmgr['imgmgr_level_2'][$img_type];
+    	}
+    	
+    	$response['errno'] = 0;
+    	$response['data']['content'] = $result;
+    	
+    	$this->renderJson($response['errno'], $response['data']);
+    
+    }
 
 
     //对要闻进行单条推荐
@@ -328,6 +355,8 @@ class imgmgr extends MY_Controller{
     //对要闻进行单条删除属性变更
     function del_one_ajax(){
         if(intval($_GET['id'])>0) {
+        	// 更新时间戳
+        	$this->redis->set($this->key_img, time());
             $id=$this->input->get('id');
             if($this->imgmgr_model->del_info($id)){
 				echo 1;
@@ -394,10 +423,12 @@ class imgmgr extends MY_Controller{
     //添加图片
     function imgmgr_add(){
         $this->load->library('form');
-        $img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+        //$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+        $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
         $img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
 
         $this->smarty->assign('img_type_sel',$img_type_sel);
+        $this->smarty->assign('img_title_sel',$img_title_sel);
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
         $this->smarty->assign('show_validator','true');
@@ -445,7 +476,8 @@ class imgmgr extends MY_Controller{
         $info = $this->imgmgr_model->get_info_by_id($imgmgr_id);
 		//$info['img'] = !empty($info['img']) ? json_decode($info['img']) : array();
 
-        $img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+        //$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+        $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
         $img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
         $this->smarty->assign('info',$info);
