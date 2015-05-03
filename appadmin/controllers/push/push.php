@@ -87,19 +87,18 @@ class push extends MY_Controller{
 	{
 		if($_POST) {
 			$data = array (
-				'user_type'		=> $this->input->post('dosearch'),
-				'citys'		=> $this->input->post('citys'),
-				'school'	=> $this->input->post('school'),
+				'user_type'		=> $this->input->post('user_type'),
+				'citys'		=> json_encode($this->input->post('citys')),
+				'school'	=> json_encode($this->input->post('school')),
 				'wap_url'		=> $this->input->post('wap_url'),
 				'title'		=> $this->input->post('title'),
 				'time_push'	=> strtotime($this->input->post('push_time')),
 				'time_create'	=> time(),
 			);
 
-			var_dump($data);exit;
-			if( $data['listorder']!='' && $data['title'] != ''){
-				//$info['img'] = !empty($pic) ? json_encode($pic) : '';
-				if($this->imgmgr_model->create_info($info)){
+			if( $data['citys']!='' && count($this->input->post('citys')) > 0 && count($this->input->post('school')) > 0 && $data['title']!='' && $data['time_push'] != ''){
+
+				if($this->push_model->create_info($data)){
 					show_tips('操作成功','','','add');
 				}else{
 					show_tips('操作异常');

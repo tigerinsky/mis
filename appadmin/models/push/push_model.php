@@ -166,7 +166,7 @@ class Push_model extends CI_Model {
 	 * @param bool 是否成功执行
 	 */
 	public function create_info($info){
-		$insert_query=$this->db->insert_string('ci_mis_imgmgr',$info);
+		$insert_query=$this->db->insert_string('ci_app_push',$info);
 		if($this->db->query($insert_query)){
 			return true;
 		} else {
