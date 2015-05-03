@@ -194,8 +194,8 @@ class push extends MY_Controller{
 		$info = $this->push_model->get_info_by_id($imgmgr_id);
 
 		$info['time_push'] = date("Y-m-d H:i:s",$info['time_push']);
-		$info['citys_list']	= $this->pushForm($info['citys'],'citys');
-		$info['school_list']	= $this->pushForm($info['school'],'school');
+		$info['citys_list']	= $this->pushForm(json_decode($info['citys'],true),'citys');
+		$info['school_list']	= $this->pushForm(json_decode($info['school'],true),'school');
 
 
 		$img_type_list=array('1'=>'认证','2'=>'未认证');
