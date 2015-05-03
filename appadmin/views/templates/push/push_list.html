@@ -35,12 +35,14 @@
                 <tr>
                     <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
                     <th width="40">ID</th>
-                    <th width="60">一级分类图片</th>
-                    <th width="40">分组</th>
-                    <th width="40">排序</th>
-                    <th width="60">二级分类图片</th>
-                    <th width="120">图片URL</th>
-                    <th width="100">管理操作</th>
+                    <th width="60">推送时间</th>
+                    <th width="40">用户类型</th>
+                    <th width="40">接收城市</th>
+                    <th width="60">目标校</th>
+                    <th width="120">标题</th>
+                    <th width="100">url</th>
+                    <th width="100">ios下载数</th>
+                    <th width="100">android下载数</th>
                 </tr>
                 </thead>
 
@@ -49,13 +51,15 @@
                 <tr>
                     <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['tid']}>" type="checkbox"></td>
                     <td width="60" align="center"><{$row['id']}></td>
-                    <td align="center"><{$img_type_list[$row['img_type']]}></td>
-                    <td align="center"><{$row['cell']}></td>
-                    <td align="center"><{$row['img_type']}>.<{$row['listorder']}></td>
-                    <td align="center"><{$row['title']}></td>
-                    <td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>
+                    <td align="center"><{$row['time_push']}></td>
+                    <td align="center"><{$row['user_type']}></td>
+                    <td align="center"><{$row['citys']}></td>
+                    <td align="center"><{$row['school']}></td>
+                    <td width="120" align="center"><a target="_blank" href="<{$row['wap_url']}>" ><{$row['wap_url']}></a></td>
+                    <td align="center"><{$row['ios_num']}></td>
+                    <td align="center"><{$row['android_num']}></td>
                     <td align="center">
-                        <a href="javascript:edit(<{$row['id']}>,'<{$row['img_type']}>')">修改</a> |
+                        <a href="javascript:edit(<{$row['id']}>)">修改</a> |
                         <a href="javascript:;" onclick="del_one(this,'<{$row['id']}>')">删除</a>
                     </td>
                 </tr>
