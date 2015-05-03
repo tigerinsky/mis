@@ -192,21 +192,20 @@ class push extends MY_Controller{
 
 		$imgmgr_id = $this->input->get('id');
 		$info = $this->push_model->get_info_by_id($imgmgr_id);
-		foreach($info as $key=>$value)
-		{
-			$img_type_list=array('1'=>'认证','2'=>'未认证');
-			$utype = ($value['user_type']==0)?"未认证":"认证";
-			$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"',$utype);
-			$info[$key]['time_push'] = date("Y-m-d H:i:s",$value['time_push']);
-			$info[$key]['citys_list']	= $this->pushForm($value['citys'],'citys');
-			$info[$key]['school_list']	= $this->pushForm($value['school'],'school');
-		}
+
+		$info['time_push'] = date("Y-m-d H:i:s",$info['time_push']);
+		$info['citys_list']	= $this->pushForm($info['citys'],'citys');
+		$info['school_list']	= $this->pushForm($info['school'],'school');
+
+
+		$img_type_list=array('1'=>'认证','2'=>'未认证');
+		$utype = ($info['user_type']==0)?"未认证":"认证";
+		$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"',$utype);
 
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
 		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
 		$this->smarty->assign('info',$info);
-		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
