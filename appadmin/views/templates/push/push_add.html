@@ -12,9 +12,15 @@
 //        $("#img_type").formValidator({onshow:"请选择图片类型",onfocus:"图片类型不能为空",empty:false}).inputValidator({min:1,onerror:"图片类型不能为空"});
         //城市多选
         $("#city").change(function(){
-            $("#city_list").append("<li style='padding-left: 5px;'>"+$(this).find("option:selected").text()+"<span style='width:14px;height:14px;'><img src='<{$sys_config['exten_pub_path']}>images/cancelbutton.gif'></span></li>");
+            var ids = '_city_'+$(this).val();
+            $("#city_list").append("<li id='"+ids+"' style='padding-left: 5px;'>"+$(this).find("option:selected").text()+"<span style='width:14px;height:14px;padding-left: 8px; overflow: hidden'><a href='javascript:_del("+ids+")'><img src='<{$sys_config['exten_pub_path']}>images/cancelbutton.gif'></a></span></li>");
         });
     })
+    //删除
+    function _del(x)
+    {
+        $("#"+x).remove();
+    }
     $(function() {
         $('#img').uploadify({
             //'formData'     : {
