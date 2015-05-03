@@ -181,21 +181,52 @@ class push extends MY_Controller{
 	//修改推送
 	function push_edit(){
 		$this->load->library('form');
+		//城市
+		$city_type_list=$this->getCity();
+		$city_type_sel=Form::select($city_type_list,$info['citys'],'id="citys" name="citys"','所在城市（多选）');
+		//学校
+		$school_type_list=$this->getSchool();
+		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="school"','目标学校（多选）');
+		$this->smarty->assign('city_type_sel', $city_type_sel);
+		$this->smarty->assign('school_type_sel', $school_type_sel);
+
 		$imgmgr_id = $this->input->get('id');
 		$info = $this->push_model->get_info_by_id($imgmgr_id);
-		var_dump($info);exit;
-		//$info['img'] = !empty($info['img']) ? json_decode($info['img']) : array();
+		foreach($info as $key=>$value)
+		{
+			$img_type_list=array('1'=>'认证','2'=>'未认证');
+			$utype = ($value['user_type']==0)?"未认证":"认证";
+			$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"',$utype);
+			$info[$key]['time_push'] = date("Y-m-d H:i:s",$value['time_push']);
+			$info[$key]['citys_list']	= $this->pushForm($value['citys'],'citys');
+			$info[$key]['school_list']	= $this->pushForm($value['school'],'school');
+		}
 
-		//$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
 		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
 		$this->smarty->assign('info',$info);
 		$this->smarty->assign('img_type_sel',$img_type_sel);
+		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
 		$this->smarty->display('push/push_edit.html');
+	}
+
+	private function pushForm($arr,$type = 'citys')
+	{
+		if(empty($arr)) return ""; $str = "";
+		foreach($arr as $key=>$value)
+		{
+			if($type == 'citys') {
+				$str .= '<li id="city_' . $value . '" style="padding-left: 5px;">' . $this->getCity ( $value ) . '<span style="padding-left: 8px; width:14px; height:14px; cursor:pointer; " onclick="_del(\'city_' . $value . '\')"><img src="/public/images/error.gif"></span></li>';
+			}else
+			{
+				$str .= '<li id="school_'.$value.'" style="padding-left: 5px;">'.$this->getSchool($value).'<span style="padding-left: 8px; width:14px; height:14px; cursor:pointer; " onclick="_del(\'school_'.$value.'\')"><img src="/public/images/error.gif"></span></li>';
+			}
+		}
+		return $str;
 	}
 
 
