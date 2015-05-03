@@ -109,7 +109,7 @@
 
     function edit(id, img_type) {
         window.top.art.dialog({id:'edit'}).close();
-        window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/imgmgr/imgmgr/imgmgr_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+        window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/push/push/push_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
     }
     function sug_one(obj,aid) {
         window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'},
@@ -132,7 +132,7 @@
     function del_one(obj,aid) {
         window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'sug_one'},
                 function(){
-                    $.get('<{site_url url='/imgmgr/imgmgr/del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+                    $.get('<{site_url url='/push/push/del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
                         if(data == 1) $(obj).parent().parent().fadeOut("slow");
                     })
                 },
