@@ -9,7 +9,7 @@ class push extends MY_Controller{
 		$this->dbr=$this->load->database('dbr',TRUE);
 		$this->load->library('redis');
 		$this->key_img = 'mis_img_timestamp';
-		$this->load->model('imgmgr/imgmgr_model','imgmgr_model');
+		$this->load->model('push/push_model','push_model');
 	}
 
 	//默认调用控制器
@@ -64,9 +64,9 @@ class push extends MY_Controller{
 		$offset = $pagesize*($page-1);
 		$limit="LIMIT $offset,$pagesize";
 
-		$user_num=$this->imgmgr_model->get_count_by_parm($where);
+		$user_num=$this->push_model->get_count_by_parm($where);
 		$pages=pages($user_num,$page,$pagesize);
-		$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
+		$list_data=$this->push_model->get_data_by_parm($where,$limit);
 
 		$this->load->library('form');
 		$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
