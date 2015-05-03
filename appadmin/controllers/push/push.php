@@ -64,14 +64,14 @@ class push extends MY_Controller{
 	function push_add(){
 		$this->load->library('form');
 		$img_type_list=array('1'=>'认证','2'=>'未认证');
-		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[user_type]"','');
+		$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"','');
 
 		//城市
 		$city_type_list=array('1'=>'北京','2'=>'上海');
-		$city_type_sel=Form::select($city_type_list,$info['city'],'id="city" name="info[city]"','所在城市（多选）');
+		$city_type_sel=Form::select($city_type_list,$info['city'],'id="citys" name="citys"','所在城市（多选）');
 		//学校
 		$school_type_list=array('1'=>'北京大学','2'=>'清华大学');
-		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="info[school]"','目标学校（多选）');
+		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="school"','目标学校（多选）');
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('city_type_sel', $city_type_sel);
 		$this->smarty->assign('school_type_sel', $school_type_sel);
