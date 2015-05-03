@@ -60,5 +60,14 @@ class push extends MY_Controller{
 		$this->smarty->display('push/push_list.html');
 	}
 
+	//添加推送
+	function push_add(){
+		$this->load->library('form');
+		$this->smarty->assign('random_version', rand(100,999));
+		$this->smarty->assign('show_dialog','true');
+		$this->smarty->assign('show_validator','true');
+		$this->smarty->display('push/push_add.html');
+	}
+
 
 }
