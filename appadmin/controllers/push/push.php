@@ -70,8 +70,8 @@ class push extends MY_Controller{
 		$city_type_list=array('1'=>'北京','2'=>'上海');
 		$city_type_sel=Form::select($city_type_list,$info['city'],'id="city" name="info[city]"','所在城市（多选）');
 		//学校
-		$school_type_list=array('1'=>'北京大学','2'=>'清华');
-		$school_type_sel=Form::select($city_type_list,$info['school'],'id="school" name="info[school]"','目标学校（多选）');
+		$school_type_list=array('1'=>'北京大学','2'=>'清华大学');
+		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="info[school]"','目标学校（多选）');
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('city_type_sel', $city_type_sel);
 		$this->smarty->assign('school_type_sel', $school_type_sel);
