@@ -66,7 +66,12 @@ class push extends MY_Controller{
 		$img_type_list=array('1'=>'认证','2'=>'未认证');
 		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[user_type]"','请选择');
 
+		//城市
+		$city_type_list=array('1'=>'北京','2'=>'上海');
+		$city_type_sel=Form::select($img_type_list,$info['city'],'id="city" name="info[city]"','所在城市（多选）');
+
 		$this->smarty->assign('img_type_sel',$img_type_sel);
+		$this->smarty->assign('city_type_sel',$city_type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
