@@ -12,7 +12,7 @@ class imgmgr extends MY_Controller{
     
     //默认调用控制器
     function index(){
-        $this->imgmgr_list();
+    	$this->imgmgr_list();
     }
     
     //显示图片列表，同时有检索功能
@@ -82,72 +82,139 @@ class imgmgr extends MY_Controller{
      * 
      */ 
     function get_img_list(){
-        $request = $this->request_array;    
+        $request = $this->request_array;
         $response = $this->response_array;
-
-        $where_array[]="is_deleted=1";
         
-        if(is_array($where_array) and count($where_array)>0){
-            $where=' WHERE '.join(' AND ',$where_array);
+        $devicetype = $request['devicetype'];
+        $timestamp = $request['timestamp'];
+        
+        $result = array();
+        if (isset($devicetype) && $devicetype == 'ios') {
+	        $this->get_img_list_by_ios($response, $timestamp);
+        } else {
+	        $this->get_img_list_by_android($response, $timestamp);
         }
 
-        $row_num=$this->imgmgr_model->get_count_by_parm($where);
-        $limit="LIMIT $row_num";
-        
-        $list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
-        
-        $result = array(); 
-        $img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
-		
-        if (isset($request['devicetype']) && $request['devicetype'] == 'ios') {
-        	foreach($list_data as $img_data) {
-        		$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-        		if ($img_data['img_type'] == 1) {
-        			if (!isset($sketch_array_tmp[$img_data['cell']])) {
-        				$sketch_array_tmp[$img_data['cell']][] = $tmp_array;
-        			} else {
-        				array_push($sketch_array_tmp[$img_data['cell']], $tmp_array);
-        			}
-        			$sketch_array = array_values($sketch_array_tmp);
-        		} elseif ($img_data['img_type'] == 2) {
-        			if (!isset($color_painting_array_tmp[$img_data['cell']])) {
-        				$color_painting_array_tmp[$img_data['cell']][] = $tmp_array;
-        			} else {
-        				array_push($color_painting_array_tmp[$img_data['cell']], $tmp_array);
-        			}
-        			$color_painting_array = array_values($color_painting_array_tmp);
-        		} elseif ($img_data['img_type'] == 3) {
-        			if (!isset($quick_sketch_array_tmp[$img_data['cell']])) {
-        				$quick_sketch_array_tmp[$img_data['cell']][] = $tmp_array;
-        			} else {
-        				array_push($quick_sketch_array_tmp[$img_data['cell']], $tmp_array);
-        			}
-        			$quick_sketch_array = array_values($quick_sketch_array_tmp);
-        		} elseif ($img_data['img_type'] == 4) {
-        			if (!isset($design_array_tmp[$img_data['cell']])) {
-        				$design_array_tmp[$img_data['cell']][] = $tmp_array;
-        			} else {
-        				array_push($design_array_tmp[$img_data['cell']], $tmp_array);
-        			}
-        			$design_array = array_values($design_array_tmp);
-        		} elseif ($img_data['img_type'] == 5) {
-        			if (!isset($creation_array_tmp[$img_data['cell']])) {
-        				$creation_array_tmp[$img_data['cell']][] = $tmp_array;
-        			} else {
-        				array_push($creation_array_tmp[$img_data['cell']], $tmp_array);
-        			}
-        			$creation_array = array_values($creation_array_tmp);
-        		} elseif ($img_data['img_type'] == 6) {
-        			if (!isset($photo_array_tmp[$img_data['cell']])) {
-        				$photo_array_tmp[$img_data['cell']][] = $tmp_array;
-        			} else {
-        				array_push($photo_array_tmp[$img_data['cell']], $tmp_array);
-        			}
-        			$photo_array = array_values($photo_array_tmp);
-        		}
-        	}
-        } else {
-	        foreach($list_data as $img_data) {
+        $this->renderJson($response['errno'], $response['data']);
+
+    }
+    
+    
+    private function get_img_list_by_ios(&$response, $timestamp){
+    	$this->load->library('redis');
+    	$key = 'mis_img_timestamp';
+    	$img_timestamp = $this->redis->get($key);
+    	
+    	$result = array();
+    	if ($img_timestamp > $timestamp) {
+	    	$where_array[]="is_deleted=1";
+	    
+	    	if(is_array($where_array) and count($where_array)>0){
+	    		$where=' WHERE '.join(' AND ',$where_array);
+	    	}
+	    
+	    	$row_num=$this->imgmgr_model->get_count_by_parm($where);
+	    	$limit="LIMIT $row_num";
+	    	$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
+	    
+	    	$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+	    	
+    		foreach($list_data as $img_data) {
+    			$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
+    			if ($img_data['img_type'] == 1) {
+    				if (!isset($sketch_array_tmp[$img_data['cell']])) {
+    					$sketch_array_tmp[$img_data['cell']][] = $tmp_array;
+    				} else {
+    					array_push($sketch_array_tmp[$img_data['cell']], $tmp_array);
+    				}
+    				$sketch_array = array_values($sketch_array_tmp);
+    			} elseif ($img_data['img_type'] == 2) {
+    				if (!isset($color_painting_array_tmp[$img_data['cell']])) {
+    					$color_painting_array_tmp[$img_data['cell']][] = $tmp_array;
+    				} else {
+    					array_push($color_painting_array_tmp[$img_data['cell']], $tmp_array);
+    				}
+    				$color_painting_array = array_values($color_painting_array_tmp);
+    			} elseif ($img_data['img_type'] == 3) {
+    				if (!isset($quick_sketch_array_tmp[$img_data['cell']])) {
+    					$quick_sketch_array_tmp[$img_data['cell']][] = $tmp_array;
+    				} else {
+    					array_push($quick_sketch_array_tmp[$img_data['cell']], $tmp_array);
+    				}
+    				$quick_sketch_array = array_values($quick_sketch_array_tmp);
+    			} elseif ($img_data['img_type'] == 4) {
+    				if (!isset($design_array_tmp[$img_data['cell']])) {
+    					$design_array_tmp[$img_data['cell']][] = $tmp_array;
+    				} else {
+    					array_push($design_array_tmp[$img_data['cell']], $tmp_array);
+    				}
+    				$design_array = array_values($design_array_tmp);
+    			} elseif ($img_data['img_type'] == 5) {
+    				if (!isset($creation_array_tmp[$img_data['cell']])) {
+    					$creation_array_tmp[$img_data['cell']][] = $tmp_array;
+    				} else {
+    					array_push($creation_array_tmp[$img_data['cell']], $tmp_array);
+    				}
+    				$creation_array = array_values($creation_array_tmp);
+    			} elseif ($img_data['img_type'] == 6) {
+    				if (!isset($photo_array_tmp[$img_data['cell']])) {
+    					$photo_array_tmp[$img_data['cell']][] = $tmp_array;
+    				} else {
+    					array_push($photo_array_tmp[$img_data['cell']], $tmp_array);
+    				}
+    				$photo_array = array_values($photo_array_tmp);
+    			}
+    		}
+	    
+	    	if(count($sketch_array) > 0) {
+	    		$result['sketch'] = $sketch_array;
+	    	}
+	    	if(count($color_painting_array) > 0) {
+	    		$result['color_painting'] = $color_painting_array;
+	    	}
+	    	if(count($quick_sketch_array) > 0) {
+	    		$result['quick_sketch'] = $quick_sketch_array;
+	    	}
+	    	if(count($design_array) > 0) {
+	    		$result['design'] = $design_array;
+	    	}
+	    	if(count($creation_array) > 0) {
+	    		$result['creation'] = $creation_array;
+	    	}
+	    	if(count($photo_array) > 0) {
+	    		$result['photo'] = $photo_array;
+	    	}
+	    	
+	    	$response['errno'] = 0;
+	    	$response['data']['content'] = $result;
+    	} else {
+	    	$response['errno'] = 801;
+	    	$response['data']['content'] = $result;
+    	}
+    
+    }
+    
+    
+    private function get_img_list_by_android(&$response, $timestamp){
+    	$this->load->library('redis');
+    	$key = 'mis_img_timestamp';
+    	$img_timestamp = $this->redis->get($key);
+    	
+    	$result = array();
+    	if ($img_timestamp > $timestamp) {
+	    	$where_array[]="is_deleted=1";
+	    
+	    	if(is_array($where_array) and count($where_array)>0){
+	    		$where=' WHERE '.join(' AND ',$where_array);
+	    	}
+	    
+	    	$row_num=$this->imgmgr_model->get_count_by_parm($where);
+	    	$limit="LIMIT $row_num";
+	    	$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
+	    
+	    	$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+	    	
+    		foreach($list_data as $img_data) {
 	        	$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
 	            if ($img_data['img_type'] == 1) {
 	                $sketch_array[] = $tmp_array;
@@ -163,33 +230,36 @@ class imgmgr extends MY_Controller{
 	                $photo_array[] = $tmp_array;
 	            }
 	        }
-        	
-        }
-
-        if(count($sketch_array) > 0) {
-            $result['sketch'] = $sketch_array;    
-        }
-        if(count($color_painting_array) > 0) {
-            $result['color_painting'] = $color_painting_array;
-        }
-        if(count($quick_sketch_array) > 0) {
-            $result['quick_sketch'] = $quick_sketch_array;
-        }
-        if(count($design_array) > 0) {
-            $result['design'] = $design_array;
-        }
-        if(count($creation_array) > 0) {
-            $result['creation'] = $creation_array;
-        }
-        if(count($photo_array) > 0) {
-            $result['photo'] = $photo_array;    
-        }
-        
-        $response['errno'] = 0;
-        $response['data']['content'] = $result;
-        $this->renderJson($response['errno'], $response['data']);
-
+	    
+	    	if(count($sketch_array) > 0) {
+	    		$result['sketch'] = $sketch_array;
+	    	}
+	    	if(count($color_painting_array) > 0) {
+	    		$result['color_painting'] = $color_painting_array;
+	    	}
+	    	if(count($quick_sketch_array) > 0) {
+	    		$result['quick_sketch'] = $quick_sketch_array;
+	    	}
+	    	if(count($design_array) > 0) {
+	    		$result['design'] = $design_array;
+	    	}
+	    	if(count($creation_array) > 0) {
+	    		$result['creation'] = $creation_array;
+	    	}
+	    	if(count($photo_array) > 0) {
+	    		$result['photo'] = $photo_array;
+	    	}
+	    	
+	    	$response['errno'] = 0;
+	    	$response['data']['content'] = $result;
+    	} else {
+	    	$response['errno'] = 801;
+	    	$response['data']['content'] = $result;
+    	}
+    
     }
+    
+    
 
 
     //对要闻进行单条推荐
