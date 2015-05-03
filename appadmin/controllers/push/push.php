@@ -203,7 +203,6 @@ class push extends MY_Controller{
 
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
-		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
 		$this->smarty->assign('info',$info);
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
