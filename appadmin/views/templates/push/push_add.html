@@ -18,9 +18,7 @@
     })
     //删除
     function _del(x)
-    {
-        $("#"+x).remove();
-    }
+    {$("#"+x).remove();}
     $(function() {
         $('#img').uploadify({
             //'formData'     : {
@@ -61,7 +59,7 @@
         <form name="myform" action="<{site_url url='/imgmgr/imgmgr/imgmgr_add_do/'}>" enctype="multipart/form-data"  method="post" id="myform">
             <table width="100%" class="table_form contentWrap">
                 <tr>
-                    <td>用户类型类型</td>
+                    <td>用户类型</td>
                     <td>
                         <{$img_type_sel}>
                     </td>

@@ -69,13 +69,26 @@ class push extends MY_Controller{
 		//城市
 		$city_type_list=array('1'=>'北京','2'=>'上海');
 		$city_type_sel=Form::select($city_type_list,$info['city'],'id="city" name="info[city]"','所在城市（多选）');
-
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('city_type_sel', $city_type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
 		$this->smarty->display('push/push_add.html');
+	}
+
+	//对外提供学校
+	function getSchools()
+	{
+		$areaid=is_numeric($this->input->get('area'))?$this->input->get('area'):0;
+		if(!$areaid) {echo "";exit;};
+		$schools = array(
+			1 => array('北京大学','清华大学')
+		);
+		if(array_key_exists($areaid,$schools))
+		{
+			echo json_encode($schools[$areaid]);
+		}
 	}
 
 
