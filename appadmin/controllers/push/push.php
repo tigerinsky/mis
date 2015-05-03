@@ -162,6 +162,21 @@ class push extends MY_Controller{
 		return $str;
 	}
 
+	//对要闻进行单条删除属性变更
+	function del_one_ajax(){
+		if(intval($_GET['id'])>0) {
+			// 更新时间戳
+			$this->redis->set($this->key_img, time());
+			$id=$this->input->get('id');
+			if($this->push_model->del_info($id)){
+				echo 1;
+			}else{
+				echo 0;
+			}
+		} else {
+			echo 0;
+		}
+	}
 
 
 }

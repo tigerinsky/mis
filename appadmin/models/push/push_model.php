@@ -116,24 +116,6 @@ class Push_model extends CI_Model {
 		return false;
 	}
 
-	/**
-	 * 对指定编号数据进行删除
-	 * @param arr $ids 需要删除的数据的id，可以是单个id，也可以是id的数组
-	 * @return bool 返回执行结果
-	 */
-	public function del_info($ids){
-		if(is_array($ids) && count($ids)){
-			$id_str=join("','",$ids);
-		}else{
-			$id_str=$ids;
-		}
-		$del_rule="UPDATE ci_mis_imgmgr SET is_deleted = 0 WHERE id IN('{$id_str}')";
-		if($this->db->query($del_rule)){
-			return true;
-		}else{
-			return false;
-		}
-	}
 
 	/**
 	 * 批量执行删除
@@ -184,6 +166,26 @@ class Push_model extends CI_Model {
 		$where="id={$id}";
 		$update_rule=$this->db->update_string('ci_app_push', $info, $where);
 		if($this->db->query($update_rule)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
+	/**
+	 * 对指定编号数据进行删除
+	 * @param arr $ids 需要删除的数据的id，可以是单个id，也可以是id的数组
+	 * @return bool 返回执行结果
+	 */
+	public function del_info($ids){
+		if(is_array($ids) && count($ids)){
+			$id_str=join("','",$ids);
+		}else{
+			$id_str=$ids;
+		}
+		$del_rule="UPDATE ci_app_push SET removed = 1 WHERE id IN('{$id_str}')";
+		if($this->db->query($del_rule)){
 			return true;
 		}else{
 			return false;
