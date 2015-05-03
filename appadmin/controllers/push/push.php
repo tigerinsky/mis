@@ -150,6 +150,7 @@ class push extends MY_Controller{
 	private function arrJson($json,$type='citys')
 	{
 		$arr = json_decode($json,true);
+		if(empty($arr)) return "";
 		$str="";
 		foreach($arr as $key=>$value)
 		{
