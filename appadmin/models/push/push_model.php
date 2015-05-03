@@ -18,7 +18,7 @@ class Push_model extends CI_Model {
 	 * @return int $data 分会符合条件二维数组
 	 */
 	public function get_data_by_parm($where,$limit){
-		$query_data="SELECT `id`, `img_type`, `cell`, `listorder`, `title`, `img_url`, `is_deleted` FROM ci_app_push {$where} ORDER BY listorder ASC {$limit}";
+		$query_data="SELECT `id`, `user_type`, `title`, `wap_url`, `status`, `pushed`, `ios_num`,'android_num','time_push','area','school' FROM ci_app_push {$where} ORDER BY id ASC {$limit}";
 		$result_data=$this->dbr->query($query_data);
 		$list_data=$result_data->result_array();
 		return $list_data;
