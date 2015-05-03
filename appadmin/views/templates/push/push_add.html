@@ -12,7 +12,7 @@
 //        $("#img_type").formValidator({onshow:"请选择图片类型",onfocus:"图片类型不能为空",empty:false}).inputValidator({min:1,onerror:"图片类型不能为空"});
         //城市多选
         $("#city").change(function(){
-            $("#city_list").html($(this).val());
+            $("#city_list").append("<li style='padding-left: 5px;'>"+$(this).text()+"</li>");
         });
     })
     $(function() {
@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <td width="80"></td>
-                    <td><{$city_type_sel}> <div id="city_list" class="onError"></div></td>
+                    <td><{$city_type_sel}> <div id="city_list" style="display:inline-block;display:-moz-inline-stack;zoom:1;*display:inline; vertical-align:middle; color:#444;line-height:18px;padding:2px 10px 2px 23px; margin-left:10px;_margin-left:5px"></div></td>
                 </tr>
                 <tr>
                     <td width="80">排序字段</td>
