@@ -78,26 +78,31 @@
                     <td><{$school_type_sel}> <div id="school_list" style="display:inline-block;display:-moz-inline-stack;zoom:1;*display:inline; vertical-align:middle; color:#444;line-height:18px;padding:2px 10px 2px 23px; margin-left:10px;_margin-left:5px"></div></td>
                 </tr>
                 <tr>
-                    <td width="80">排序字段</td>
+                    <td width="80">标题</td>
                     <td><input type="text" name="info[listorder]"  class="input-text wid300" id="listorder" value=""></td>
                 </tr>
                 <tr>
-                    <td width="80">图片标题</td>
+                    <td width="80">url</td>
                     <td><input type="text" name="info[title]"  class="input-text wid300" id="title" value=""></td>
                 </tr>
                 <tr>
-                    <td width="80">上传图片</td>
-                    <td><input type="file" name="img" id="img"></td>
-                </tr>
-                <tr>
-                    <td width="80">图片</td>
+                    <td width="80">发送时间</td>
                     <td>
-                        <div class="bk10"></div>
-                        <fieldset class="blue pad-10" id="swfupload">
-                            <legend>列表</legend>
-                            <ul class="attachment-list"  id="fsUploadProgress">
-                            </ul>
-                        </fieldset>
+                        <link rel="stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>js/calendar/jscal2.css"/>
+                        <link rel="stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>js/calendar/border-radius.css"/>
+                        <link rel="stylesheet" type="text/css" href="<{$sys_config['exten_pub_path']}>js/calendar/win2k.css"/>
+                        <script type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/calendar/calendar.js"></script>
+                        <script type="text/javascript" src="<{$sys_config['exten_pub_path']}>js/calendar/lang/en.js"></script><input type="text" name="push_time" id="push_time" value="" size="21" class="date" readonly>&nbsp;<script type="text/javascript">
+                        Calendar.setup({
+                            weekNumbers: true,
+                            inputField : "time_start",
+                            trigger    : "time_start",
+                            dateFormat: "%Y-%m-%d %H:%M:%S",
+                            showTime: true,
+                            minuteStep: 1,
+                            onSelect   : function() {this.hide();}
+                        });
+                    </script>
                     </td>
                 </tr>
             </table>
