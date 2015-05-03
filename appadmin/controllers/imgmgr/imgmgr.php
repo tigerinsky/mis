@@ -7,6 +7,8 @@ class imgmgr extends MY_Controller{
     function __construct(){
         parent::__construct();
         $this->dbr=$this->load->database('dbr',TRUE);
+        $this->load->library('redis');
+        $this->key_img = 'mis_img_timestamp';
         $this->load->model('imgmgr/imgmgr_model','imgmgr_model');
     }
     
@@ -101,9 +103,7 @@ class imgmgr extends MY_Controller{
     
     
     private function get_img_list_by_ios(&$response, $timestamp){
-    	$this->load->library('redis');
-    	$key = 'mis_img_timestamp';
-    	$img_timestamp = $this->redis->get($key);
+    	$img_timestamp = $this->redis->get($this->key_img);
     	
     	$result = array();
     	if ($img_timestamp > $timestamp) {
@@ -196,9 +196,7 @@ class imgmgr extends MY_Controller{
     
     
     private function get_img_list_by_android(&$response, $timestamp){
-    	$this->load->library('redis');
-    	$key = 'mis_img_timestamp';
-    	$img_timestamp = $this->redis->get($key);
+    	$img_timestamp = $this->redis->get($this->key_img);
     	
     	$result = array();
     	if ($img_timestamp > $timestamp) {
@@ -408,6 +406,7 @@ class imgmgr extends MY_Controller{
     
     //执行添加图片操作
     function imgmgr_add_do(){
+    	$this->redis->set($this->key_img, time());
         $info = $this->input->post('info');
         $pic  = $this->input->post('pic');
         log_message('debug', '*****************[test]******************img_add_do');
@@ -459,6 +458,7 @@ class imgmgr extends MY_Controller{
     
     //执行修改要闻操作
     function imgmgr_edit_do(){
+    	$this->redis->set($this->key_img, time());
         $id = $this->input->post('id');
         $info = $this->input->post('info');
 		$this->load->library('oss');
