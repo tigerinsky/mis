@@ -52,10 +52,11 @@ class push extends MY_Controller{
 			if($keywords!=''){
 				$search_arr['keywords']=$keywords;
 				$where_array[]="title like '%{$keywords}%'";
+
 			}
 
 		}
-dump($where_array);
+var_dump($where_array);
 		if(is_array($where_array) and count($where_array)>0){
 			$where=' WHERE '.join(' AND ',$where_array);
 		}
