@@ -15,6 +15,11 @@
             var ids = 'city_'+$(this).val();
             $("#city_list").append("<li id='"+ids+"' style='padding-left: 5px;'>"+$(this).find("option:selected").text()+"<span style='padding-left: 8px; width:14px; height:14px; cursor:pointer; ' onclick=\'_del(\""+ids+"\")\'><img src='<{$sys_config['exten_pub_path']}>images/error.gif' /></span></li>");
         });
+        //学校多选
+        $("#school").change(function(){
+            var ids = 'school_'+$(this).val();
+            $("#school_list").append("<li id='"+ids+"' style='padding-left: 5px;'>"+$(this).find("option:selected").text()+"<span style='padding-left: 8px; width:14px; height:14px; cursor:pointer; ' onclick=\'_del(\""+ids+"\")\'><img src='<{$sys_config['exten_pub_path']}>images/error.gif' /></span></li>");
+        });
     })
     //删除
     function _del(x)
@@ -67,6 +72,10 @@
                 <tr>
                     <td width="80"></td>
                     <td><{$city_type_sel}> <div id="city_list" style="display:inline-block;display:-moz-inline-stack;zoom:1;*display:inline; vertical-align:middle; color:#444;line-height:18px;padding:2px 10px 2px 23px; margin-left:10px;_margin-left:5px"></div></td>
+                </tr>
+                <tr>
+                    <td width="80"></td>
+                    <td><{$shool_type_sel}> <div id="shool_list" style="display:inline-block;display:-moz-inline-stack;zoom:1;*display:inline; vertical-align:middle; color:#444;line-height:18px;padding:2px 10px 2px 23px; margin-left:10px;_margin-left:5px"></div></td>
                 </tr>
                 <tr>
                     <td width="80">排序字段</td>
