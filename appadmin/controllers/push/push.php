@@ -48,7 +48,17 @@ class push extends MY_Controller{
 		$user_num=$this->push_model->get_count_by_parm($where);
 		$pages=pages($user_num,$page,$pagesize);
 		$list_data=$this->push_model->get_data_by_parm($where,$limit);
-		var_dump($list_data);exit;
+		if(count($list_data)>0)
+		{
+			foreach($list_data as $key=>$value)
+			{
+				$list_data[$key]['user_type'] = ($value['user_type'] == 1)?"认证":"未认证";
+				$list_data[$key]['time_push'] = time("Y-m-d H:i:s",$value['time_push']);
+				$list_data[$key]['time_push'] = time("Y-m-d H:i:s",$value['time_push']);
+				$list_data[$key]['citys']	= $this->arrJson($value['citys'],'citys');
+				$list_data[$key]['school']	= $this->arrJson($value['school'],'school');
+			}
+		}
 
 		$this->load->library('form');
 		$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
@@ -135,6 +145,20 @@ class push extends MY_Controller{
 				return $city[ $id ];
 			} else return "";
 		}
+	}
+
+	private function arrJson($json,$type='citys')
+	{
+		$arr = json_decode($json,true);
+		$str="";
+		foreach($arr as $key=>$value)
+		{
+			if($type == 'citys')
+				$str .= $this->getCity($value) .",";
+			else
+				$str .= $this->getSchool($value) .",";
+		}
+		return $str;
 	}
 
 

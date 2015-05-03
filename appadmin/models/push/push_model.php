@@ -182,7 +182,7 @@ class Push_model extends CI_Model {
 	 */
 	public function update_info($info,$id){
 		$where="id={$id}";
-		$update_rule=$this->db->update_string('ci_mis_imgmgr', $info, $where);
+		$update_rule=$this->db->update_string('ci_app_push', $info, $where);
 		if($this->db->query($update_rule)){
 			return true;
 		}else{
