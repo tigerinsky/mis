@@ -82,5 +82,35 @@ class push extends MY_Controller{
 	}
 
 
+	//处理推送数据
+	function push_add_do()
+	{
+		if($_POST) {
+			$data = array (
+				'user_type'		=> $this->input->post('dosearch'),
+				'citys'		=> $this->input->post('citys'),
+				'school'	=> $this->input->post('school'),
+				'wap_url'		=> $this->input->post('wap_url'),
+				'title'		=> $this->input->post('title'),
+				'time_push'	=> strtotime($this->input->post('push_time')),
+				'time_create'	=> time(),
+			);
+
+			var_dump($data);exit;
+			if( $data['listorder']!='' && $data['title'] != ''){
+				//$info['img'] = !empty($pic) ? json_encode($pic) : '';
+				if($this->imgmgr_model->create_info($info)){
+					show_tips('操作成功','','','add');
+				}else{
+					show_tips('操作异常');
+				}
+			}else{
+				show_tips('数据不完整，请检测');
+			}
+
+		}
+	}
+
+
 
 }
