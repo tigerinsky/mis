@@ -53,8 +53,7 @@ class push extends MY_Controller{
 			foreach($list_data as $key=>$value)
 			{
 				$list_data[$key]['user_type'] = ($value['user_type'] == 1)?"认证":"未认证";
-				$list_data[$key]['time_push'] = time("Y-m-d H:i:s",$value['time_push']);
-				$list_data[$key]['time_push'] = time("Y-m-d H:i:s",$value['time_push']);
+				$list_data[$key]['push_time'] = time("Y-m-d H:i:s",$value['time_push']);
 				$list_data[$key]['citys']	= $this->arrJson($value['citys'],'citys');
 				$list_data[$key]['school']	= $this->arrJson($value['school'],'school');
 			}
