@@ -59,7 +59,6 @@ class push extends MY_Controller{
 				$list_data[$key]['school']	= $this->arrJson($value['school'],'school');
 			}
 		}
-		var_dump($list_data);exit;
 		$this->load->library('form');
 		$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
 		$search_arr['img_type_sel']=$this->form->select($img_type_list,$img_type_id,'name="img_type_id"','选择图片类型');
@@ -159,6 +158,8 @@ class push extends MY_Controller{
 			else
 				$str .= $this->getSchool($value) .",";
 		}
+		if(substr($str,-1,1) == ',')
+			$str = substr($str,0,strlen($str)-1);
 		return $str;
 	}
 
