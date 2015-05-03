@@ -178,5 +178,25 @@ class push extends MY_Controller{
 		}
 	}
 
+	//修改推送
+	function push_edit(){
+		$this->load->library('form');
+		$imgmgr_id = $this->input->get('id');
+		$info = $this->push_model->get_info_by_id($imgmgr_id);
+		var_dump($info);exit;
+		//$info['img'] = !empty($info['img']) ? json_decode($info['img']) : array();
+
+		//$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
+
+		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
+		$this->smarty->assign('info',$info);
+		$this->smarty->assign('img_type_sel',$img_type_sel);
+		$this->smarty->assign('random_version', rand(100,999));
+		$this->smarty->assign('show_dialog','true');
+		$this->smarty->assign('show_validator','true');
+		$this->smarty->display('push/push_edit.html');
+	}
+
 
 }

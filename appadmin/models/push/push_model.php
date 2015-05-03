@@ -42,7 +42,7 @@ class Push_model extends CI_Model {
 	 * @return int $data 返回数据内容
 	 */
 	public function get_info_by_id($id){
-		$query_data="SELECT `id`, `img_type`, `cell`, `listorder`, `title`, `img_url`, `is_deleted` FROM ci_mis_imgmgr WHERE id=?";
+		$query_data="SELECT `id`, `img_type`, `cell`, `listorder`, `title`, `img_url`, `is_deleted` FROM ci_app_push WHERE id=?";
 		$result_data=$this->dbr->query($query_data,array($id));
 		$row_data=$result_data->row_array();
 		if($row_data['id']>0){
