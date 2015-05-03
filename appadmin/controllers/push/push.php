@@ -63,6 +63,10 @@ class push extends MY_Controller{
 	//添加推送
 	function push_add(){
 		$this->load->library('form');
+		$img_type_list=array('1'=>'认证','2'=>'未认证');
+		$img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[user_type]"','请选择');
+
+		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
