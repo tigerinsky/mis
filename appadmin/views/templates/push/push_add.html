@@ -13,7 +13,7 @@
         //城市多选
         $("#city").change(function(){
             var ids = '_city_'+$(this).val();
-            $("#city_list").append("<li id='"+ids+"' style='padding-left: 5px;'>"+$(this).find("option:selected").text()+"<span style='padding-left: 8px;'><a href='javascript:_del('"+ids+"')'><img src='<{$sys_config['exten_pub_path']}>images/cancelbutton.gif' width=14 height=14 /></a></span></li>");
+            $("#city_list").append("<li id='"+ids+"' style='padding-left: 5px;'>"+$(this).find("option:selected").text()+"<span style='padding-left: 8px;'><a href='javascript:_del("+ids+")'><img src='<{$sys_config['exten_pub_path']}>images/cancelbutton.gif' width=14 height=14 /></a></span></li>");
         });
     })
     //删除
