@@ -55,7 +55,7 @@ class push extends MY_Controller{
 			}
 
 		}
-
+dump($where_array);
 		if(is_array($where_array) and count($where_array)>0){
 			$where=' WHERE '.join(' AND ',$where_array);
 		}
