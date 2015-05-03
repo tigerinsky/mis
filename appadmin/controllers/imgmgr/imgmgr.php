@@ -110,7 +110,10 @@ class imgmgr extends MY_Controller{
     	$img_timestamp = $this->redis->get($this->key_img);
     	
     	$result = array();
-    	if ($img_timestamp > $timestamp) {
+    	if (isset($timestamp) && $timestamp > $img_timestamp) {
+    		$response['errno'] = 901;
+    		$response['data']['content'] = $result;
+    	} else {
 	    	$where_array[]="is_deleted=1";
 	    
 	    	if(is_array($where_array) and count($where_array)>0){
@@ -192,9 +195,6 @@ class imgmgr extends MY_Controller{
 	    	
 	    	$response['errno'] = 0;
 	    	$response['data']['content'] = $result;
-    	} else {
-	    	$response['errno'] = 801;
-	    	$response['data']['content'] = $result;
     	}
     
     }
@@ -204,7 +204,11 @@ class imgmgr extends MY_Controller{
     	$img_timestamp = $this->redis->get($this->key_img);
     	
     	$result = array();
-    	if ($img_timestamp > $timestamp) {
+    	
+    	if (isset($timestamp) && $timestamp > $img_timestamp) {
+    		$response['errno'] = 901;
+    		$response['data']['content'] = $result;
+    	} else {
 	    	$where_array[]="is_deleted=1";
 	    
 	    	if(is_array($where_array) and count($where_array)>0){
@@ -255,9 +259,6 @@ class imgmgr extends MY_Controller{
 	    	}
 	    	
 	    	$response['errno'] = 0;
-	    	$response['data']['content'] = $result;
-    	} else {
-	    	$response['errno'] = 801;
 	    	$response['data']['content'] = $result;
     	}
     
