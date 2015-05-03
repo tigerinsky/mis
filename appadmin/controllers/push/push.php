@@ -76,7 +76,7 @@ class push extends MY_Controller{
 		$this->smarty->assign('list_data',$list_data);
 		$this->smarty->assign('pages',$pages);
 		$this->smarty->assign('show_dialog','true');
-		$this->smarty->display('imgmgr/imgmgr_list.html');
+		$this->smarty->display('push/push_list.html');
 	}
 
 
