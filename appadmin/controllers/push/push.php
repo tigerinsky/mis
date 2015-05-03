@@ -17,7 +17,7 @@ class push extends MY_Controller{
 		$this->push_list();
 	}
 
-	//显示图片列表，同时有检索功能
+	//显示推送列表，同时有检索功能
 	private function push_list(){
 		$this->load->library('form');
 		$page=$this->input->get('page');
@@ -48,6 +48,7 @@ class push extends MY_Controller{
 		$user_num=$this->push_model->get_count_by_parm($where);
 		$pages=pages($user_num,$page,$pagesize);
 		$list_data=$this->push_model->get_data_by_parm($where,$limit);
+		var_dump($list_data);exit;
 
 		$this->load->library('form');
 		$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
@@ -67,10 +68,10 @@ class push extends MY_Controller{
 		$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"','');
 
 		//城市
-		$city_type_list=array('1'=>'北京','2'=>'上海');
+		$city_type_list=$this->getCity();
 		$city_type_sel=Form::select($city_type_list,$info['citys'],'id="citys" name="citys"','所在城市（多选）');
 		//学校
-		$school_type_list=array('1'=>'北京大学','2'=>'清华大学');
+		$school_type_list=$this->getSchool();
 		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="school"','目标学校（多选）');
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('city_type_sel', $city_type_sel);
@@ -107,6 +108,32 @@ class push extends MY_Controller{
 				show_tips('数据不完整，请检测');
 			}
 
+		}
+	}
+
+	//城市字典
+	private function getCity($id = 0)
+	{
+		$city = array('1'=>'北京','2'=>'上海');
+		if($id == 0) return $city;
+		else
+		{
+			if(array_key_exists($id,$city)) {
+				return $city[ $id ];
+			} else return "";
+		}
+	}
+
+	//城市字典
+	private function getSchool($id = 0)
+	{
+		$city = array('1'=>'北京大学','2'=>'清华大学');
+		if($id == 0) return $city;
+		else
+		{
+			if(array_key_exists($id,$city)) {
+				return $city[ $id ];
+			} else return "";
 		}
 	}
 
