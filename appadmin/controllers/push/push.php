@@ -68,7 +68,7 @@ class push extends MY_Controller{
 
 		//城市
 		$city_type_list=array('1'=>'北京','2'=>'上海');
-		$city_type_sel=Form::select($city_type_list,$info['city'],'id="citys" name="citys"','所在城市（多选）');
+		$city_type_sel=Form::select($city_type_list,$info['citys'],'id="citys" name="citys"','所在城市（多选）');
 		//学校
 		$school_type_list=array('1'=>'北京大学','2'=>'清华大学');
 		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="school"','目标学校（多选）');
