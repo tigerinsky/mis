@@ -18,7 +18,7 @@ class Push_model extends CI_Model {
 	 * @return int $data 分会符合条件二维数组
 	 */
 	public function get_data_by_parm($where,$limit){
-		$query_data="SELECT `id`, `img_type`, `cell`, `listorder`, `title`, `img_url`, `is_deleted` FROM ci_mis_imgmgr {$where} ORDER BY listorder ASC {$limit}";
+		$query_data="SELECT `id`, `img_type`, `cell`, `listorder`, `title`, `img_url`, `is_deleted` FROM ci_app_push {$where} ORDER BY listorder ASC {$limit}";
 		$result_data=$this->dbr->query($query_data);
 		$list_data=$result_data->result_array();
 		return $list_data;
@@ -30,7 +30,7 @@ class Push_model extends CI_Model {
 	 * @return int $data 返回数据的条数
 	 */
 	public function get_count_by_parm($where){
-		$query_data="SELECT count(id) as nums FROM ci_mis_imgmgr {$where}";
+		$query_data="SELECT count(id) as nums FROM ci_app_push {$where}";
 		$result_data=$this->dbr->query($query_data);
 		$row_data=$result_data->row_array();
 		return $row_data['nums'];
