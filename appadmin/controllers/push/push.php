@@ -196,7 +196,7 @@ class push extends MY_Controller{
 		$info['time_push'] = date("Y-m-d H:i:s",$info['time_push']);
 		$info['citys_list']	= $this->pushForm(json_decode($info['citys'],true),'citys');
 		$info['school_list']	= $this->pushForm(json_decode($info['school'],true),'school');
-
+var_dump($info);exit;
 
 		$img_type_list=array('1'=>'认证','2'=>'未认证');
 		$utype = ($info['user_type']==0)?"未认证":"认证";
