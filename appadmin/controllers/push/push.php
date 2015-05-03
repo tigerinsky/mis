@@ -24,28 +24,9 @@ class push extends MY_Controller{
 		$page = max(intval($page),1);
 		$dosearch=$this->input->get('dosearch');
 
-		$search_arr['is_deleted']=1;
-		$where_array[]="is_deleted=1";
+		$where_array[]="removed=0";
 
 		if($dosearch=='ok'){
-
-			$search_filed=array(
-				'img_type'=>array(
-					'1'=>'img_type=1',
-					'2'=>'img_type=2',
-					'3'=>'img_type=3',
-					'4'=>'img_type=4',
-					'5'=>'img_type=5',
-					'6'=>'img_type=6',
-				)
-			);
-
-			if(intval($this->input->get('img_type_id'))!=''){
-				$img_type_id=$this->input->get('img_type_id');
-				if($search_filed['img_type'][$img_type_id]!=''){
-					$where_array[]=$search_filed['img_type'][$img_type_id];
-				}
-			}
 
 			$keywords=trim($this->input->get('keywords'));
 
