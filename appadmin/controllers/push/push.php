@@ -217,10 +217,10 @@ class push extends MY_Controller{
 		foreach($arr as $key=>$value)
 		{
 			if($type == 'citys') {
-				$str .= '<li id="city_' . $value . '" style="padding-left: 5px;">' . $this->getCity ( $value ) . '<span style="padding-left: 8px; width:14px; height:14px; cursor:pointer; " onclick="_del(\'city_' . $value . '\')"><img src="/public/images/error.gif"></span></li>';
+				$str .= '<li id="city_' . $value . '" style="padding-left: 5px;">' . $this->getCity ( $value ) . '<span style="padding-left: 8px; width:14px; height:14px; cursor:pointer; " onclick="_del(\'city_' . $value . '\')"><img src="/public/images/error.gif"></span><input type=\'hidden\' name=\'citys[]\' value="'.$value.'" /></li>';
 			}else
 			{
-				$str .= '<li id="school_'.$value.'" style="padding-left: 5px;">'.$this->getSchool($value).'<span style="padding-left: 8px; width:14px; height:14px; cursor:pointer; " onclick="_del(\'school_'.$value.'\')"><img src="/public/images/error.gif"></span></li>';
+				$str .= '<li id="school_'.$value.'" style="padding-left: 5px;">'.$this->getSchool($value).'<span style="padding-left: 8px; width:14px; height:14px; cursor:pointer; " onclick="_del(\'school_'.$value.'\')"><img src="/public/images/error.gif"></span><input type=\'hidden\' name=\'citys[]\' value="'.$value.'" /></li>';
 			}
 		}
 		return $str;
