@@ -226,5 +226,33 @@ class push extends MY_Controller{
 		return $str;
 	}
 
+	public function push_edit_do()
+	{
+		if($_POST) {
+			$data = array (
+				'user_type'		=> $this->input->post('user_type'),
+				'citys'		=> json_encode($this->input->post('citys')),
+				'school'	=> json_encode($this->input->post('school')),
+				'wap_url'		=> $this->input->post('wap_url'),
+				'title'		=> $this->input->post('title'),
+				'time_push'	=> strtotime($this->input->post('push_time')),
+				'time_create'	=> time(),
+			);
+			$id = $this->input->post('id');
+
+			if( $data['citys']!='' && count($this->input->post('citys')) > 0 && count($this->input->post('school')) > 0 && $data['title']!='' && $data['time_push'] != ''){
+
+				if($this->push_model->edit_info($data,$id)){
+					show_tips('操作成功','','','add');
+				}else{
+					show_tips('操作异常');
+				}
+			}else{
+				show_tips('数据不完整，请检测');
+			}
+
+		}
+	}
+
 
 }

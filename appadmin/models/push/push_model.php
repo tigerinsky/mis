@@ -156,13 +156,15 @@ class Push_model extends CI_Model {
 		}
 	}
 
+
+
 	/**
 	 * 对数据表中的单行数据进行修改
 	 * @param arr $info 需要修改的键值对
 	 * @param int $id 被修改的id编号
 	 * @return bool 是否执行成功
 	 */
-	public function update_info($info,$id){
+	public function edit_info($info,$id){
 		$where="id={$id}";
 		$update_rule=$this->db->update_string('ci_app_push', $info, $where);
 		if($this->db->query($update_rule)){
