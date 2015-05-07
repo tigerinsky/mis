@@ -1,0 +1,145 @@
+<{include file="../common/header.html"}>
+<script src="<{$sys_config['exten_pub_path']}>js/uploadify/jquery.uploadify.min.js?ver=<{$random_version}>" type="text/javascript"></script>
+<link href="<{$sys_config['exten_pub_path']}>js/swfupload/swfupload.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/uploadify.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    html{_overflow-y:scroll}
+    .common-form>li{ float:left;display:inline; }
+</style>
+<script type="text/javascript"> 
+<!--
+	$(function(){
+		$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+		$("#img_type").formValidator({onshow:"请选择图片类型",onfocus:"图片类型不能为空",empty:false}).inputValidator({min:1,onerror:"图片类型不能为空"});
+		$("#img_title").formValidator({onshow:"请选择图片二级分类",onfocus:"图片二级分类不能为空",empty:false}).inputValidator({min:1,onerror:"图片二级分类不能为空"});
+	})
+	$(function() {
+        $('#img').uploadify({
+            //'formData'     : {
+                //'room_id' : '<{$room_id}>',
+            //},
+            'fileObjName':'pic',
+            'debug'    : false,
+            'fileTypeExts':'*.jpg;*.png;*.gif',
+            'fileSizeLimit':300, 
+            'sizeLimit':300, 
+            'width':'75',//选择文件按钮的宽度
+            'height':'23',//选择文件按钮的高度
+            'buttonText':'上传图片',
+            'swf'      : '<{$sys_config['exten_pub_path']}>images/uploadify/uploadify.swf',
+            'uploader' : '/common/upload/uploadify',
+            onUploadError:function(file,errorCode,errorMsg){
+                alert('上传错误：错误代码：'+obj2string(errorCode)+'错误消息：'+obj2string(errorMsg));
+            },
+			onUploadError:function(file, errorCode, errorMsg, errorString){
+				alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
+			},
+            onUploadSuccess:function(file,r,response){
+				eval("var obj="+r);
+                console.log(obj.data.pic);
+				if (response && obj.ret==1) {
+                $("#fsUploadProgress").append('<li><input type="checkbox" name="pic[]" value="'+obj.data.pic+'" checked><img  width=90 src="'+obj.data.pic+'"/></li>');  
+				} else {
+					alert(obj.msg);
+				}
+            }
+        });
+    });
+    
+    $(document).ready(function() {
+		
+		$("#img_type").change(function() {
+		 	var img_type = $("#img_type").val();
+			var url = "<{site_url url='/imgmgr/imgmgr/get_img_title_list_ajax/'}>";
+			var data = {'img_type':img_type}
+		    jQuery.ajax({
+				type: 'GET',
+				url: url,
+				data: data,
+				success: imgTypeOnSuccess,
+				error: imgTypeOnError,
+				dataType: 'json',
+				async:false
+			});
+		});
+		
+		// 触发上面注册的函数,这样就不用执行最上面的初始化函数了
+		$("#img_type").change();
+		
+		// 服务器类型发生改变时触发此函数
+		function imgTypeOnSuccess(data) {
+			var title = "<{$info['title']}>";
+			var img_title_json = data["data"]["content"];
+			$("#img_title").html("<option value='-1'>请选择</option>");
+			for(var i in img_title_json) {
+				console.log(i);
+				console.log(img_title_json[i]);
+				var t = $("<option></option>");
+				t.html(img_title_json[i]);
+				//t.val(i);
+				t.val(img_title_json[i]);
+				$("#img_title").append(t);
+			}
+			$("#img_title").val(title);
+		}
+		
+		function imgTypeOnError() {
+			console.log("发生错误!");
+		}
+		 
+	});
+    
+//-->
+</script>
+
+<div class="pad_10">
+	<div class="common-form">
+		<form name="myform" action="<{site_url url='/imgmgr/imgmgr/imgmgr_edit_do/'}>" enctype="multipart/form-data"  method="post" id="myform">
+			<table width="100%" class="table_form contentWrap">
+				<tr>
+					<td>图片类型</td>
+					<td>
+					    <{$img_type_sel}>
+					</td>
+				</tr>
+				<tr>
+					<td width="80">图片二级分类</td>
+					<td>
+					    <select name="info[title]" id="img_title">
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td width="80">cell分组</td>
+					<td><input type="text" name="info[cell]"  class="input-text wid300" id="cell" value="<{$info['cell']}>"></td>
+				</tr>
+				<tr>
+					<td width="80">排序字段</td>
+					<td><input type="text" name="info[listorder]"  class="input-text wid300" id="listorder" value="<{$info['listorder']}>"></td>
+				</tr>
+				<tr>
+					<td width="80">上传图片</td>
+					<td><input type="file" name="img" id="img"></td>
+				</tr>
+				<tr>
+					<td width="80">图片</td>
+					<td>
+					<div class="bk10"></div>
+					<fieldset class="blue pad-10" id="swfupload">
+						<legend>列表</legend>
+						<ul class="attachment-list"  id="fsUploadProgress">    
+					    <{if $info['img_url']}>
+					    <li><input type="checkbox" name="pic[]" value="<{$info['img_url']}>" checked><img  width=90 src="<{$info['img_url']}>"/></li>
+					    <{/if}>
+						</ul>
+					</fieldset>
+					</td>
+				</tr>
+			</table>
+		    <div class="bk15"></div>
+		    <input type="hidden" value="<{$info['id']}>" name="id">
+		    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
+		</form>
+	</div>
+</div>
+<{include file="../common/footer.html"}>

@@ -12,49 +12,67 @@ class product extends MY_Controller{
         // $this->mis_imgmgr['imgmgr_level_1']
         $this->load->library('redis');
         $this->key_img = 'mis_img_timestamp';
-        $this->load->model('imgmgr/imgmgr_model', 'imgmgr_model');
+        $this->load->model('product/product_model', 'product_model');
     }
     
     //默认调用控制器
     function index(){
-    	$this->imgmgr_list();
+    	$this->product_list();
     }
     
     //显示图片列表，同时有检索功能
-    private function imgmgr_list(){
+    private function product_list(){
         $this->load->library('form');
         $page=$this->input->get('page');
         $page = max(intval($page),1);
         $dosearch=$this->input->get('dosearch');
         
-        $search_arr['is_deleted']=1;
-        $where_array[]="is_deleted=1";
+        $search_arr['is_del']=0;
+        $where_array[]="is_del=0";
         
         if($dosearch=='ok'){
             
             $search_filed=array(
-                'img_type'=>array(
-                    '1'=>'img_type=1',
-                    '2'=>'img_type=2',
-                    '3'=>'img_type=3',
-                    '4'=>'img_type=4',
-                    '5'=>'img_type=5',
-                    '6'=>'img_type=6',
-                ) 
+            	'product_type'=>array(
+            			'1'=>'type!=0',
+            			'2'=>'type=1',
+            			'3'=>'type=0',
+            		),
+            	'img_type'=>array(
+            			'1'=>'f_catalog=1',
+            			'2'=>'f_catalog=2',
+            			'3'=>'f_catalog=3',
+            			'4'=>'f_catalog=4',
+            			'5'=>'f_catalog=5',
+            			'6'=>'f_catalog=6',
+            		),
             );
             
-            if(intval($this->input->get('img_type_id'))!=''){
-                $img_type_id=$this->input->get('img_type_id');
-                if($search_filed['img_type'][$img_type_id]!=''){
-                    $where_array[]=$search_filed['img_type'][$img_type_id];
-                }
+            if(intval($this->input->get('product_type_id'))!=''){
+            	$product_type_id=$this->input->get('product_type_id');
+            	if($search_filed['product_type'][$product_type_id]!=''){
+            		$where_array[]=$search_filed['product_type'][$product_type_id];
+            	}
             }
+            
+            if(intval($this->input->get('img_type_id'))!=''){
+            	$img_type_id=$this->input->get('img_type_id');
+            	if($search_filed['img_type'][$img_type_id]!=''){
+            		$where_array[]=$search_filed['img_type'][$img_type_id];
+            	}
+            }
+            
 
+            $img_title = trim($this->input->get('img_title'));
+            if($img_title != '') {
+                $search_arr['$img_title'] = $img_title;
+                $where_array[] = "s_catalog = '{$img_title}'";
+            }
+            
             $keywords=trim($this->input->get('keywords'));
-
             if($keywords!=''){
                 $search_arr['keywords']=$keywords;
-                $where_array[]="title like '%{$keywords}%'";        
+                $where_array[]="tags like '%{$keywords}%'";
             }
 
         }
@@ -63,205 +81,64 @@ class product extends MY_Controller{
             $where=' WHERE '.join(' AND ',$where_array);
         }
 
-        $pagesize=10;
+        $pagesize = 10;
         $offset = $pagesize*($page-1);
-        $limit="LIMIT $offset,$pagesize";
+        $limit = "LIMIT $offset,$pagesize";
         
-        $user_num=$this->imgmgr_model->get_count_by_parm($where);
-        $pages=pages($user_num,$page,$pagesize);
-        $list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
+        $product_num = $this->product_model->get_count_by_parm($where);
+        $pages = pages($product_num, $page, $pagesize);
+        $list_data = $this->product_model->get_data_by_parm($where, $limit);
 
         $this->load->library('form');
+        
+        $product_type_list = array('1'=>'全部', '2'=>'素材', '3'=>'非素材');
+        $search_arr['product_type_sel'] = $this->form->select($product_type_list, $product_type_id, 'name="product_type_id"');
         //$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
         $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
-        $search_arr['img_type_sel']=$this->form->select($img_type_list,$img_type_id,'name="img_type_id"','选择图片类型');
-        $this->smarty->assign('search_arr',$search_arr);
-        $this->smarty->assign('img_type_list',$img_type_list);
-        $this->smarty->assign('list_data',$list_data);
-        $this->smarty->assign('pages',$pages);
-        $this->smarty->assign('show_dialog','true');
-        $this->smarty->display('imgmgr/imgmgr_list.html');
+        $search_arr['img_type_sel']=$this->form->select($img_type_list, $img_type_id, 'id="img_type" name="img_type_id"', '一级分类');
+        
+        
+        $this->smarty->assign('search_arr', $search_arr);
+        $this->smarty->assign('img_type_list', $img_type_list);
+        $this->smarty->assign('img_title', $img_title);
+        $this->smarty->assign('list_data', $list_data);
+        $this->smarty->assign('pages', $pages);
+        $this->smarty->assign('show_dialog', 'true');
+        $this->smarty->display('product/product_list.html');
     }
 
     /**
-     * 对外提供的接口
+     * 测试接口
      * 
      */ 
-    function get_img_list(){
+    function get_product_list(){
         $request = $this->request_array;
         $response = $this->response_array;
         
-        $devicetype = $request['devicetype'];
-        $timestamp = $request['timestamp'];
+        $search_arr['is_del']=0;
+        $where_array[]="is_del=0";
+        
+        if(is_array($where_array) and count($where_array)>0){
+        	$where=' WHERE '.join(' AND ',$where_array);
+        }
+        
+        $pagesize = 10;
+        $page = 1;
+        $offset = $pagesize*($page-1);
+        $limit = "LIMIT $offset,$pagesize";
         
         $result = array();
-        if (isset($devicetype) && $devicetype == 'ios') {
-	        $this->get_img_list_by_ios($response, $timestamp);
-        } else {
-	        $this->get_img_list_by_android($response, $timestamp);
-        }
+        $product_num = $this->product_model->get_count_by_parm($where);
+        $pages = pages($product_num, $page, $pagesize);
+        $list_data = $this->product_model->get_data_by_parm($where, $limit);
+        
+        $result = $list_data;
+        
+        $response['errno'] = 0;
+        $response['data']['content'] = $result;
 
         $this->renderJson($response['errno'], $response['data']);
 
-    }
-    
-    
-    private function get_img_list_by_ios(&$response, $timestamp){
-    	$img_timestamp = $this->redis->get($this->key_img);
-    	
-    	$result = array();
-    	if (isset($timestamp) && $timestamp > $img_timestamp) {
-    		$response['errno'] = 901;
-    		$response['data']['content'] = $result;
-    	} else {
-	    	$where_array[]="is_deleted=1";
-	    
-	    	if(is_array($where_array) and count($where_array)>0){
-	    		$where=' WHERE '.join(' AND ',$where_array);
-	    	}
-	    
-	    	$row_num=$this->imgmgr_model->get_count_by_parm($where);
-	    	$limit="LIMIT $row_num";
-	    	$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
-	    
-	    	//$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
-	    	$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
-	    	
-    		foreach($list_data as $img_data) {
-    			$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-    			if ($img_data['img_type'] == 1) {
-    				if (!isset($sketch_array_tmp[$img_data['cell']])) {
-    					$sketch_array_tmp[$img_data['cell']][] = $tmp_array;
-    				} else {
-    					array_push($sketch_array_tmp[$img_data['cell']], $tmp_array);
-    				}
-    				$sketch_array = array_values($sketch_array_tmp);
-    			} elseif ($img_data['img_type'] == 2) {
-    				if (!isset($color_painting_array_tmp[$img_data['cell']])) {
-    					$color_painting_array_tmp[$img_data['cell']][] = $tmp_array;
-    				} else {
-    					array_push($color_painting_array_tmp[$img_data['cell']], $tmp_array);
-    				}
-    				$color_painting_array = array_values($color_painting_array_tmp);
-    			} elseif ($img_data['img_type'] == 3) {
-    				if (!isset($quick_sketch_array_tmp[$img_data['cell']])) {
-    					$quick_sketch_array_tmp[$img_data['cell']][] = $tmp_array;
-    				} else {
-    					array_push($quick_sketch_array_tmp[$img_data['cell']], $tmp_array);
-    				}
-    				$quick_sketch_array = array_values($quick_sketch_array_tmp);
-    			} elseif ($img_data['img_type'] == 4) {
-    				if (!isset($design_array_tmp[$img_data['cell']])) {
-    					$design_array_tmp[$img_data['cell']][] = $tmp_array;
-    				} else {
-    					array_push($design_array_tmp[$img_data['cell']], $tmp_array);
-    				}
-    				$design_array = array_values($design_array_tmp);
-    			} elseif ($img_data['img_type'] == 5) {
-    				if (!isset($creation_array_tmp[$img_data['cell']])) {
-    					$creation_array_tmp[$img_data['cell']][] = $tmp_array;
-    				} else {
-    					array_push($creation_array_tmp[$img_data['cell']], $tmp_array);
-    				}
-    				$creation_array = array_values($creation_array_tmp);
-    			} elseif ($img_data['img_type'] == 6) {
-    				if (!isset($photo_array_tmp[$img_data['cell']])) {
-    					$photo_array_tmp[$img_data['cell']][] = $tmp_array;
-    				} else {
-    					array_push($photo_array_tmp[$img_data['cell']], $tmp_array);
-    				}
-    				$photo_array = array_values($photo_array_tmp);
-    			}
-    		}
-	    
-	    	if(count($sketch_array) > 0) {
-	    		$result['sketch'] = $sketch_array;
-	    	}
-	    	if(count($color_painting_array) > 0) {
-	    		$result['color_painting'] = $color_painting_array;
-	    	}
-	    	if(count($quick_sketch_array) > 0) {
-	    		$result['quick_sketch'] = $quick_sketch_array;
-	    	}
-	    	if(count($design_array) > 0) {
-	    		$result['design'] = $design_array;
-	    	}
-	    	if(count($creation_array) > 0) {
-	    		$result['creation'] = $creation_array;
-	    	}
-	    	if(count($photo_array) > 0) {
-	    		$result['photo'] = $photo_array;
-	    	}
-	    	
-	    	$response['errno'] = 0;
-	    	$response['data']['content'] = $result;
-    	}
-    
-    }
-    
-    
-    private function get_img_list_by_android(&$response, $timestamp){
-    	$img_timestamp = $this->redis->get($this->key_img);
-    	
-    	$result = array();
-    	
-    	if (isset($timestamp) && $timestamp > $img_timestamp) {
-    		$response['errno'] = 901;
-    		$response['data']['content'] = $result;
-    	} else {
-	    	$where_array[]="is_deleted=1";
-	    
-	    	if(is_array($where_array) and count($where_array)>0){
-	    		$where=' WHERE '.join(' AND ',$where_array);
-	    	}
-	    
-	    	$row_num=$this->imgmgr_model->get_count_by_parm($where);
-	    	$limit="LIMIT $row_num";
-	    	$list_data=$this->imgmgr_model->get_data_by_parm($where,$limit);
-	    
-	    	//$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
-	    	$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
-	    	
-    		foreach($list_data as $img_data) {
-	        	$tmp_array = array('name' => $img_data['title'], 'img' => $img_data['img_url']);
-	            if ($img_data['img_type'] == 1) {
-	                $sketch_array[] = $tmp_array;
-	            } elseif ($img_data['img_type'] == 2) {
-	                $color_painting_array[] = $tmp_array;
-	            } elseif ($img_data['img_type'] == 3) {
-	                $quick_sketch_array[] = $tmp_array;
-	            } elseif ($img_data['img_type'] == 4) {
-	                $design_array[] = $tmp_array;
-	            } elseif ($img_data['img_type'] == 5) {
-	                $creation_array[] = $tmp_array;
-	            } elseif ($img_data['img_type'] == 6) {
-	                $photo_array[] = $tmp_array;
-	            }
-	        }
-	    
-	    	if(count($sketch_array) > 0) {
-	    		$result['sketch'] = $sketch_array;
-	    	}
-	    	if(count($color_painting_array) > 0) {
-	    		$result['color_painting'] = $color_painting_array;
-	    	}
-	    	if(count($quick_sketch_array) > 0) {
-	    		$result['quick_sketch'] = $quick_sketch_array;
-	    	}
-	    	if(count($design_array) > 0) {
-	    		$result['design'] = $design_array;
-	    	}
-	    	if(count($creation_array) > 0) {
-	    		$result['creation'] = $creation_array;
-	    	}
-	    	if(count($photo_array) > 0) {
-	    		$result['photo'] = $photo_array;
-	    	}
-	    	
-	    	$response['errno'] = 0;
-	    	$response['data']['content'] = $result;
-    	}
-    
     }
     
     
