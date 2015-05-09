@@ -56,9 +56,10 @@ class Product_model extends CI_Model {
     			
     			$index = 1;
     			foreach($json_data_array as $img_data) {
+    				$img_url = isset($img_data['big']['url']) ? $img_data['big']['url'] : '';
     				$tmp_item_mis = array(
 			    					'img_index' => 'pc'.$index,
-			    					'img_url'   => $img_data['big']['url'],
+			    					'img_url'   => $img_url,
     							);
     				$tmp_item['img_list'][] = $tmp_item_mis;
     				$index++;
