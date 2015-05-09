@@ -49,6 +49,22 @@ class Product_model extends CI_Model {
     		}
     		$tmp_item['f_catalog'] = $item['f_catalog'];
     		$tmp_item['s_catalog'] = $item['s_catalog'];
+    		
+    		$tmp_item['img_list'] = array();
+    		if (isset($item['img'])) {
+    			$json_data_array = json_decode($item['img'], true);
+    			
+    			$index = 1;
+    			foreach($json_data_array as $img_data) {
+    				$tmp_item_mis = array(
+			    					'img_index' => 'pc'.$index,
+			    					'img_url'   => $img_data['big']['url'],
+    							);
+    				$tmp_item['img_list'][] = $tmp_item_mis;
+    				$index++;
+    			}
+    		}
+    		
     		$tmp_item['img'] = $item['img'];
     		$tmp_item['content'] = $item['content'];
     		$tmp_item['tags'] = $item['tags'];
@@ -77,16 +93,17 @@ class Product_model extends CI_Model {
      * @return int $data 返回数据内容
      */
     public function get_info_by_tid($tid){
-        $query_data="SELECT `tid`, `uid`, `type`, `f_catalog`, `s_catalog`, `img`, `content`, `tags`, `ctime`, `is_del`, `dtime` FROM {$this->table_name} WHERE tid=?";
-        $result_data=$this->dbr->query($query_data,array($id));
-        $row_data=$result_data->row_array();
+        $query_data = "SELECT `tid`, `uid`, `type`, `f_catalog`, `s_catalog`, `img`, `content`, `tags`, `ctime`, `is_del`, `dtime` FROM {$this->table_name} WHERE tid=?";
+        $result_data = $this->dbr->query($query_data, array($tid));
+        $row_data = $result_data->row_array();
         if($row_data['tid']>0){
-            $result=$row_data;
+            $result = $row_data;
         }else{
-            $result='';
+            $result = '';
         }
         return $result;
     }
+
     
     /**
      * 对要闻进行单条推荐或取消推荐
@@ -158,11 +175,12 @@ class Product_model extends CI_Model {
      */
     public function del_info($ids){
         if(is_array($ids) && count($ids)){
-            $id_str=join("','",$ids);
+            $id_str = join("','",$ids);
         }else{
-            $id_str=$ids;
+            $id_str = $ids;
         }
-        $del_rule="UPDATE ci_mis_imgmgr SET is_deleted = 0 WHERE id IN('{$id_str}')";
+        $dtime = time();
+        $del_rule="UPDATE ci_tweet SET is_del = 1, dtime = '{$dtime}' WHERE tid IN('{$id_str}')";
         if($this->db->query($del_rule)){
             return true;
         }else{
@@ -215,9 +233,9 @@ class Product_model extends CI_Model {
      * @param int $id 被修改的id编号
      * @return bool 是否执行成功 
      */
-    public function update_info($info,$id){
-        $where="id={$id}";
-        $update_rule=$this->db->update_string('ci_mis_imgmgr', $info, $where); 
+    public function update_info($info, $tid){
+        $where="tid={$tid}";
+        $update_rule=$this->db->update_string('ci_tweet', $info, $where); 
         if($this->db->query($update_rule)){
             return true;
         }else{

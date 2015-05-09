@@ -13,6 +13,7 @@ class product extends MY_Controller{
         $this->load->library('redis');
         $this->key_img = 'mis_img_timestamp';
         $this->load->model('product/product_model', 'product_model');
+        $this->load->model('imgmgr/imgmgr_model', 'imgmgr_model');
     }
     
     //默认调用控制器
@@ -39,12 +40,12 @@ class product extends MY_Controller{
             			'3'=>'type=0',
             		),
             	'img_type'=>array(
-            			'1'=>'f_catalog=1',
-            			'2'=>'f_catalog=2',
-            			'3'=>'f_catalog=3',
-            			'4'=>'f_catalog=4',
-            			'5'=>'f_catalog=5',
-            			'6'=>'f_catalog=6',
+            			'1'=>"f_catalog='".$this->mis_imgmgr['imgmgr_level_1']['1']."'",
+            			'2'=>"f_catalog='".$this->mis_imgmgr['imgmgr_level_1']['2']."'",
+            			'3'=>"f_catalog='".$this->mis_imgmgr['imgmgr_level_1']['3']."'",
+            			'4'=>"f_catalog='".$this->mis_imgmgr['imgmgr_level_1']['4']."'",
+            			'5'=>"f_catalog='".$this->mis_imgmgr['imgmgr_level_1']['5']."'",
+            			'6'=>"f_catalog='".$this->mis_imgmgr['imgmgr_level_1']['6']."'",
             		),
             );
             
@@ -142,29 +143,6 @@ class product extends MY_Controller{
     }
     
     
-    /**
-     * ajax调用的函数
-     *
-     */
-    function get_img_title_list_ajax(){
-    	$request = $this->request_array;
-    	$response = $this->response_array;
-    
-    	$img_type = $request['img_type'];
-    
-    	$result = array();
-    	if (isset($this->mis_imgmgr['imgmgr_level_2'][$img_type])) {
-    		$result = $this->mis_imgmgr['imgmgr_level_2'][$img_type];
-    	}
-    	
-    	$response['errno'] = 0;
-    	$response['data']['content'] = $result;
-    	
-    	$this->renderJson($response['errno'], $response['data']);
-    
-    }
-
-
     //对要闻进行单条推荐
     function sug_one_ajax(){
         if(intval($_GET['id'])>0) {
@@ -230,13 +208,11 @@ class product extends MY_Controller{
         }
     }
 
-    //对要闻进行单条删除属性变更
-    function del_one_ajax(){
+    //作品删除操作
+    function del_one_ajax() {
         if(intval($_GET['id'])>0) {
-        	// 更新时间戳
-        	$this->redis->set($this->key_img, time());
-            $id=$this->input->get('id');
-            if($this->imgmgr_model->del_info($id)){
+            $id = $this->input->get('id');
+            if($this->product_model->del_info($id)){
 				echo 1;
             }else{
 				echo 0;
@@ -298,94 +274,115 @@ class product extends MY_Controller{
     }
     
     
-    //添加图片
-    function imgmgr_add(){
-        $this->load->library('form');
-        //$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
-        $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
-        $img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
-
-        $this->smarty->assign('img_type_sel',$img_type_sel);
-        $this->smarty->assign('img_title_sel',$img_title_sel);
-        $this->smarty->assign('random_version', rand(100,999));
-        $this->smarty->assign('show_dialog','true');
-        $this->smarty->assign('show_validator','true');
-        $this->smarty->display('imgmgr/imgmgr_add.html');
+    /**
+     * 测试接口
+     */
+    function get_model_data() {
+    	$tid = 13627;
+    	$info = $this->product_model->get_info_by_tid($tid);
+    	$info = $this->format_one($info);
+    	
+    	
+    	$imgmgr_id = 5;
+    	$info_imgmgr = $this->imgmgr_model->get_info_by_id($imgmgr_id);
+    	
+    	$result['product'] = $info;
+    	$result['imgmgr'] = $info_imgmgr;
+    	$response['errno'] = 0;
+    	$response['data']['content'] = $result;
+    	
+    	$this->renderJson($response['errno'], $response['data']);
     }
     
-    //执行添加图片操作
-    function imgmgr_add_do(){
-    	$this->redis->set($this->key_img, time());
-        $info = $this->input->post('info');
-        $pic  = $this->input->post('pic');
-        log_message('debug', '*****************[test]******************img_add_do');
-        log_message('debug', $pic[0]);
-        //判断数据有效性
-		/*
-		$this->load->library('oss');
-		if ($_FILES['img']['name'] != "") {
-			$pic_ret = $this->oss->upload('img', array('dir'=>'tweet'));
-			if (isset($pic_ret['error_code']) && intval($pic_ret['error_code'])) {
-				show_tips($pic_ret['error_code']. ":" . $pic_ret['error']);
-			}	
-			$info['img'] = $pic_ret;
-		}
-		 */
-
-        //$info['img_url'] = 'http://www.qqw21.com/article/UploadPic/2012-12/2012123185857829.jpg';
-        $info['img_url'] = $pic[0];
-
-        if( $info['listorder']!='' && $info['title'] != ''){
-			//$info['img'] = !empty($pic) ? json_encode($pic) : '';
-            if($this->imgmgr_model->create_info($info)){
-                show_tips('操作成功','','','add');
-            }else{
-                show_tips('操作异常');
-            }
-        }else{
-            show_tips('数据不完整，请检测');
-        }
+    /**
+     * 格式化函数
+     * ＠param array $info
+     * @return array $format_info
+     */
+    private function format_one($info) {
+    	$format_info = array();
+    	$format_info['tid'] = $info['tid'];
+    	$format_info['uid'] = $info['uid'];
+    	$format_info['type'] = $info['type'];
+    	
+    	$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
+    	foreach ($img_type_list as $key=>$value) {
+    		if ($value == $info['f_catalog']) {
+    			$format_info['img_type'] = $key;
+    			break;
+    		}
+    	}
+    	$format_info['title'] = $info['s_catalog'];
+    	
+    	$radio_data = array();
+    	$tag_list = explode(',', $info['tags']);
+    	if (in_array("男", $tag_list)) {
+    		$radio_data['sex'] = "男";
+    	} elseif (in_array("女", $tag_list)) {
+    		$radio_data['sex'] = "女";
+    	}
+    	if (in_array("青年", $tag_list)) {
+    		$radio_data['age'] = "青年";
+    	} elseif (in_array("中年", $tag_list)) {
+    		$radio_data['age'] = "中年";
+    	} elseif (in_array("老年", $tag_list)) {
+    		$radio_data['age'] = "老年";
+    	}
+    	if (in_array("正面", $tag_list)) {
+    		$radio_data['angle'] = "正面";
+    	} elseif (in_array("侧面", $tag_list)) {
+    		$radio_data['angle'] = "侧面";
+    	} elseif (in_array("1/3", $tag_list)) {
+    		$radio_data['angle'] = "1/3";
+    	} elseif (in_array("3/4", $tag_list)) {
+    		$radio_data['angle'] = "3/4";
+    	}
+    	
+    	$format_info['radio_data'] = $radio_data;
+    	
+    	
+    	return $format_info;
     }
     
-    //修改要闻
-    function imgmgr_edit(){
+    
+    //修改作品分类
+    function product_edit(){
         $this->load->library('form');
-        $imgmgr_id = $this->input->get('id');
-        $info = $this->imgmgr_model->get_info_by_id($imgmgr_id);
+        $tid = $this->input->get('id');
+        $info = $this->product_model->get_info_by_tid($tid);
+        $info = $this->format_one($info);
 		//$info['img'] = !empty($info['img']) ? json_decode($info['img']) : array();
 
         //$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
         $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
-        $img_type_sel=Form::select($img_type_list,$info['img_type'],'id="img_type" name="info[img_type]"','请选择');
+        $img_type_sel=Form::select($img_type_list, $info['img_type'], 'id="img_type" name="info[img_type]"', '一级分类');
         $this->smarty->assign('info',$info);
         $this->smarty->assign('img_type_sel',$img_type_sel);
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
         $this->smarty->assign('show_validator','true');
-        $this->smarty->display('imgmgr/imgmgr_edit.html');
+        $this->smarty->display('product/product_edit.html');
     }
     
-    //执行修改要闻操作
-    function imgmgr_edit_do(){
+    //执行修改作品操作
+    function product_edit_do(){
     	$this->redis->set($this->key_img, time());
-        $id = $this->input->post('id');
+        $tid = $this->input->post('tid');
+        $sex = $this->input->post('sex');
+        $age = $this->input->post('age');
+        $angle = $this->input->post('angle');
         $info = $this->input->post('info');
-		$this->load->library('oss');
-		$pic = $this->input->post('pic');
-		/*
-		if ($_FILES['img']['name'] != "") {
-			$pic_ret = $this->oss->upload('img', array('dir'=>'tweet'));
-			if (isset($pic_ret['error_code']) && intval($pic_ret['error_code'])) {
-				show_tips($pic_ret['error_code']. ":" . $pic_ret['error']);
-			}	
-			$info['img'] = $pic_ret;
-		}
-		 */
-        $info['img_url'] = $pic[0];
-        if($info['listorder'] != '' && $info['title'] != '') {
-			//$info['img'] = !empty($pic) ? json_encode($pic) : '';
-            if($this->imgmgr_model->update_info($info, $id)){
+        
+        $new_info['f_catalog'] = $this->mis_imgmgr['imgmgr_level_1'][$info['img_type']];
+        $new_info['s_catalog'] = $info['title'];
+        $new_info['type'] = $info['type'];
+        
+        $tag_list = array($sex, $age, $angle);
+        $new_info['tags'] = implode(',', $tag_list);
+        
+        if($new_info['f_catalog'] != '' && $new_info['s_catalog'] != '') {
+            if($this->product_model->update_info($new_info, $tid)){
                 show_tips('操作成功','','','edit');
             }else{
                 show_tips('操作异常，请检测');
@@ -397,8 +394,8 @@ class product extends MY_Controller{
     
     
     //单条删除要闻
-    function tweet_del_one_ajax(){
-        $tweet_id=intval($this->input->get('id'));
+    function tweet_del_one_ajax() {
+        $tweet_id = intval($this->input->get('id'));
         $ret=0;
         if($tweet_id>0){
             if($this->tweet_model->del_info($tweet_id)){

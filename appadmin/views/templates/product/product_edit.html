@@ -13,45 +13,14 @@
 		$("#img_type").formValidator({onshow:"请选择图片类型",onfocus:"图片类型不能为空",empty:false}).inputValidator({min:1,onerror:"图片类型不能为空"});
 		$("#img_title").formValidator({onshow:"请选择图片二级分类",onfocus:"图片二级分类不能为空",empty:false}).inputValidator({min:1,onerror:"图片二级分类不能为空"});
 	})
-	$(function() {
-        $('#img').uploadify({
-            //'formData'     : {
-                //'room_id' : '<{$room_id}>',
-            //},
-            'fileObjName':'pic',
-            'debug'    : false,
-            'fileTypeExts':'*.jpg;*.png;*.gif',
-            'fileSizeLimit':300, 
-            'sizeLimit':300, 
-            'width':'75',//选择文件按钮的宽度
-            'height':'23',//选择文件按钮的高度
-            'buttonText':'上传图片',
-            'swf'      : '<{$sys_config['exten_pub_path']}>images/uploadify/uploadify.swf',
-            'uploader' : '/common/upload/uploadify',
-            onUploadError:function(file,errorCode,errorMsg){
-                alert('上传错误：错误代码：'+obj2string(errorCode)+'错误消息：'+obj2string(errorMsg));
-            },
-			onUploadError:function(file, errorCode, errorMsg, errorString){
-				alert('The file ' + file.name + ' could not be uploaded: ' + errorString);
-			},
-            onUploadSuccess:function(file,r,response){
-				eval("var obj="+r);
-                console.log(obj.data.pic);
-				if (response && obj.ret==1) {
-                $("#fsUploadProgress").append('<li><input type="checkbox" name="pic[]" value="'+obj.data.pic+'" checked><img  width=90 src="'+obj.data.pic+'"/></li>');  
-				} else {
-					alert(obj.msg);
-				}
-            }
-        });
-    });
     
     $(document).ready(function() {
 		
 		$("#img_type").change(function() {
 		 	var img_type = $("#img_type").val();
+		 	console.log(img_type);
 			var url = "<{site_url url='/imgmgr/imgmgr/get_img_title_list_ajax/'}>";
-			var data = {'img_type':img_type}
+			var data = {'img_type':img_type};
 		    jQuery.ajax({
 				type: 'GET',
 				url: url,
@@ -68,12 +37,11 @@
 		
 		// 服务器类型发生改变时触发此函数
 		function imgTypeOnSuccess(data) {
+			console.log(data);
 			var title = "<{$info['title']}>";
 			var img_title_json = data["data"]["content"];
-			$("#img_title").html("<option value='-1'>请选择</option>");
+			$("#img_title").html("<option value='-1'>二级分类</option>");
 			for(var i in img_title_json) {
-				console.log(i);
-				console.log(img_title_json[i]);
 				var t = $("<option></option>");
 				t.html(img_title_json[i]);
 				//t.val(i);
@@ -94,10 +62,10 @@
 
 <div class="pad_10">
 	<div class="common-form">
-		<form name="myform" action="<{site_url url='/imgmgr/imgmgr/imgmgr_edit_do/'}>" enctype="multipart/form-data"  method="post" id="myform">
+		<form name="myform" action="<{site_url url='/product/product/product_edit_do/'}>" enctype="multipart/form-data"  method="post" id="myform">
 			<table width="100%" class="table_form contentWrap">
 				<tr>
-					<td>图片类型</td>
+					<td>图片一级分类</td>
 					<td>
 					    <{$img_type_sel}>
 					</td>
@@ -110,34 +78,39 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="80">cell分组</td>
-					<td><input type="text" name="info[cell]"  class="input-text wid300" id="cell" value="<{$info['cell']}>"></td>
-				</tr>
-				<tr>
-					<td width="80">排序字段</td>
-					<td><input type="text" name="info[listorder]"  class="input-text wid300" id="listorder" value="<{$info['listorder']}>"></td>
-				</tr>
-				<tr>
-					<td width="80">上传图片</td>
-					<td><input type="file" name="img" id="img"></td>
-				</tr>
-				<tr>
-					<td width="80">图片</td>
+					<td width="80">是否素材</td>
 					<td>
-					<div class="bk10"></div>
-					<fieldset class="blue pad-10" id="swfupload">
-						<legend>列表</legend>
-						<ul class="attachment-list"  id="fsUploadProgress">    
-					    <{if $info['img_url']}>
-					    <li><input type="checkbox" name="pic[]" value="<{$info['img_url']}>" checked><img  width=90 src="<{$info['img_url']}>"/></li>
-					    <{/if}>
-						</ul>
-					</fieldset>
+				    	<input type="radio" name="info[type]" value="1" <{if $info['type'] == '1'}>checked<{/if}> />&nbsp;是 &nbsp;&nbsp;
+				    	<input type="radio" name="info[type]" value="0" <{if $info['type'] == '0'}>checked<{/if}> />&nbsp;否
+					</td>
+				</tr>
+				<tr>
+					<td width="80">性别</td>
+					<td>
+				    	<input type="radio" name="sex" value="男" <{if $info['radio_data']['sex'] == '男'}>checked<{/if}> />&nbsp;男 &nbsp;&nbsp;
+				    	<input type="radio" name="sex" value="女" <{if $info['radio_data']['sex'] == '女'}>checked<{/if}> />&nbsp;女
+					</td>
+				</tr>
+				<tr>
+					<td width="80">年龄</td>
+					<td>
+					    <input type="radio" name="age" value="青年" <{if $info['radio_data']['age'] == '青年'}>checked<{/if}> />&nbsp;青年 &nbsp;&nbsp;
+					    <input type="radio" name="age" value="中年" <{if $info['radio_data']['age'] == '中年'}>checked<{/if}> />&nbsp;中年 &nbsp;&nbsp;
+					    <input type="radio" name="age" value="老年" <{if $info['radio_data']['age'] == '老年'}>checked<{/if}> />&nbsp;老年
+					</td>
+				</tr>
+				<tr>
+					<td width="80">角度</td>
+					<td>
+					    <input type="radio" name="angle" value="正面" <{if $info['radio_data']['angle'] == '正面'}>checked<{/if}> />&nbsp;正面 &nbsp;&nbsp;
+					    <input type="radio" name="angle" value="侧面" <{if $info['radio_data']['angle'] == '侧面'}>checked<{/if}> />&nbsp;侧面 &nbsp;&nbsp;
+					    <input type="radio" name="angle" value="1/3" <{if $info['radio_data']['angle'] == '1/3'}>checked<{/if}> />&nbsp;1/3 &nbsp;&nbsp;
+					    <input type="radio" name="angle" value="3/4" <{if $info['radio_data']['angle'] == '3/4'}>checked<{/if}> />&nbsp;3/4
 					</td>
 				</tr>
 			</table>
 		    <div class="bk15"></div>
-		    <input type="hidden" value="<{$info['id']}>" name="id">
+		    <input type="hidden" value="<{$info['tid']}>" name="tid">
 		    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
 		</form>
 	</div>

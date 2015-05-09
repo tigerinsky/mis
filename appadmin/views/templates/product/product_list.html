@@ -1,7 +1,7 @@
 <{include file="../common/header.html"}>
 <div class="subnav">
     <div class="content-menu ib-a blue line-x">
-    <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/imgmgr/imgmgr/imgmgr_add/'}>?', title:'添加二级分类图片', width:'800', height:'600', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>添加二级分类图片</em></a> <a href="<{site_url url='/imgmgr/imgmgr/index/'}>" class="on"><em>二级分类图片列表</em></a></div>
+    <a href="<{site_url url='/product/product/index/'}>" class="on"><em>作品列表</em></a></div>
 </div>
 <style type="text/css"> 
 	html{_overflow-y:scroll}
@@ -43,7 +43,7 @@
             <th width="60">一级分类</th>
             <th width="60">二级分类</th>
             <th width="120">详情</th>
-            <th width="120">属性</th>
+            <th width="120">标签</th>
             <th width="40">是否为素材</th>
             <th width="80">发布时间</th>
             <th width="100">管理操作</th>
@@ -58,7 +58,11 @@
             <td align="center"><{$row['uid']}></td>
             <td align="center"><{$row['f_catalog']}></td>
             <td align="center"><{$row['s_catalog']}></td>
-            <td align="center"><{$row['tags']}></td>
+            <td align="center">
+            	<{foreach from=$row.img_list item=row_item}>
+            		<a target="_blank" href="<{$row_item.img_url}>" ><{$row_item.img_index}></a>
+            	<{/foreach}>
+            </td>
             <td align="center"><{$row['tags']}></td>
 			<td align="center"><{$row['type']}></td>
             <td align="center"><{$row['ctime']}></td>
@@ -118,7 +122,7 @@ $(document).ready(function() {
 		var title = "<{$img_title}>";
 		
 		var img_title_json = data["data"]["content"];
-		$("#img_title").html("<option value='-1'>二级分类</option>");
+		$("#img_title").html("<option value=''>二级分类</option>");
 		for(var i in img_title_json) {
 			var t = $("<option></option>");
 			t.html(img_title_json[i]);
@@ -154,7 +158,7 @@ function change_more_clear_del(){
 
 function edit(id, img_type) {
 	window.top.art.dialog({id:'edit'}).close();
-	window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/imgmgr/imgmgr/imgmgr_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+	window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/product/product/product_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
 }
 function sug_one(obj,aid) {
 	window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'}, 
@@ -177,7 +181,7 @@ function sug_one_cancel(obj,aid) {
 function del_one(obj,aid) {
     window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'sug_one'}, 
     function(){
-    $.get('<{site_url url='/imgmgr/imgmgr/del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+    $.get('<{site_url url='/product/product/del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
                 if(data == 1) $(obj).parent().parent().fadeOut("slow");
             })
          },
