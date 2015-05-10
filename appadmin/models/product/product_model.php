@@ -54,6 +54,9 @@ class Product_model extends CI_Model {
     		if (isset($item['img'])) {
     			try {
 	    			$json_data_array = json_decode($item['img'], true);
+	    			if (!is_array($json_data_array)) {
+	    				$json_data_array = array();
+	    			}
 	    			$index = 1;
 	    			foreach($json_data_array as $img_data) {
 	    				$img_url = isset($img_data['n']['url']) ? $img_data['n']['url'] : '';
