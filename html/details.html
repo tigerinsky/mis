@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="apple-touch-icon" sizes="114x114" href="" />
+    <link rel="apple-touch-startup-image" href="" />
+    <title></title>
+    <style type="text/css">
+        *{margin:0;padding:0;list-style-type:none;}
+        a,img{border:0;}
+        body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
+        /* gallery */
+        #pageContent h2{font-size:14px;margin:40px 0 0 0;height:28px;line-height:28px;background:#eee;border:solid 1px #ddd;padding:0 10px;color:#3366cc;}
+        #pageContent h5{font-size:12px;}
+        .anchor{background:#f8f8f8;padding:10px 20px;border-width:1px;border-style:solid;border-color:#eeeeee #dddddd #dddddd #dddddd;}
+        .anchor ul{padding:0px 15px 0 16px;}
+        .anchor ul li{list-style:circle inside;padding:2px 0;}
+        .anchor p{padding:5px 15px 15px 15px;}
+        /*content*/
+        #pics {height: 720px; overflow: hidden}
+        #pics .pic{ overflow: hidden; margin-bottom: 20px; height: 700px;}
+        #pics .pic img{width: 100%; height: 700px; overflow: hidden}
+        .mask{position: relative;
+            width: 100%;
+            height: 80px;
+            top: -14%;
+            background-image: url("img/mask.png");
+            opacity: 0.6;
+            line-height: 40px;
+            color: #FFF;}
+        .mask p {padding:  0 30px;}
+        .pic_list {margin-bottom: 20px;}
+        .pic_list ul {width: 100%; overflow: hidden;}
+        .pic_list ul li{float:left; margin: 0 2px; width: 23%; height: 140px; overflow: hidden; border: 1px #ccc solid;}
+        .pic_list ul li img{width: 100%; height: 100%;}
+        .pic_tag {color: #c6c6c6; font-size: 23px; background:url(img/icon_tag.png) no-repeat left; padding-left: 40px;margin-bottom: 20px;}
+        .line{border-bottom: 1px solid #e3e3e3; margin-bottom: 30px;}
+        #brief{padding: 0 30px 30px 20px; border-bottom:  1px solid #e3e3e3; overflow: hidden;}
+        #brief .head{ padding-right: 30px; float: left; width: 18%;}
+        #brief .descrion{float: left; padding-top: 10px; width: 71%}
+        #brief .descrion h1{font-size: 42px;color: #2b2b2b; padding-bottom: 20px;}
+        #brief .descrion p {font-size: 24px; color: #898989; line-height: 30px;}
+        #comment {background: #f8f8f8;}
+        #comment ul li{ padding:20px 30px 20px 30px; overflow:hidden; clear: both; border-bottom: 1px #e3e3e3 solid; }
+        #comment ul li span.head{float:left; width: 16%;margin-right: 30px;}
+        #comment ul li span.comment_content{float: left; width: 74%; font-size: 24px; line-height: 30px;}
+        #comment ul li span.comment_content h2{display: inline; color: #2b2b2b; font-size: 24px;}
+        #comment ul li span.comment_content p{display: inline; color: #898989;}
+    </style>
+    <link type="text/css" href="css/thickbox.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/thickbox.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".pic_list li img").click(function(){
+                $(".pic img").attr("src",$(this).attr("src"));
+                $(".pic a").attr("href",$(this).attr("src"));
+                $(".mask p").html($(this).parent().attr("data-src"));
+            })
+        });
+    </script>
+</head>
+<body>
+<div id="pics">
+    <div class="pic">
+        <a href="img/51.png" title="test test" class="thickbox"><img alt="check test" src="img/51.png" /></a>
+    </div>
+        <div class="mask"><p>昨晚钓的，帐号老是退出，什么情什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况什么情况</p></div>
+    </div>
+    <div class="pic_list">
+        <ul>
+            <li data-src="好图片1好图片1好图片1好图片1好图片1好图片1好图片1好图片1"><img src="img/thumb.jpg" ></li>
+            <li data-src="好图片2好图片2好图片2好图片2好图片2好图片2好图片2好图片2"><img src="img/thumb2.jpg" ></li>
+            <li data-src="好图片2好图片2好图片2好图片2好图片2好图片2好图片3好图片3"><img src="img/thumb3.jpg" ></li>
+            <li data-src="好图片4好图片4好图片4好图片4好图片4好图片4好图片4好图片4"><img src="img/thumb4.jpg" ></li>
+        </ul>
+    </div>
+    <div class="pic_tag">色彩静物 水果 红色调</div>
+    <div class="line"></div>
+</div>
+<div id="brief">
+    <div class="head"><img src="img/loading.gif" > </div>
+    <div class="descrion">
+        <h1>艺众画室</h1><span></span>
+        <p>老师的简介，构图沉稳美观，色彩和谐统一更多《荷花》《鱼》装饰画，点击头像进入图库选择。</p>
+    </div>
+</div>
+<div id="comment">
+    <ul>
+        <li>
+            <span class="head"><img src="img/icon_tag.png" ></span>
+            <span class="comment_content">
+                <h2>湖水般的鹿：</h2>
+                <p>知道春分你一定会放图。</p>
+            </span>
+        </li>
+        <li>
+            <span class="head"><img src="img/icon_tag.png" ></span>
+            <span class="comment_content">
+                <h2>湖水般的鹿：</h2>
+                <p>知道春分你一定会放图。</p>
+            </span>
+        </li>
+        <li>
+            <span class="head"><img src="img/icon_tag.png" ></span>
+            <span class="comment_content">
+                <h2>湖水般的鹿：</h2>
+                <p>知道春分你一定会放图。</p>
+            </span>
+        </li>
+        <li>
+            <span class="head"><img src="img/icon_tag.png" ></span>
+            <span class="comment_content">
+                <h2>湖水般的鹿：</h2>
+                <p>知道春分你一定会放图。</p>
+            </span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
