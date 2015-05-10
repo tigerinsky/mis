@@ -52,17 +52,20 @@ class Product_model extends CI_Model {
     		
     		$tmp_item['img_list'] = array();
     		if (isset($item['img'])) {
-    			$json_data_array = json_decode($item['img'], true);
-    			
-    			$index = 1;
-    			foreach($json_data_array as $img_data) {
-    				$img_url = isset($img_data['n']['url']) ? $img_data['n']['url'] : '';
-    				$tmp_item_mis = array(
-			    					'img_index' => 'pc'.$index,
-			    					'img_url'   => $img_url,
-    							);
-    				$tmp_item['img_list'][] = $tmp_item_mis;
-    				$index++;
+    			try {
+	    			$json_data_array = json_decode($item['img'], true);
+	    			$index = 1;
+	    			foreach($json_data_array as $img_data) {
+	    				$img_url = isset($img_data['n']['url']) ? $img_data['n']['url'] : '';
+	    				$tmp_item_mis = array(
+				    					'img_index' => 'pc'.$index,
+				    					'img_url'   => $img_url,
+	    							);
+	    				$tmp_item['img_list'][] = $tmp_item_mis;
+	    				$index++;
+	    			}
+    			} catch (Exception $e) {
+    				echo $e->getMessage(),"\n";
     			}
     		}
     		
