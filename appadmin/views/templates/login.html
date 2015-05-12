@@ -1,30 +1,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	<title>系统管理登录</title>
-	<link type="text/css" rel="stylesheet" href="<{$sys_config['exten_pub_path']}>css/login.css">
-	<script language="JavaScript">
-		<!--
-		if(top!=self)
-			if(self!=top) top.location=self.location;
-		//-->
-	</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>系统管理登录</title>
+<link type="text/css" rel="stylesheet" href="<{$sys_config['exten_pub_path']}>css/login.css">
+<script language="JavaScript">
+<!--
+	if(top!=self)
+	if(self!=top) top.location=self.location;
+//-->
+</script>
 </head>
 
 <body onload="javascript:document.myform.username.focus();">
 <div id="login_bg" class="login_box">
 	<div class="login_iptbox">
-		<form action="<{$sys_config['home_url']}>/user/check_login/" method="post" id="login_box" name="myform">
-			<input name="dosubmit" value="" type="submit" class="login_tj_btn" />
-			<label> 用户名：</label><input name="username" type="text" class="ipt" value="" />
-			<label>密码：</label><input name="password" type="password" class="ipt" value="" />
-			<label>验证码：</label><input name="code" type="text" class="ipt ipt_reg" onfocus="document.getElementById('yzm').style.display='block'" />
-			<div id="yzm" class="yzm"><img id="code_img" src="<{site_url url='checkcode/'}>"/><br /><a href="javascript:document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();void(0);">单击更换验证码</a></div>
-		</form>
-	</div>
-	<div class="cr">版权信息</div>
+   	 <form action="<{$sys_config['home_url']}>/user/chklogin_true/" method="post" id="login_box" name="myform">
+	   	 <input name="dosubmit" value="" type="submit" class="login_tj_btn" />
+	   	 <label> 用户名：</label><input name="username" type="text" class="ipt" value="" />
+	   	 <label>密码：</label><input name="password" type="password" class="ipt" value="" />
+	   	 <!--label>验证码：</label><input name="code" type="text" class="ipt ipt_reg" onfocus="document.getElementById('yzm').style.display='block';document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();" />
+	    <div id="yzm" class="yzm"><img id="code_img" src="<{site_url url='checkcode/'}>" onclick="javascript:document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();void(0);"/><br /><a href="javascript:document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();void(0);">单击更换验证码</a></div-->
+     </form>
+    </div>
+    <div class="cr">版权信息</div>
 </div>
 </body>
 </html>
