@@ -1,30 +1,277 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-<title>系统管理登录</title>
-<link type="text/css" rel="stylesheet" href="<{$sys_config['exten_pub_path']}>css/login.css">
-<script language="JavaScript">
-<!--
-	if(top!=self)
-	if(self!=top) top.location=self.location;
-//-->
-</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>系统管理登录</title>
+	<style>
+		* {
+			word-break: break-all;
+			font-family: Verdana, Arial
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			font-size: 12px;
+			font-family: "宋体,Arial,微软雅黑";
+			min-width: 1000px;
+		}
+
+		div,ul,ol,li,h1,h2,h3,h4,h5,h6,form,button,p,th,td,dl,textarea,input,select,button,table {
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			overflow-y: scroll;
+		}
+
+		li {
+			list-style-type: none;
+		}
+
+		a {
+			text-decoration: none;
+			outline: none;
+		}
+
+		a:hover {
+			text-decoration: none;
+		}
+
+		img,a img,textarea,button,table {
+			border: none;
+		}
+
+		input,img,select,button,table {
+			vertical-align: middle;
+		}
+
+		input,button,select,textarea {
+			outline: none;
+		}
+
+		input {
+			border: 0;
+		}
+
+		textarea {
+			resize: none;
+		}
+
+		h1,h2,h3,h4,h5,h6 {
+			font-weight: normal;
+		}
+
+		/*basic*/
+		.f_l {
+			float: left;
+		}
+
+		.f_r {
+			float: right;
+		}
+
+		.c_b {
+			clear: both;
+		}
+
+		/*login*/
+		.login_bg {
+			background: url(/public/images/cms_login_bg.jpg) no-repeat center top #055f98;
+		}
+
+		.login {
+			width: 920px;
+			margin: 0 auto;
+			position: relative;
+			top: 575px;
+		}
+
+		.login .name {
+			background: url(/public/images/cms_button_images.png) no-repeat 0 0;
+			width: 280px;
+			height: 46px;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+
+		.login .name input {
+			width: 220px;
+			height: 30px;
+			color: #033655;
+			font: 16px "微软雅黑";
+			margin: 8px 10px 8px 50px;
+			line-height: 30px;
+			background: #086ea0;
+		}
+
+		.login .name input:-webkit-autofill {background-color： #086ea0；
+
+		}
+
+		.login .password {
+			background: url(/public/images/cms_button_images.png) no-repeat 0 -50px;
+			width: 280px;
+			height: 46px;
+			position: absolute;
+			top: 0;
+			left: 300px;
+		}
+
+		.login .password input {
+			width: 220px;
+			height: 30px;
+			color: #033655;
+			font: 16px "微软雅黑";
+			margin: 8px 10px 8px 50px;
+			line-height: 30px;
+			background: #086ea0;
+		}
+
+		.login .captcha {
+			position: absolute;
+			top: 0;
+			left: 600px;
+		}
+
+		.login .captcha span {
+			background: url(/public/images/images/cms_button_images.png) no-repeat 0 -100px;
+			width: 108px;
+			height: 46px;
+			float: left;
+			margin-right: 15px;
+		}
+
+		.login .captcha span input {
+			width: 88px;
+			height: 30px;
+			color: #033655;
+			font: 16px "微软雅黑";
+			margin: 8px 10px;
+			line-height: 30px;
+			background: #086ea0;
+		}
+
+		.login .captcha img {
+			width: 90px;
+			height: 38px;
+			margin-top: 4px;
+			float: left;
+		}
+
+		.login .button_login {
+			position: absolute;
+			top: 2px;
+			left: 835px;
+		}
+
+		.login .button_login a {
+			background: url(/public/images/cms_button_images.png) no-repeat -110px -100px;
+			width: 83px;
+			height: 46px;
+			display: block;
+		}
+
+		.login .button_login a:hover {
+			background: url(/public/images/cms_button_images.png) no-repeat -195px -100px;
+			width: 83px;
+			height: 46px;
+			display: block;
+		}
+
+		.login_remind {
+			position: absolute;
+			top: 65px;
+			background: url(/public/images/cms_remind.png) no-repeat 0 0;
+			width: 920px;
+			height: 50px;
+			text-align: center;
+			display: none;
+			font: 14px "宋体";
+			color: #fff;
+			line-height: 50px;
+		}
+	</style>
 </head>
 
-<body onload="javascript:document.myform.username.focus();">
-<div id="login_bg" class="login_box">
-	<div class="login_iptbox">
-   	 <form action="<{$sys_config['home_url']}>/user/chklogin_true/" method="post" id="login_box" name="myform">
-	   	 <input name="dosubmit" value="" type="submit" class="login_tj_btn" />
-	   	 <label> 用户名：</label><input name="username" type="text" class="ipt" value="" />
-	   	 <label>密码：</label><input name="password" type="password" class="ipt" value="" />
-	   	 <!--label>验证码：</label><input name="code" type="text" class="ipt ipt_reg" onfocus="document.getElementById('yzm').style.display='block';document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();" />
-	    <div id="yzm" class="yzm"><img id="code_img" src="<{site_url url='checkcode/'}>" onclick="javascript:document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();void(0);"/><br /><a href="javascript:document.getElementById('code_img').src='<{site_url url='checkcode'}>/'+Math.random();void(0);">单击更换验证码</a></div-->
-     </form>
-    </div>
-    <div class="cr">版权信息</div>
-</div>
+<body class="login_bg" onload="javascript:document.myform.username.focus();">>
+<form action="<{$sys_config['home_url']}>/user/check_login/" method="post" id="login_box" name="myform">
+	<input name="dosubmit" value="" type="submit" class="login_tj_btn" />
+	<input type="hidden" id="appKey" name="appKey" value="906db971-f320-422a-a964-98450277b11b" /> <input type="hidden" id="callbackURL" name="callbackURL"
+																										  value="http://cms.iappk.com:80/main.do"
+		/>
+	<div class="login">
+		<div class="name">
+			<input id="loginName" name="username" type="text" alt="请输入用户名" value="" />
+		</div>
+		<div class="password">
+			<input id="loginPwd" name="password" type="password" alt="请输入密码" value="" />
+		</div>
+		<!--<div class="captcha">-->
+		<!--<span><input id="jcaptcha" name="jcaptcha" type="text" alt="请输入验证码" value="" /></span> <img id="jcaptchaPic" src=""-->
+		<!--onclick="f_initJcaptcha();"-->
+		<!--/>-->
+		<!--<div class="c_b"></div>-->
+		<!--</div>-->
+		<div class="button_login">
+			<a href="#" onclick="f_login();"></a>
+		</div>
+		<div id="remind" class="login_remind" style="display: none;"></div>
+	</div>
+</form>
 </body>
+
+<script type="text/javascript">
+	var v_errorMsg = "";
+
+	AE.ready(function() {
+		f_initJcaptcha();
+
+		if (v_errorMsg != "") {
+			f_showMsg(v_errorMsg);
+		}
+
+		$(window).keydown(function(event) {
+			if (event && event.which == 13) {
+				f_login();
+			}
+		})
+	});
+
+	function f_initJcaptcha() {
+		jq("#jcaptchaPic").attr('src', "jcaptcha.do?no=" + Math.random());
+	}
+
+	function f_showMsg(v_msg) {
+		$("#remind").html(v_msg);
+		$("#remind").show();
+	}
+
+	function f_login() {
+		var v_loginName = $('#loginName').val();
+		if (v_loginName == null || jq.trim(v_loginName) == ''
+				|| v_loginName == '邮箱或用户名') {
+			f_showMsg("请输入账户(可以为邮箱或用户名)");
+			return false;
+		}
+
+		var loginPwd = $('#loginPwd').val();
+		if (loginPwd == null || jq.trim(loginPwd) == '') {
+			f_showMsg("请输入密码");
+			return false;
+		}
+
+		//验证码
+//		var v_jcaptcha = jq('#jcaptcha').val();
+//		if (v_jcaptcha == null || jq.trim(v_jcaptcha) == '') {
+//			f_showMsg("请输入4位验证码");
+//			return false;
+//		}
+
+		document.forms[0].submit();
+	}
+</script>
 </html>
