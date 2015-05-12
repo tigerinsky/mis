@@ -199,7 +199,7 @@
     </style>
 </head>
 
-<body class="login_bg" onload="javascript:document.myform.username.focus();">>
+<body class="login_bg" onload="javascript:document.myform.username.focus();">
 <form action="<{$sys_config['home_url']}>/user/chklogin_true/" method="post" id="login_box" name="myform">
     <input name="dosubmit" value="" type="submit" class="login_tj_btn" />
     <div class="login">
@@ -245,8 +245,9 @@
     //	}
 
     function f_showMsg(v_msg) {
-        $("#remind").html(v_msg);
-        $("#remind").show();
+//        $("#remind").html(v_msg);
+//        $("#remind").show();
+        alert(v_msg);return false;
     }
 
     function f_login() {
