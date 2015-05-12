@@ -210,12 +210,12 @@
 		<div class="password">
 			<input id="loginPwd" name="password" type="password" alt="请输入密码" value="" />
 		</div>
-		<!--<div class="captcha">-->
-		<!--<span><input id="jcaptcha" name="jcaptcha" type="text" alt="请输入验证码" value="" /></span> <img id="jcaptchaPic" src=""-->
-		<!--onclick="f_initJcaptcha();"-->
-		<!--/>-->
-		<!--<div class="c_b"></div>-->
-		<!--</div>-->
+		<div class="captcha">
+		<span><input id="jcaptcha" name="code" type="text" alt="请输入验证码" value="" /></span> <img id="jcaptchaPic" src="<{site_url url='checkcode/'}>"
+		onclick="f_initJcaptcha();"
+		/>
+		<div class="c_b"></div>
+		</div>
 		<div class="button_login">
 			<a href="#" onclick="f_login();"></a>
 		</div>
@@ -242,7 +242,7 @@
 	});
 
 	function f_initJcaptcha() {
-		jq("#jcaptchaPic").attr('src', "jcaptcha.do?no=" + Math.random());
+		document.getElementById('jcaptchaPic').src='<{site_url url='checkcode'}>/'+Math.random()
 	}
 
 	function f_showMsg(v_msg) {
@@ -265,11 +265,11 @@
 		}
 
 		//验证码
-//		var v_jcaptcha = jq('#jcaptcha').val();
-//		if (v_jcaptcha == null || jq.trim(v_jcaptcha) == '') {
-//			f_showMsg("请输入4位验证码");
-//			return false;
-//		}
+		var v_jcaptcha = jq('#jcaptcha').val();
+		if (v_jcaptcha == null || jq.trim(v_jcaptcha) == '') {
+			f_showMsg("请输入4位验证码");
+			return false;
+		}
 
 		document.forms[0].submit();
 	}
