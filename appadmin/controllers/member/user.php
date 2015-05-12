@@ -10,7 +10,8 @@ class user extends MY_Controller {
         $this->dbr = $this->load->database("dbr", TRUE);
         $this->load->config("common_config", TRUE);
         self::$common_config = $this->config->item('common_config');
-        $this->table_name = "ci_user";
+        $this->table_name_1 = "ci_user";
+        $this->table_name_2 = "ci_user_detail";
     }
 
     public function index() {
@@ -21,25 +22,28 @@ class user extends MY_Controller {
         $page = $this->input->get('page');
         $page = max(intval($page),1);
         $dosearch = $this->input->get('dosearch');
+        
+        $where_array[] = "id = uid";
+        
         if($dosearch == 'ok'){
             $keywords = trim($this->input->get('keywords'));
             $search_arr['keywords'] = $keywords;
             if($keywords != ''){
-                $where_array[] = "sname like '%{$keywords}%' or uname like '%{$keywords}%' ";                                                                         
-            }                                                                                                                        
-            if(is_array($where_array) and count($where_array) > 0) {
-                $where = ' WHERE '.join(' AND ',$where_array);
+                $where_array[] = "sname like '%{$keywords}%' or intro like '%{$keywords}%' ";
             }
+        }
+        if(is_array($where_array) and count($where_array) > 0) {
+            $where = ' WHERE '.join(' AND ',$where_array);
         }
         $pagesize  = 10;
         $offset    = $pagesize*($page-1);                                                                                     
         $limit     = " LIMIT $offset,$pagesize";
 		$order     = " ORDER BY id DESC";
-        $sql_ct    = "SELECT id FROM ci_user $where";
+        $sql_ct    = "SELECT id FROM ci_user, ci_user_detail $where";
         $query     = $this->dbr->query($sql_ct);
         $log_num   = $query->num_rows();
         $pages     = pages($log_num, $page, $pagesize);
-        $sql       = "SELECT id, uname, sname, avatar, umobile, gold, ukind, status, locked, lock_num, lock_time, create_time FROM ci_user $where $order $limit";
+        $sql       = "SELECT id, sname, avatar, umobile, province, city, intro, school, ukind, ukind_verify, ukind_info, locked, lock_time, create_time, login_time FROM ci_user, ci_user_detail $where $order $limit";
         $result    = $this->dbr->query($sql);
         $list_data = $result->result_array();
         //debug_show($list_data, 'list_data');

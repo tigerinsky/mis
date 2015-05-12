@@ -35,16 +35,18 @@
         <thead>
             <tr>
             <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
-            <th width="40">ID</th>
-            <th width="40">用户名</th>
-            <th width="60">用户昵称</th>
+            <th width="30">ID</th>
+            <th width="50">用户昵称</th>
             <th width="50">用户头像</th>
-            <th width="50">蓝鲸币</th>
-            <th width="50">用户身份</th>
-            <th width="50">审核状态</th>
+            <th width="50">身份</th>
+            <th width="50">手机号码</th>
+            <th width="50">城市</th>
+            <th width="50">目标学校</th>
+            <th width="50">是否认证</th>
+            <th width="50">认证信息</th>
             <th width="50">锁定状态</th>
-            <th width="90">身份认证</th>
-            <th width="90">注册时间</th>
+            <th width="120">注册时间</th>
+            <th width="120">最后登录时间</th>
             <th width="140">管理操作</th>
             </tr>
         </thead>
@@ -54,15 +56,22 @@
             <tr>
             <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['id']}>" type="checkbox"></td>
             <td align="center"><{$row['id']}></td>
-            <td align="center"><{$row['uname']}></td>
             <td align="center"><{$row['sname']}></td>
             <td align="center"><{if $row['avatar']}><img width=45 src="<{$row['avatar']}>" /><{/if}></td>
-            <td align="center"><{$row['gold']}></td>
+            <td align="center"><{$row['ukind_verify']}></td>
+            <td align="center"><{$row['umobile']}></td>
+            <td align="center"><{$row['city']}></td>
+            <td align="center"><{$row['school']}></td>
+            <td align="center"><{if $row['ukind']==1}><font color="#D75145">是</font><{else}><font color="#008000">否</font><{/if}></td>
+            <td align="center"><{$row['ukind_info']}></td>
+            <!-- 
             <td align="center"><{$identify_arr[$row['ukind']]}></td>
 			<td align="center" id="user_status"><{if $row['status'] == 1}><font color="#008000">已通过</font><{elseif $row['status'] == 2}><font color="#D75145">未通过</font><{elseif $row['status'] == 0}>未审核<{elseif $row['status'] == -1}>已删除<{/if}></td>
-            <td align="center"><{if $row['locked']==1}><font color="#D75145">锁定</font><{else}><font color="#008000">正常</font><{/if}></td>
 			<td align="center"><{if $row['ukind_verify'] == 1}><span style="color:green"></span><{else}><span style="color:red">未认证</span><{/if}></td>
+             -->
+            <td align="center"><{if $row['locked']==1}><font color="#D75145">锁定</font><{else}><font color="#008000">正常</font><{/if}></td>
             <td align="center"><{date("Y-m-d H:i:s", $row['create_time'])}></td>
+            <td align="center"><{date("Y-m-d H:i:s", $row['login_time'])}></td>
             <td align="center"><a href="javascript:edit(<{$row['id']}>,'<{$row['uname']}>')">修改</a> | <{if $row['status']==1 || $row['status']==-1}><font color="#cccccc">删除</font><{else}><a href="javascript:;" onclick="delete_one(this,'<{$row['id']}>')">删除</a><{/if}> | <a href="javascript:view(<{$row['id']}>,'<{$row['uname']}>')">查看详情</a>
             </td>
             </tr>

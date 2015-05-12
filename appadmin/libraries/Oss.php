@@ -13,7 +13,7 @@ require_once( BASEPATH.'third_party/oss/sdk.class.php' );
 class Oss {
     private $CI;
     private $oss_service;
-    private $file_ext = array('jpg', 'png', 'gif');
+    private $file_ext = array('jpg', 'png', 'gif', 'JPG', 'PNG', 'GIF');
     private $project_arr = array('meiyuanbangapp','myb-img','jinglietou','hongzuan','lanjinger','lanjingshandong','lanjinghenan', 'lanjingapp');
     private $file_size   = 409600; //1024*400;
 

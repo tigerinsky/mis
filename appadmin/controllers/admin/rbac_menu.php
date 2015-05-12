@@ -320,19 +320,10 @@ class rbac_menu extends CI_Controller{
 						}
 					}
 
-					$menu_str.='<h3 class="f14"><span title="展开与收缩" class="switchs cu on"></span>系统推送</h3>';
-					$menu_str.='<ul>';
-					$menu_str.='<li class="sub_menu" id="_MP0"><a style="outline:none;" hidefocus="true" href="javascript:_MP(20,\''.site_url('push/push/index/').'\',0);">系统推送</a></li>';
-					$menu_str.='</ul>';
-
-					//$menu_str.='<h3 class="f14"><span title="展开与收缩" class="switchs cu on"></span>日志统计</h3>';
-					//$menu_str.='<ul>';
-					//$menu_str.='<li class="sub_menu" id="_MP0"><a style="outline:none;" hidefocus="true" href="javascript:_MP(20,\''.site_url('crash/crash/index/').'\',0);">Crash日志</a></li>';
-					//$menu_str.='</ul>';
-					//$menu_str.='<h3 class="f14"><span title="展开与收缩" class="switchs cu on"></span>图片管理</h3>';
-					//$menu_str.='<ul>';
-					//$menu_str.='<li class="sub_menu" id="_MP0"><a style="outline:none;" hidefocus="true" href="javascript:_MP(20,\''.site_url('imgmgr/imgmgr/index/').'\',0);">二级分类图片管理</a></li>';
-					//$menu_str.='</ul>';
+// 					$menu_str.='<h3 class="f14"><span title="展开与收缩" class="switchs cu on"></span>系统推送</h3>';
+// 					$menu_str.='<ul>';
+// 					$menu_str.='<li class="sub_menu" id="_MP0"><a style="outline:none;" hidefocus="true" href="javascript:_MP(20,\''.site_url('push/push/index/').'\',0);">系统推送</a></li>';
+// 					$menu_str.='</ul>';
 				}
 				if($stop==1){
 					echo $menu_str;

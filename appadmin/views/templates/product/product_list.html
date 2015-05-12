@@ -1,0 +1,202 @@
+<{include file="../common/header.html"}>
+<div class="subnav">
+    <div class="content-menu ib-a blue line-x">
+    <a href="<{site_url url='/product/product/index/'}>" class="on"><em>作品列表</em></a></div>
+</div>
+<style type="text/css"> 
+	html{_overflow-y:scroll}
+</style>
+<div class="pad_10">
+<div id="searchid">
+<form name="searchform" action="<{site_url url='/product/product/index/'}>" method="get" >
+<table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+		<tr>
+		<td>
+		<div class="explain-col">
+			<{$search_arr['product_type_sel']}>
+            <{$search_arr['img_type_sel']}>
+            <select name="img_title" id="img_title">
+			</select>
+			<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
+			<input type="submit" name="search" class="button" value="搜索" />
+		</div>
+		</td>
+		</tr>
+    </tbody>
+</table>
+<input type="hidden" value="1" name="show">
+<input type="hidden" value="ok" name="dosearch">
+<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+</form>
+</div>
+
+<form name="myform" id="myform" action="" method="post" >
+
+<div class="table-list">
+	<table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+            <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
+            <th width="40">作品ID</th>
+            <th width="40">发布者</th>
+            <th width="60">一级分类</th>
+            <th width="60">二级分类</th>
+            <th width="120">详情</th>
+            <th width="120">标签</th>
+            <th width="40">是否为素材</th>
+            <th width="80">发布时间</th>
+            <th width="100">管理操作</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        	<{foreach from=$list_data item=row}>
+            <tr>
+            <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['tid']}>" type="checkbox"></td>
+            <td width="60" align="center"><{$row['tid']}></td>
+            <td align="center"><{$row['uid']}></td>
+            <td align="center"><{$row['f_catalog']}></td>
+            <td align="center"><{$row['s_catalog']}></td>
+            <td align="center">
+            	<{foreach from=$row.img_list item=row_item}>
+            		<a target="_blank" href="<{$row_item.img_url}>" ><{$row_item.img_index}></a>
+            	<{/foreach}>
+            </td>
+            <td align="center"><{$row['tags']}></td>
+			<td align="center"><{$row['type']}></td>
+            <td align="center"><{$row['ctime']}></td>
+            <td align="center">
+                <a href="javascript:edit(<{$row['tid']}>,'<{$row['type']}>')">修改</a> | 
+			    <a href="javascript:;" onclick="del_one(this,'<{$row['tid']}>')">删除</a>
+            </td>
+            </tr>
+            <{foreachelse}>
+			<tr>
+            <td colspan="10">没有数据</td>
+            </tr>
+            <{/foreach}>
+    	</tbody>
+    </table>
+    <div class="btn">
+    	<label for="check_box">全选/取消</label>
+		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+		<input type="hidden" value="1" name="dosubmit">
+		<!--
+		<input type="button" class="button" value="推荐" onclick="myform.action='<{site_url url='/mis/tweet/tweet_sug/'}>';return change_more_sug();"/>
+		<input type="button" class="button" value="删除" onclick="myform.action='<{site_url url='/mis/tweet/tweet_del/'}>';return change_more_del()"/>
+        <input type="button" class="button" value="取消推荐" onclick="myform.action='<{site_url url='/mis/tweet/tweet_clear_sug/'}>';return change_more_clear_sug();"/>
+        <input type="button" class="button" value="审核" onclick="myform.action='<{site_url url='/weibo/news/news_status/'}>';return change_more_status();"/> 
+        <input type="button" class="button" value="取消删除" onclick="myform.action='<{site_url url='/mis/tweet/tweet_clear_del/'}>';return change_more_clear_del()"/>
+		-->
+	</div>
+    <div id="pages"><{$pages}></div>
+</div>
+</form>
+</div>
+<script type="text/javascript"> 
+<!--
+
+$(document).ready(function() {
+		
+	$("#img_type").change(function() {
+	 	var img_type = $("#img_type").val();
+		var url = "<{site_url url='/imgmgr/imgmgr/get_img_title_list_ajax/'}>";
+		var data = {'img_type':img_type}
+	    jQuery.ajax({
+			type: 'GET',
+			url: url,
+			data: data,
+			success: imgTypeOnSuccess,
+			error: imgTypeOnError,
+			dataType: 'json',
+			async:false
+		});
+	});
+	
+	// 触发上面注册的函数,这样就不用执行最上面的初始化函数了
+	$("#img_type").change();
+	
+	// 服务器类型发生改变时触发此函数
+	function imgTypeOnSuccess(data) {
+		var title = "<{$img_title}>";
+		
+		var img_title_json = data["data"]["content"];
+		$("#img_title").html("<option value=''>二级分类</option>");
+		for(var i in img_title_json) {
+			var t = $("<option></option>");
+			t.html(img_title_json[i]);
+			//t.val(i);
+			t.val(img_title_json[i]);
+			$("#img_title").append(t);
+		}
+		$("#img_title").val(title);
+	}
+	
+	function imgTypeOnError() {
+		console.log("发生错误!");
+	}
+	
+});
+
+
+function change_more_sug(){
+	if(confirm('确认推荐所选信息吗？')) $('#myform').submit();
+}
+
+function change_more_del(){
+	if(confirm('确认删除所选信息吗？')) $('#myform').submit();
+}
+
+function change_more_clear_sug(){
+    if(confirm('确认取消推荐所选信息吗？')) $('#myform').submit();
+}
+
+function change_more_clear_del(){
+    if(confirm('确认取消删除所选信息吗？')) $('#myform').submit();
+}
+
+function edit(id, img_type) {
+	window.top.art.dialog({id:'edit'}).close();
+	window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/product/product/product_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
+}
+function sug_one(obj,aid) {
+	window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'}, 
+    function(){
+    $.get('<{site_url url='/mis/tweet/sug_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+                if(data == 1) $(obj).parent().parent().fadeOut("slow");
+            })
+         },
+    function(){});
+}
+function sug_one_cancel(obj,aid) {
+    window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'}, 
+    function(){
+    $.get('<{site_url url='/mis/tweet/sug_one_cancel_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+                if(data == 1) $(obj).parent().parent().fadeOut("slow");
+            })
+         },
+    function(){});
+}
+function del_one(obj,aid) {
+    window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'sug_one'}, 
+    function(){
+    $.get('<{site_url url='/product/product/del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+                if(data == 1) $(obj).parent().parent().fadeOut("slow");
+            })
+         },
+    function(){});
+}
+function del_one_cancel(obj,aid) {
+    window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'}, 
+    function(){
+    $.get('<{site_url url='/mis/tweet/del_one_cancel_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
+                if(data == 1) $(obj).parent().parent().fadeOut("slow");
+            })
+         },
+    function(){});
+}
+
+//-->
+</script>
+<{include file="../common/footer.html"}>
