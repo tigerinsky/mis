@@ -50,7 +50,7 @@
             <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['tid']}>" type="checkbox"></td>
             <td width="60" align="center"><{$row['id']}></td>
             <td align="center"><{$row['name']}></td>
-			<td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>
+			<td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['name']}><{else}>[无图片]<{/if}></a></td>
 			<td width="120" align="center"><a target="_blank" href="<{$row['jump_url']}>" ><{if $row['jump_url']}><{$row['jump_url']}><{else}>[无地址]<{/if}></a></td>
             <td align="center"><{$row['online_time']|date_format:'%Y-%m-%d %H:%M:%S'}></td>
             <td align="center"><{$row['offline_time']|date_format:'%Y-%m-%d %H:%M:%S'}></td>
