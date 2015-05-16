@@ -326,7 +326,7 @@ class rbac_menu extends CI_Controller{
 // 					$menu_str.='</ul>';
 					 					$menu_str.='<h3 class="f14"><span title="展开与收缩" class="switchs cu on"></span>批量上传</h3>';
 					 					$menu_str.='<ul>';
-					 					$menu_str.='<li class="sub_menu" id="_MP0"><a style="outline:none;" hidefocus="true" href="javascript:_MP(20,\''.site_url('upload/upload/index/').'\',0);">批量上传</a></li>';
+					 					$menu_str.='<li class="sub_menu" id="_MP0"><a style="outline:none;" hidefocus="true" href="javascript:_MP(20,\''.site_url('uploadbatch/uploadbatch/index/').'\',0);">批量上传</a></li>';
 					 					$menu_str.='</ul>';
 				}
 				if($stop==1){
