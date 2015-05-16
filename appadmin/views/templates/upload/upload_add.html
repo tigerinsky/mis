@@ -1,0 +1,19 @@
+<{include file="../common/header.html"}>
+<style type="text/css">
+    html{_overflow-y:scroll}
+</style>
+<script src="<{$sys_config['exten_pub_path']}>js/uploadify/jquery.uploadify.min.js?ver=<{$random_version}>" type="text/javascript"></script>
+<link href="<{$sys_config['exten_pub_path']}>js/swfupload/swfupload.css" rel="stylesheet" type="text/css" />
+<link href="<{$sys_config['exten_pub_path']}>css/uploadify.css" rel="stylesheet" type="text/css" />
+
+<div class="pad_10">
+    <div class="common-form">
+        <form id="addform" action="<{site_url url='/uploadbatch/uploadbatch/doUpload/'}>" method="post" enctype="multipart/form-data">
+            <p>请选择要导入的CSV文件：<br/><input type="file" name="file"> <input type="submit"
+                                                                        class="btn" value="导入CSV">
+                <br/><br/><br/> </p>
+            <p>请输入图片路径：<br/><input size="50" type="text" name="path" value="/home/meihua/athena/app/amytian/admin.amytian.com/uploadbatch"></p>
+        </form>
+    </div>
+</div>
+<{include file="../common/footer.html"}>
