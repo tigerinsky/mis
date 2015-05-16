@@ -5,33 +5,10 @@
 <script src="<{$sys_config['exten_pub_path']}>js/uploadify/jquery.uploadify.min.js?ver=<{$random_version}>" type="text/javascript"></script>
 <link href="<{$sys_config['exten_pub_path']}>js/swfupload/swfupload.css" rel="stylesheet" type="text/css" />
 <link href="<{$sys_config['exten_pub_path']}>css/uploadify.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-    $(document).ready(function() {
-
-        $("#img_type").change(function() {
-            var img_type = $("#img_type").val();
-            var url = "<{site_url url='/imgmgr/imgmgr/get_img_title_list_ajax/'}>";
-            var data = {'img_type':img_type}
-            jQuery.ajax({
-                type: 'GET',
-                url: url,
-                data: data,
-                success: imgTypeOnSuccess,
-                error: imgTypeOnError,
-                dataType: 'json',
-                async:false
-            });
-        });
-
-    });
-
-
-    //-->
-</script>
 
 <div class="pad_10">
     <div class="common-form">
-        <form id="addform" action="<{site_url url='/uploadbatch/uploadbatch/index/'}>" method="post" enctype="multipart/form-data">
+        <form id="addform" action="<{site_url url='/uploadbatch/uploadbatch/doUpload/'}>" method="post" enctype="multipart/form-data">
             <p>请选择要导入的CSV文件：<br/><input type="file" name="file"> <input type="submit"
                                                                         class="btn" value="导入CSV">
                 <br/><br/><br/> </p>
