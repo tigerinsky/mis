@@ -2,7 +2,7 @@
 /**
  * 二级分类图片管理
  */
-class batchUpload extends MY_Controller{
+class uploadbatch extends MY_Controller{
 
 	function __construct(){
 		parent::__construct();
