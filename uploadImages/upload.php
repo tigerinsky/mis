@@ -50,7 +50,7 @@ function upload_file($url,$filename){
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
 	curl_setopt($ch, CURLOPT_POST, true );
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	@curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 	curl_setopt($ch, CURLOPT_HEADER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	// curl_getinfo($ch);
@@ -62,7 +62,7 @@ function upload_file($url,$filename){
 
 function setDB($arr)
 {
-	$con = mysql_connect("hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
+	$con = @mysql_connect("hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
 	if (!$con)
 	{
 		die('Could not connect: ' . mysql_error());
