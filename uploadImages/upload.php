@@ -23,11 +23,11 @@ function upImg($path,$req)
 					if($file!="." && $file!=".." && $file != null)
 					{
 						//获取后缀名
-						$extName = substr(strrchr($file, '.'), 1);
+//						$extName = substr(strrchr($file, '.'), 1);
 						//文件名
-						$fileName = pathinfo($file);
-						$fileName = $fileName['filename'];
-						var_dump(upload_file($req,$fileName,$path,$extName));
+//						$fileName = pathinfo($file);
+//						$fileName = $fileName['filename'];
+						var_dump(upload_file($req,$path.$file));
 					}
 				}
 			}
@@ -36,9 +36,10 @@ function upImg($path,$req)
 	}
 }
 
-function upload_file($url,$filename,$path,$type){
+function upload_file($url,$filename){
 	$data = array(
-		'file'=>'@'.realpath($path).";type=image/".$type.";filename=".$filename
+		'file'=>'@'.$filename
+//		'file'=>'@'.realpath($path).";type=image/".$type.";filename=".$filename
 	);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
