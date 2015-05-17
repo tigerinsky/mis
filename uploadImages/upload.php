@@ -24,8 +24,11 @@ function upImg($path,$req)
 					{
 						//获取后缀名
 						$extName = substr(strrchr($file, '.'), 1);
-//						echo $req."@".$path.$file.";type=".$extName;
-						var_dump(_curl_post($req,http_build_query(array('file'=>"@".$path.$file.";type=".$extName))));
+						//文件名
+						$fileName = pathinfo($file);
+						$fileName = $fileName['filename'];
+						echo $req."||".$fileName."||".$path."||".$extName;exit;
+						var_dump(upload_file($req,$fileName,$path,$extName));
 					}
 				}
 			}
@@ -34,18 +37,19 @@ function upImg($path,$req)
 	}
 }
 
-function _curl_post($url, $data){
+function upload_file($url,$filename,$path,$type){
+	$data = array(
+		'pic'=>'@'.realpath($path).";type=".$type.";filename=".$filename
+	);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_HEADER, 0);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_POST, true );
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-
-	if( ($data = curl_exec($ch)) === false)
-	{
-		echo 'error: ' . curl_error($ch);
-	}
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// curl_getinfo($ch);
+	$return_data = curl_exec($ch);
 	curl_close($ch);
-	return $data;
+	echo $return_data;
 }
+
