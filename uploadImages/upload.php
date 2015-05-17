@@ -1,6 +1,6 @@
 <?php
-@ini_set('post_max_size', '200M');
-@ini_set('upload_max_filesize', '50M');
+@ini_set('post_max_size', '2020M');
+@ini_set('upload_max_filesize', '500M');
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
 $req = 'http://182.92.212.76/upload/tweet_pic';
 
