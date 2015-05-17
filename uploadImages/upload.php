@@ -38,7 +38,7 @@ function upImg($path,$req)
 
 function upload_file($url,$filename){
 	$data = array(
-		'file'=>'@'.$filename
+		'file'=>'@'.realpath($filename)
 //		'file'=>'@'.realpath($path).";type=image/".$type.";filename=".$filename
 	);
 	$ch = curl_init();
