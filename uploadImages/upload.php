@@ -38,7 +38,7 @@ function upImg($path,$req)
 
 function upload_file($url,$filename,$path,$type){
 	$data = array(
-		'pic'=>'@'.realpath($path).";type=".$type.";filename=".$filename
+		'file'=>'@'.realpath($path).";type=".$type.";filename=".$filename
 	);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -49,6 +49,6 @@ function upload_file($url,$filename,$path,$type){
 	// curl_getinfo($ch);
 	$return_data = curl_exec($ch);
 	curl_close($ch);
-	echo $return_data;
+	return $return_data;
 }
 
