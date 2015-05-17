@@ -32,7 +32,7 @@ function upImg($path,$req)
 						if($rs['errno'] == 0)
 						{
 							echo json_encode($rs['data']['img']);
-							setDB(json_encode($rs['data']['img']));
+							setDB(addslashes(json_encode($rs['data']['img'])));
 						}
 					}
 				}
