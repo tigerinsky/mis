@@ -32,7 +32,7 @@ function upImg($path,$req)
 						if($rs['errno'] == 0)
 						{
 //							echo json_encode($rs['data']['img']);
-							setDB(addslashes(json_encode($rs['data']['img'])));
+							setDB(addslashes(json_encode($rs['data']['img'])),$file);
 						}
 					}
 				}
@@ -61,7 +61,7 @@ function upload_file($url,$filename){
 }
 
 
-function setDB($arr)
+function setDB($arr,$file)
 {
 	$con = @mysql_connect("rdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
 	if (!$con)
@@ -69,8 +69,8 @@ function setDB($arr)
 		die('Could not connect: ' . mysql_error());
 	}
 	mysql_select_db("amytian", $con);
-	echo "INSERT INTO ci_tweet (uid, img) VALUES (0, '$arr')";
-	mysql_query("INSERT INTO ci_tweet (uid, img) VALUES (0, '$arr')");
+	echo "INSERT INTO ci_tweet (uid, img, img_oname) VALUES (0, '$arr',)";
+	mysql_query("INSERT INTO ci_tweet (uid, img, img_oname) VALUES (0, '$arr','$file')");
 
 	mysql_close($con);
 }
