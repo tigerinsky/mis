@@ -7,87 +7,59 @@ class uploadbatch extends MY_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->dbr=$this->load->database('dbr',TRUE);
-		$this->load->config('mis_imgmgr',TRUE);
-		$this->mis_imgmgr = $this->config->item('mis_imgmgr');
+//		$this->load->config('mis_imgmgr',TRUE);
+//		$this->mis_imgmgr = $this->config->item('mis_imgmgr');
 		// $this->mis_imgmgr['imgmgr_level_1']
 		$this->load->library('redis');
 		$this->key_img = 'mis_img_timestamp';
-		$this->load->model('imgmgr/imgmgr_model','imgmgr_model');
+		$this->load->model('uploadbatch/uploadbatch_model','uploadbatch_model');
 	}
 
 	//默认调用控制器
 	function index(){
-		$this->upload_add();
+		$this->upload_list();
 	}
 
-	//显示图片列表，同时有检索功能
-	private function upload_add(){
+	private function upload_list(){
 		$this->load->library('form');
+		$page=$this->input->get('page');
+		$page = max(intval($page),1);
+		$dosearch=$this->input->get('dosearch');
+
+		$search_arr['is_del']=0;
+		$where_array[]="is_del=0";
+
+		if($dosearch=='ok'){
+
+			$keywords=trim($this->input->get('keywords'));
+
+			if($keywords!=''){
+				$search_arr['keywords']=$keywords;
+				$where_array[]="content like '%{$keywords}%'";
+			}
+		}
+
+		if(is_array($where_array) and count($where_array)>0){
+			$where=' WHERE '.join(' AND ',$where_array);
+		}
+
+		$pagesize=10;
+		$offset = $pagesize*($page-1);
+		$limit="LIMIT $offset,$pagesize";
+
+		$user_num=$this->uploadbatch_model->get_count_by_parm($where);
+		$pages=pages($user_num,$page,$pagesize);
+		$list_data=$this->uploadbatch_model->get_data_by_parm($where,$limit);
+
+		$this->load->library('form');
+		//$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
+		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
+
+		$this->smarty->assign('img_type_list',$img_type_list);
+		$this->smarty->assign('list_data',$list_data);
+		$this->smarty->assign('pages',$pages);
 		$this->smarty->assign('show_dialog','true');
-		$this->smarty->display('upload/upload_add.html');
+		$this->smarty->display('uploadbatch/uploadbatch_list.html');
 	}
-
-	public function doUpload()
-	{
-		if($_POST)
-		{
-			$path  = $this->input->post('path');
-			//上传图片
-			$picList = $this->upImg($path);
-			var_dump($picList);exit;
-
-			$data_values = "";
-			$path  = $this->input->post('path');
-			$filename = $_FILES['file']['tmp_name'];
-			if (empty ($filename)) {
-				show_tips('请选择您要导入的csv文件');
-			}
-			$handle = fopen($filename, 'r');
-			$result = input_csv($handle); //解析csv
-			$len_result = count($result);
-			if($len_result==0){show_tips('没有任何数据');
-			}
-			for ($i = 1; $i < $len_result; $i++) { //循环获取各字段值
-				$name = iconv('gb2312', 'utf-8', $result[$i][0]); //中文转码
-				$sex = iconv('gb2312', 'utf-8', $result[$i][1]);
-				$age = $result[$i][2];
-				$data_values .= "('$name','$sex','$age'),";
-			}
-			$data_values = substr($data_values,0,-1); //去掉最后一个逗号
-			fclose($handle); //关闭指针
-			$query = mysql_query("insert into student (name,sex,age) values $data_values");//批量插入数据表中
-			if($query){
-				show_tips('导入成功');			}else{
-				show_tips('导入失败');			}
-
-		}
-	}
-
-	private function upImg($path)
-	{
-		if(is_dir($path))
-		{
-			if ($dh = opendir($path))
-			{
-				while (($file = readdir($dh)) !== false)
-				{
-					if((is_dir($path."/".$file)) && $file!="." && $file!="..")
-					{
-						echo "<b><font color='red'>文件名：</font></b>",$file,"<br><hr>";
-						$this->upImg($path."/".$file."/");
-					}
-					else
-					{
-						if($file!="." && $file!="..")
-						{
-							echo $file."<br>";
-						}
-					}
-				}
-				closedir($dh);
-			}
-		}
-	}
-
 
 }
