@@ -1,26 +1,7 @@
 <?php
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
 $req = 'http://182.92.212.76:8081/uploadImages/post.php';
-//$req = 'http://182.92.212.76/upload/tweet_pic';
 
-header('content-type:text/html;charset=utf8');
-
-$ch = curl_init();
-
-//加@符号curl就会把它当成是文件上传处理
-$data = array('img'=>'@'. $path.'img3.jpg;type=image/jpg;');
-curl_setopt($ch,CURLOPT_URL,$req);
-curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-curl_setopt($ch,CURLOPT_POST,true);
-curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
-$result = curl_exec($ch);
-curl_close($ch);
-var_dump($result);
-
-
-
-exit;
 upImg($path,$req);
 
 //上传图片
@@ -61,6 +42,7 @@ function upload_file($url,$filename,$path,$type){
 	);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
 	curl_setopt($ch, CURLOPT_POST, true );
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 	curl_setopt($ch, CURLOPT_HEADER, false);
