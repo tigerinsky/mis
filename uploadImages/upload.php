@@ -27,8 +27,8 @@ function upImg($path,$imgs)
 			}
 			closedir($dh);
 		}
-		return $imgs;
 	}
+	return $imgs;
 }
 
 function _curl_post($url, $data){
