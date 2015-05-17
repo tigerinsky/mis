@@ -62,14 +62,14 @@ function upload_file($url,$filename){
 
 function setDB($arr)
 {
-	$con = @mysql_connect("hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
+	$con = @mysql_connect("rdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
 	if (!$con)
 	{
 		die('Could not connect: ' . mysql_error());
 	}
 
 	mysql_select_db("amytian", $con);
-
+	mysql_query("set names 'utf8'");//写库
 	mysql_query("INSERT INTO ci_tweet (uid, img)
 VALUES (0, $arr)");
 
