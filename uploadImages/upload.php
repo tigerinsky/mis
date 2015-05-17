@@ -21,14 +21,13 @@ function upImg($path)
 				{
 					if($file!="." && $file!="..")
 					{
-						array_push($imgs,$path.$file);
+						echo $file;
 					}
 				}
 			}
 			closedir($dh);
 		}
 	}
-	return $imgs;
 }
 
 function _curl_post($url, $data){
