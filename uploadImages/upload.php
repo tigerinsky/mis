@@ -27,7 +27,6 @@ function upImg($path,$req)
 						//文件名
 						$fileName = pathinfo($file);
 						$fileName = $fileName['filename'];
-						echo $req."||".$fileName."||".$path."||".$extName;exit;
 						var_dump(upload_file($req,$fileName,$path,$extName));
 					}
 				}
