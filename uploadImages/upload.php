@@ -25,12 +25,7 @@ function upImg($path,$req)
 						//获取后缀名
 						$extName = substr(strrchr($file, '.'), 1);
 //						echo $req."@".$path.$file.";type=".$extName;
-						if (class_exists('\CURLFile')) {
-							$field = array('file' => new \CURLFile(realpath($file)));
-						} else {
-							$field = array('file' => '@' . realpath($file));
-						}
-						var_dump(_curl_post($req,$field));
+						var_dump(_curl_post($req,array('file'=>"@".$path.$file.";type=".$extName)));
 					}
 				}
 			}
@@ -44,16 +39,8 @@ function _curl_post($url, $data){
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_HEADER, 0);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	if (class_exists('\CURLFile')) {
-		curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
-	} else {
-		if (defined('CURLOPT_SAFE_UPLOAD')) {
-			curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
-		}
-	}
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-
 
 	if( ($data = curl_exec($ch)) === false)
 	{
