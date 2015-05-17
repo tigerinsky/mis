@@ -1,6 +1,7 @@
 <?php
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
-$req = 'http://182.92.212.76/upload/tweet_pic';
+$req = 'http://182.92.212.76:8081/uploadImages/post.php';
+//$req = 'http://182.92.212.76/upload/tweet_pic';
 
 upImg($path,$req);
 
