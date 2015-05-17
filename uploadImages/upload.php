@@ -8,7 +8,7 @@ header('content-type:text/html;charset=utf8');
 $ch = curl_init();
 
 //加@符号curl就会把它当成是文件上传处理
-$data = array('img'=>'@'. '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/img3.jpg');
+$data = array('img'=>'@'. 'images/img3.jpg');
 curl_setopt($ch,CURLOPT_URL,$req);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 curl_setopt($ch,CURLOPT_POST,true);
