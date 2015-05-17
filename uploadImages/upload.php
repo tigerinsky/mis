@@ -68,11 +68,9 @@ function setDB($arr)
 	{
 		die('Could not connect: ' . mysql_error());
 	}
-
 	mysql_select_db("amytian", $con);
 	mysql_query("set names 'utf8'");//写库
-	mysql_query("INSERT INTO ci_tweet (uid, img)
-VALUES (0, $arr)");
+	mysql_query("INSERT INTO ci_tweet (uid, img) VALUES (0, `$arr`)");
 	mysql_close($con);
 }
 
