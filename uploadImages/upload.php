@@ -1,5 +1,6 @@
 <?php
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadbatch/images/';
+echo 1;
 var_dump(upImg($path));
 
 
