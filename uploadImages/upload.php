@@ -1,10 +1,10 @@
 <?php
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
-var_dump(upImg($path,array()));
+var_dump(upImg($path));
 //http://182.92.212.76/upload/tweet_pic
 
 //上传图片
-function upImg($path,$imgs)
+function upImg($path)
 {
 	if(is_dir($path))
 	{
@@ -15,7 +15,7 @@ function upImg($path,$imgs)
 				if((is_dir($path."/".$file)) && $file!="." && $file!="..")
 				{
 //					echo "<b><font color='red'>文件名：</font></b>",$file,"<br><hr>";
-					upImg($path."/".$file."/",$imgs);
+					upImg($path."/".$file."/");
 				}
 				else
 				{
