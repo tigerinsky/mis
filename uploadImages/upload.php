@@ -1,5 +1,4 @@
 <?php
-phpinfo();exit;
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
 $req = 'http://182.92.212.76/upload/tweet_pic';
 
