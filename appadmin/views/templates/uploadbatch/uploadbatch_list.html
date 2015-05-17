@@ -48,7 +48,7 @@
                 <tbody>
                 <{foreach from=$list_data item=row}>
                 <tr>
-                    <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['tid']}>" type="checkbox"></td>
+                    <td align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>
                     <td width="60" align="center"><{$row['id']}></td>
                     <td align="center"><{$img_type_list[$row['img_type']]}></td>
                     <td align="center"><{$row['cell']}></td>
@@ -58,11 +58,12 @@
                             <option value="saab">头像</option>
                         </select>
                     </td>
-                    <td align="center"><select name="carlist" form="carform">
+                    <td align="center">
+                        <select name="carlist" form="carform">
                         <option value="volvo">素描</option>
                         <option value="saab">头像</option>
                     </select></td>
-                    <td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>
+                    <td width="120" align="center"></td>
                     <td align="center">
                     </td>
                 </tr>
