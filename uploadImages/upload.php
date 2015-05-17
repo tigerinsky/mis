@@ -27,6 +27,7 @@ function upImg($path,$req)
 						//文件名
 //						$fileName = pathinfo($file);
 //						$fileName = $fileName['filename'];
+						var_dump(upload_file($req,$path.$file));exit;
 						$rs = json_decode(upload_file($req,$path.$file),true);
 						if($rs['errno'] == 0)
 						{
@@ -34,7 +35,6 @@ function upImg($path,$req)
 							var_dump($rs);
 //							echo json_encode($rs['data']['img']);
 						}
-
 					}
 				}
 			}
