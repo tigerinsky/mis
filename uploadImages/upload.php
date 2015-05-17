@@ -1,10 +1,11 @@
 <?php
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
-var_dump(upImg($path));
-//http://182.92.212.76/upload/tweet_pic
+$req = 'http://182.92.212.76/upload/tweet_pic';
+
+upImg($path,$req);
 
 //上传图片
-function upImg($path)
+function upImg($path,$req)
 {
 	if(is_dir($path))
 	{
@@ -15,13 +16,15 @@ function upImg($path)
 				if((is_dir($path."/".$file)) && $file!="." && $file!="..")
 				{
 //					echo "<b><font color='red'>文件名：</font></b>",$file,"<br><hr>";
-					upImg($path."/".$file."/");
+					upImg($path."/".$file."/",$req);
 				}
 				else
 				{
 					if($file!="." && $file!=".." && $file != null)
 					{
-						echo $file;
+						//获取后缀名
+						$extName = substr(strrchr($file, '.'), 1);
+						var_dump(_curl_post($req,"@".$file.";type=".$extName));
 					}
 				}
 			}
