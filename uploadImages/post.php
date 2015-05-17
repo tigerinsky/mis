@@ -1,7 +1,3 @@
 <?php
-/**
- * DOC
- * Date: 15/5/17
- */
 
-var_dump($_POST);
+error_log($_POST, 3, "/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/post.log");
