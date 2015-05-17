@@ -3,6 +3,26 @@ $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/'
 $req = 'http://182.92.212.76:8081/uploadImages/post.php';
 //$req = 'http://182.92.212.76/upload/tweet_pic';
 
+$file = realpath('/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/img3.jpg'); //要上传的文件
+$fields['f'] = '@'.$file; // 前面加@符表示上传图片
+
+$ch =curl_init();
+
+
+curl_setopt($ch,CURLOPT_URL,$req);
+
+curl_setopt($ch,CURLOPT_POST,true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+
+
+$content = curl_exec($ch);
+
+echo $content;
+
+
+
+exit;
 upImg($path,$req);
 
 //上传图片
