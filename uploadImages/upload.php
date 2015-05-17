@@ -19,7 +19,7 @@ function upImg($path)
 				}
 				else
 				{
-					if($file!="." && $file!="..")
+					if($file!="." && $file!=".." && $file != null)
 					{
 						echo $file;
 					}
