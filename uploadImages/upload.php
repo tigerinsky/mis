@@ -25,7 +25,7 @@ function upImg($path,$req)
 						//获取后缀名
 						$extName = substr(strrchr($file, '.'), 1);
 //						echo $req."@".$path.$file.";type=".$extName;
-						var_dump(_curl_post($req,array('file'=>"@".$path.$file.";type=".$extName)));
+						var_dump(_curl_post($req,http_build_query(array('file'=>"@".$path.$file.";type=".$extName))));
 					}
 				}
 			}
