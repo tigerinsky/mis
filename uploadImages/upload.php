@@ -14,14 +14,14 @@ function upImg($path)
 			{
 				if((is_dir($path."/".$file)) && $file!="." && $file!="..")
 				{
-					echo "<b><font color='red'>文件名：</font></b>",$file,"<br><hr>";
+//					echo "<b><font color='red'>文件名：</font></b>",$file,"<br><hr>";
 					upImg($path."/".$file."/");
 				}
 				else
 				{
 					if($file!="." && $file!="..")
 					{
-						echo $file."<br>";
+						echo $path."/".$file;
 					}
 				}
 			}
