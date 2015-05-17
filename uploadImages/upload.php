@@ -31,6 +31,7 @@ function upImg($path,$req)
 						if($rs['errno'] == 0)
 						{
 							setDB(json_encode($rs['data']['img']));
+							echo json_encode($rs['data']['img']);
 						}
 
 					}
@@ -72,9 +73,6 @@ function setDB($arr)
 	mysql_query("set names 'utf8'");//写库
 	mysql_query("INSERT INTO ci_tweet (uid, img)
 VALUES (0, $arr)");
-
 	mysql_close($con);
-
-
 }
 
