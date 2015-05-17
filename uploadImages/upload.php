@@ -25,6 +25,7 @@ function upImg($path)
 						array_push($imgs,$path.$file);
 					}
 				}
+				return $imgs;
 			}
 			closedir($dh);
 		}
