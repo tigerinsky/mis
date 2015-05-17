@@ -31,8 +31,8 @@ function upImg($path,$req)
 						$rs = json_decode(upload_file($req,$path.$file),true);
 						if($rs['errno'] == 0)
 						{
+							echo json_encode($rs['data']['img']);
 							setDB(json_encode($rs['data']['img']));
-							echo $rs['errno'];
 						}
 					}
 				}
