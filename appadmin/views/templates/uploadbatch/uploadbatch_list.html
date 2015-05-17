@@ -52,8 +52,16 @@
                     <td width="60" align="center"><{$row['id']}></td>
                     <td align="center"><{$img_type_list[$row['img_type']]}></td>
                     <td align="center"><{$row['cell']}></td>
-                    <td align="center"><{$row['img_type']}>.<{$row['listorder']}></td>
-                    <td align="center"><{$row['title']}></td>
+                    <td align="center">
+                        <select name="carlist" form="carform">
+                            <option value="volvo">素描</option>
+                            <option value="saab">头像</option>
+                        </select>
+                    </td>
+                    <td align="center"><select name="carlist" form="carform">
+                        <option value="volvo">素描</option>
+                        <option value="saab">头像</option>
+                    </select></td>
                     <td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>
                     <td align="center">
                     </td>
