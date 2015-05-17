@@ -1,6 +1,6 @@
 <?php
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
-var_dump(upImg($path,$imgs));
+var_dump(upImg($path,array()));
 //http://182.92.212.76/upload/tweet_pic
 
 //上传图片
