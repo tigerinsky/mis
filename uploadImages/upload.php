@@ -6,6 +6,7 @@ var_dump(upImg($path));
 //上传图片
 function upImg($path)
 {
+	$imgs = array();
 	if(is_dir($path))
 	{
 		if ($dh = opendir($path))
@@ -21,7 +22,7 @@ function upImg($path)
 				{
 					if($file!="." && $file!="..")
 					{
-						echo $path."/".$file;
+						array_push($imgs,$path.$file);
 					}
 				}
 			}
