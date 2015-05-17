@@ -62,17 +62,25 @@ function upload_file($url,$filename){
 
 function setDB($arr)
 {
-	$con = mysql_connect("hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
-	if (!$con)
-	{
-		die('Could not connect: ' . mysql_error());
-	}
+//	$con = mysql_connect("hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
+//	if (!$con)
+//	{
+//		die('Could not connect: ' . mysql_error());
+//	}
+//
+//	mysql_select_db("amytian", $con);
+//
+//	mysql_query("INSERT INTO ci_tweet (uid, img)
+//VALUES (0, $arr)");
+//
+//	mysql_close($con);
 
-	mysql_select_db("amytian", $con);
+$dbh = new PDO('mysql:host=hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com;dbname=amytian', 'nvshen', 'MhxzKhl2014');
+$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$dbh->exec('set names utf8');
+/*添加*/
+$sql = "INSERT INTO `ci_tweet` (`uid` ,`img`)VALUES (0, $arr)";$stmt = $dbh->prepare($sql);  $stmt->execute(array(':login'=>'kevin2',':password'=>''));
+echo $dbh->lastinsertid();
 
-	mysql_query("INSERT INTO ci_tweet (uid, img)
-VALUES (0, $arr)");
-
-	mysql_close($con);
 }
 
