@@ -8,7 +8,7 @@ header('content-type:text/html;charset=utf8');
 $ch = curl_init();
 
 //加@符号curl就会把它当成是文件上传处理
-$data = array('img'=>'@'. 'images/img3.jpg;type=image/jpeg;');
+$data = array('img'=>'@'. $path.'img3.jpg;type=image/jpeg;');
 curl_setopt($ch,CURLOPT_URL,$req);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 curl_setopt($ch,CURLOPT_POST,true);
