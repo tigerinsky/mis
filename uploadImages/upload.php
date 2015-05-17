@@ -25,9 +25,9 @@ function upImg($path,$imgs)
 					}
 				}
 			}
-			return $imgs;
 			closedir($dh);
 		}
+		return $imgs;
 	}
 }
 
