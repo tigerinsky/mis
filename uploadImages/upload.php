@@ -17,7 +17,6 @@ function upImg($path,$req)
 			{
 				if((is_dir($path."/".$file)) && $file!="." && $file!="..")
 				{
-//					echo "<b><font color='red'>文件名：</font></b>",$file,"<br><hr>";
 					upImg($path."/".$file."/",$req);
 				}
 				else
@@ -29,13 +28,11 @@ function upImg($path,$req)
 						//文件名
 //						$fileName = pathinfo($file);
 //						$fileName = $fileName['filename'];
-						var_dump(upload_file($req,$path.$file));exit;
 						$rs = json_decode(upload_file($req,$path.$file),true);
 						if($rs['errno'] == 0)
 						{
 							setDB(json_encode($rs['data']['img']));
-							var_dump($rs);
-//							echo json_encode($rs['data']['img']);
+							echo $rs['errno'];
 						}
 					}
 				}
