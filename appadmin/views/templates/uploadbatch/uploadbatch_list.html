@@ -1,27 +1,27 @@
 <{include file="../common/header.html"}>
-<div class="subnav">
-    <div class="content-menu ib-a blue line-x">
-        <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/imgmgr/imgmgr/imgmgr_add/'}>?', title:'添加二级分类图片', width:'800', height:'600', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>添加二级分类图片</em></a> <a href="<{site_url url='/imgmgr/imgmgr/index/'}>" class="on"><em>二级分类图片列表</em></a></div>
-</div>
+<!--<div class="subnav">-->
+    <!--<div class="content-menu ib-a blue line-x">-->
+        <!--<a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'<{site_url url='/imgmgr/imgmgr/imgmgr_add/'}>?', title:'添加二级分类图片', width:'800', height:'600', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>添加二级分类图片</em></a> <a href="<{site_url url='/imgmgr/imgmgr/index/'}>" class="on"><em>二级分类图片列表</em></a></div>-->
+<!--</div>-->
 <style type="text/css">
     html{_overflow-y:scroll}
 </style>
 <div class="pad_10">
     <div id="searchid">
-        <form name="searchform" action="<{site_url url='/imgmgr/imgmgr/index/'}>" method="get" >
-            <table width="100%" cellspacing="0" class="search-form">
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="explain-col">
-                            <{$search_arr['img_type_sel']}>
-                            <input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />
-                            <input type="submit" name="search" class="button" value="搜索" />
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <form name="searchform" action="<{site_url url='/uploadbatch/uploadbatch/index/'}>" method="get" >
+            <!--<table width="100%" cellspacing="0" class="search-form">-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<div class="explain-col">-->
+                            <!--<{$search_arr['img_type_sel']}>-->
+                            <!--<input name="keywords" type="text" value="<{$search_arr['keywords']}>" class="input-text" />-->
+                            <!--<input type="submit" name="search" class="button" value="搜索" />-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
             <input type="hidden" value="1" name="show">
             <input type="hidden" value="ok" name="dosearch">
             <input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
@@ -35,13 +35,13 @@
                 <thead>
                 <tr>
                     <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
-                    <th width="40">ID</th>
-                    <th width="60">一级分类图片</th>
-                    <th width="40">分组</th>
-                    <th width="40">排序</th>
-                    <th width="60">二级分类图片</th>
-                    <th width="120">图片URL</th>
-                    <th width="100">管理操作</th>
+                    <th width="60">图片</th>
+                    <th width="40">TID</th>
+                    <th width="60">UID</th>
+                    <th width="40">类型</th>
+                    <th width="40">一级分类</th>
+                    <th width="60">二级分类</th>
+                    <th width="120">描述</th>
                 </tr>
                 </thead>
 

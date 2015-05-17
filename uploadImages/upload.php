@@ -27,7 +27,12 @@ function upImg($path,$req)
 						//文件名
 //						$fileName = pathinfo($file);
 //						$fileName = $fileName['filename'];
-						var_dump(upload_file($req,$path.$file));
+						$rs = json_decode(upload_file($req,$path.$file),true);
+						if($rs['errno'] == 0)
+						{
+							setDB(json_encode($rs['data']['img']));
+						}
+
 					}
 				}
 			}
@@ -52,5 +57,22 @@ function upload_file($url,$filename){
 	$return_data = curl_exec($ch);
 	curl_close($ch);
 	return $return_data;
+}
+
+
+function setDB($arr)
+{
+	$con = mysql_connect("hrdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
+	if (!$con)
+	{
+		die('Could not connect: ' . mysql_error());
+	}
+
+	mysql_select_db("amytian", $con);
+
+	mysql_query("INSERT INTO ci_tweet (uid, img)
+VALUES (0, $arr)");
+
+	mysql_close($con);
 }
 
