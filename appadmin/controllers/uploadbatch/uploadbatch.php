@@ -68,4 +68,18 @@ class uploadbatch extends MY_Controller{
 		$this->smarty->display('uploadbatch/uploadbatch_list.html');
 	}
 
+	public function edit_one()
+	{
+		$tid=$this->input->post('id');
+		$val=$this->input->post('val');
+		if(!is_numeric($tid) || empty($val))
+		{
+			echo 1;exit;
+		}
+		$info = $this->uploadbatch_model->update_info(array('content'=>$val),$tid);
+		if($info)
+			echo 1;
+		else echo 0;
+	}
+
 }

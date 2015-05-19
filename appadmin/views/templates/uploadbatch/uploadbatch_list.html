@@ -35,7 +35,7 @@
                 <thead>
                 <tr>
                     <th width="60">图片</th>
-                    <th width="40">TID</th>
+                    <th width="40">原始名称</th>
                     <th width="60">UID</th>
                     <th width="40">类型</th>
                     <th width="40">一级分类</th>
@@ -47,8 +47,8 @@
                 <tbody>
                 <{foreach from=$list_data item=row}>
                 <tr>
-                    <td align="center"><a target="_blank" href="<{$row['img']['t']['url']}>" ><{if <{$row['img']['s']['url']}>}><img src="<{$row['img']['t']['url']}>"/><{else}>[无图片]<{/if}></a></td>
-                    <td width="60" align="center"><{$row['tid']}></td>
+                    <td align="center"><a target="_blank" href="<{$row['img']['s']['url']}>" ><{if <{$row['img']['t']['url']}>}><img width="100" height="100" src="<{$row['img']['t']['url']}>"/><{else}>[无图片]<{/if}></a></td>
+                    <td width="60" align="center"><{$row['img_oname']}></td>
                     <td align="center"><{$row['uid']}></td>
                     <td align="center">
                         <select name="carlist" form="carform">
@@ -67,7 +67,7 @@
                         <option value="volvo">素描</option>
                         <option value="saab">头像</option>
                     </select></td>
-                    <td width="220" align="center"></td>
+                    <td width="220" align="center" title="<{$row['tid']}>" id="desc"></td>
                 </tr>
                 <{foreachelse}>
                 <tr>
@@ -93,59 +93,29 @@
     </form>
 </div>
 <script type="text/javascript">
-    <!--
+    //动态修改数据
+    $(document).ready(function(){
+        $("#desc").each(function(){
+            $(this).dblclick(function(){
+                var inval=$(this).html();
+                var inid=$(this).attr("title");
+                $(this).html("<input id='edit"+inid+"' name='' value='"+inval+"'>");
+                $("#edit"+inid).focus().live("blur",function(){
+                    var editval=$(this).val();//获取更改内容
+                    $(this).parents("td").html(editval); //将点击的td中原内容改为输入的新内容
+                    $.post("<{site_url url='/uploadbatch/uploadbatch/edit_one/'}>/",{id:inid,val:editval},function(result){
+                        if(result != 1)
+                            alert("修改失败");
+                    });
+                });
+            });
+        });
+    })
 
-    function change_more_sug(){
-        if(confirm('确认推荐所选信息吗？')) $('#myform').submit();
-    }
-
-    function change_more_del(){
-        if(confirm('确认删除所选信息吗？')) $('#myform').submit();
-    }
-
-    function change_more_clear_sug(){
-        if(confirm('确认取消推荐所选信息吗？')) $('#myform').submit();
-    }
-
-    function change_more_clear_del(){
-        if(confirm('确认取消删除所选信息吗？')) $('#myform').submit();
-    }
-
-    function edit(id, img_type) {
-        window.top.art.dialog({id:'edit'}).close();
-        window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/imgmgr/imgmgr/imgmgr_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
-    }
-    function sug_one(obj,aid) {
-        window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'},
-                function(){
-                    $.get('<{site_url url='/mis/tweet/sug_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
-                        if(data == 1) $(obj).parent().parent().fadeOut("slow");
-                    })
-                },
-                function(){});
-    }
-    function sug_one_cancel(obj,aid) {
-        window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'},
-                function(){
-                    $.get('<{site_url url='/mis/tweet/sug_one_cancel_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
-                        if(data == 1) $(obj).parent().parent().fadeOut("slow");
-                    })
-                },
-                function(){});
-    }
     function del_one(obj,aid) {
         window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'sug_one'},
                 function(){
                     $.get('<{site_url url='/imgmgr/imgmgr/del_one_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
-                        if(data == 1) $(obj).parent().parent().fadeOut("slow");
-                    })
-                },
-                function(){});
-    }
-    function del_one_cancel(obj,aid) {
-        window.top.art.dialog({content:'确认推荐吗？', fixed:true, style:'confirm',id:'sug_one'},
-                function(){
-                    $.get('<{site_url url='/mis/tweet/del_one_cancel_ajax/'}>?&id='+aid+'&wb_hash='+wb_hash,function(data){
                         if(data == 1) $(obj).parent().parent().fadeOut("slow");
                     })
                 },

@@ -112,8 +112,8 @@ class Uploadbatch_model extends CI_Model {
 	 * @return bool 是否执行成功
 	 */
 	public function update_info($info,$id){
-		$where="id={$id}";
-		$update_rule=$this->db->update_string('ci_mis_imgmgr', $info, $where);
+		$where="tid={$id}";
+		$update_rule=$this->db->update_string('ci_tweet', $info, $where);
 		if($this->db->query($update_rule)){
 			return true;
 		}else{
