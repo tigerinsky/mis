@@ -47,10 +47,15 @@
                 <tbody>
                 <{foreach from=$list_data item=row}>
                 <tr>
-                    <td align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['img_url']}><{else}>[无图片]<{/if}></a></td>
-                    <td width="60" align="center"><{$row['id']}></td>
-                    <td align="center"><{$img_type_list[$row['img_type']]}></td>
-                    <td align="center"><{$row['cell']}></td>
+                    <td align="center"><a target="_blank" href="<{$row['img']['t']['url']}>" ><{if <{$row['img']['s']['url']}>}><img src="<{$row['img']['t']['url']}>"/><{else}>[无图片]<{/if}></a></td>
+                    <td width="60" align="center"><{$row['tid']}></td>
+                    <td align="center"><{$row['uid']}></td>
+                    <td align="center">
+                        <select name="carlist" form="carform">
+                            <option value="volvo">素描</option>
+                            <option value="saab">头像</option>
+                        </select>
+                    </td>
                     <td align="center">
                         <select name="carlist" form="carform">
                             <option value="volvo">素描</option>
