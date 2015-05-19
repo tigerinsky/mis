@@ -92,7 +92,7 @@
 <script type="text/javascript">
     //动态修改数据
     $(document).ready(function(){
-        $("#desc").each(function(){
+        $("tr td:eq(5)").each(function(){
             $(this).dblclick(function(){
                 var inval=$(this).html();
                 var inid=$(this).attr("title");
