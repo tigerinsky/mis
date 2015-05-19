@@ -57,7 +57,6 @@ class uploadbatch extends MY_Controller{
 				$list_data[$key]['img'] = json_decode(stripslashes($value['img']),true);
 			}
 		}
-		var_dump($list_data);exit;
 		$this->load->library('form');
 		//$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
