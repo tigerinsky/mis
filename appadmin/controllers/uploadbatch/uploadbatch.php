@@ -50,6 +50,7 @@ class uploadbatch extends MY_Controller{
 		$user_num=$this->uploadbatch_model->get_count_by_parm($where);
 		$pages=pages($user_num,$page,$pagesize);
 		$list_data=$this->uploadbatch_model->get_data_by_parm($where,$limit);
+		var_dump($list_data);exit;
 		$this->load->library('form');
 		//$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
