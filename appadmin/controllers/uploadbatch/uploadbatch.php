@@ -54,7 +54,7 @@ class uploadbatch extends MY_Controller{
 		{
 			foreach($list_data as $key => $value)
 			{
-				$list_data[$key]['img'] = json_decode($value['img'],true);
+				$list_data[$key]['img'] = json_decode(stripslashes($value['img']),true);
 			}
 		}
 		var_dump($list_data);exit;
