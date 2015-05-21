@@ -107,9 +107,9 @@
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
                     if(result)
                     {
-                        $("#class_2_"+$(this).attr('title')).empty();
+                        $("#class_2_"+tid).empty();
                         $.each( result, function(index,item){
-                            $("#class_2_"+$(this).attr('title')).append("<option value='"+item.id+"'>"+item.name+"</option>");
+                            $("#class_2_"+tid).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
                         });
                     }
                 });
