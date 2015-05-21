@@ -107,6 +107,7 @@
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
                     if(result)
                     {
+                        alert($("#class_2_"+tid).val());
                         $("#class_2_"+tid).empty();
                         $.each( result, function(index,item){
                             $("#class_2_"+tid).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
