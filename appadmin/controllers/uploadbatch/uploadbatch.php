@@ -62,9 +62,10 @@ class uploadbatch extends MY_Controller{
 			foreach($list_data as $key => $value)
 			{
 				$list_data[$key]['img'] = json_decode(stripslashes($value['img']),true);
+				$list_data[$key]['s_catalog'] = $this->getClassName($list_data[$key]['s_catalog']);
 			}
 		}
-		//一级分类
+		//一二三级分类
 		$class_1 = array();
 		foreach(self::$cls as $k=>$v)
 		{
@@ -161,6 +162,24 @@ class uploadbatch extends MY_Controller{
 		if($info)
 			echo 1;
 		else echo 0;
+
+	}
+
+	//获取二级分类名称
+	private function getClassName($id)
+	{
+		foreach(self::$cls as $key=>$value)
+		{
+
+				foreach($value['catalog'] as $k=>$v)
+				{
+					if($id == $value['id'])
+					{
+						return $v['name'];
+						break;
+					}
+				}
+			}
 
 	}
 
