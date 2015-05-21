@@ -64,11 +64,11 @@
                     </td>
                     <td align="center">
                         <select onchange="add_select(<{$row['tid']}>,2)" id="class_2_<{$row['tid']}>" title="<{$row['tid']}>" name="class_2" form="carform">
-                            <{if $cla1['s_catalog']}><option value="0"><{$row['s_catalog']}></option><{else}><option value="0">暂无</option><{/if}>
+                            <{if $row['s_catalog']}><option value="0"><{$row['s_catalog']}></option><{else}><option value="0">暂无</option><{/if}>
                         </select></td>
                     <td align="center">
                         <select onchange="add_select(<{$row['tid']}>,3)" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3" form="carform">
-                            <option value="0">暂无</option>
+                            <{if $row['tags']}><option value="0"><{$row['tags']}></option><{else}><option value="0">暂无</option><{/if}>
                     </select></td>
                     <td width="220" align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
                 </tr>
