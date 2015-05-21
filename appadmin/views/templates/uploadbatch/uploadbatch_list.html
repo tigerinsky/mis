@@ -109,9 +109,11 @@
                     if(result)
                     {
                         $("#class_2_"+tt).empty();
-                        $.each( result, function(index,item){
-                            $("#class_2_"+tt).prepend("<option value='"+item.index.id+"'>"+item.index.name+"</option>");
-                        });
+                            for(var i=0,l=result.length;i<l;i++){
+                                for(var key in result[i]){
+                                    $("#class_2_"+tt).prepend("<option value='"+result[i][id]+"'>"+result[i][name]+"</option>");
+                                }
+                            }
                     }
                 });
             });
