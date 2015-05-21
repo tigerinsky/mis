@@ -55,15 +55,15 @@
                         素描
                     </td>
                     <td align="center">
-                        <select id="class_1" name="class_1" form="carform">
+                        <select id="class_1_<{$row['f_catalog']}>" name="class_1" form="carform">
+                                <option value="0">暂无</option>
                             <{foreach from=$class_1 item=cla1}>
                                  <option <{if $cla1['id']==$row['f_catalog'] }>selected = "selected"<{/if}> value="<{$cla1['id']}>"><{$cla1['name']}></option>
                             <{/foreach}>
                         </select>
                     </td>
                     <td align="center">
-                        <select name="carlist" form="carform">
-                            <option value="volvo">test</option>
+                        <select id="class_2" name="class_2" form="carform">
                             <option value="saab">test</option>
                         </select></td>
                     <td align="center">
@@ -99,6 +99,11 @@
 <script type="text/javascript">
     //动态修改数据
     $(document).ready(function(){
+        $("#class_2").each(function(){
+            $(this).click(function(){
+                alert(1);
+            });
+        })
         $("tr td:nth-child(7)").each(function(){
             $(this).dblclick(function(){
                 var inval=$(this).html();
