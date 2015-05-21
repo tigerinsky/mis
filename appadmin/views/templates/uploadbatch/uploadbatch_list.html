@@ -67,9 +67,8 @@
                             <option value="0">暂无</option>
                         </select></td>
                     <td align="center">
-                        <select name="carlist" form="carform">
-                        <option value="volvo">test</option>
-                        <option value="saab">test</option>
+                        <select id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3" form="carform">
+                            <option value="0">暂无</option>
                     </select></td>
                     <td width="220" align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
                 </tr>
@@ -99,6 +98,7 @@
 <script type="text/javascript">
     //动态修改数据
     $(document).ready(function(){
+        //二级
         $("select[name=class_1]").each(function(){
             $(this).change(function(){
                 var tt = $(this).attr('title');
@@ -110,6 +110,23 @@
                         $("#class_2_"+tt).empty();
                         $.each( dataObj, function(index,item){
                             $("#class_2_"+tt).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
+                        });
+                    }
+                });
+            });
+        })
+        //TAG
+        $("select[name=class_2]").each(function(){
+            $(this).change(function(){
+                var tt = $(this).attr('title');
+                var tid = $("#class_2_"+tt).val();
+                $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:1},function(result){
+                    if(result)
+                    {
+                        var dataObj = eval("("+result+")");
+                        $("#class_3_"+tt).empty();
+                        $.each( dataObj, function(index,item){
+                            $("#class_3_"+tt).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
                         });
                     }
                 });
