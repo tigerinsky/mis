@@ -114,7 +114,7 @@
                     }
                 });
             });
-        })
+        });
         //TAG
         $("select[name=class_2]").each(function(){
             $(this).change(function(){
@@ -126,12 +126,12 @@
                         var dataObj = eval("("+result+")");
                         $("#class_3_"+tt).empty();
                         $.each( dataObj, function(index,item){
-                            $("#class_3_"+tt).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
+                            $("#class_3_"+tt).prepend("<option value='"+item.name+"'>"+item.name+"</option>");
                         });
                     }
                 });
             });
-        })
+        });
         $("tr td:nth-child(7)").each(function(){
             $(this).dblclick(function(){
                 var inval=$(this).html();

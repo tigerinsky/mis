@@ -112,6 +112,7 @@ class uploadbatch extends MY_Controller{
 						array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
 					}
 					echo json_encode($arr);
+					break;
 				}
 			}
 		}
@@ -123,10 +124,16 @@ class uploadbatch extends MY_Controller{
 					{
 						if($id == $v['id'])
 						{
-							array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
+							foreach($v['tag_group']['tag'] as $kn=>$vn)
+							{
+
+									array_push($arr,array('name'=>$vn));
+
+							}
+							echo json_encode($arr);
+							break;
 						}
 					}
-					echo json_encode($arr);
 			}
 		}
 	}
