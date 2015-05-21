@@ -87,7 +87,7 @@ class uploadbatch extends MY_Controller{
 		$val=$this->input->post('val');
 		if(!is_numeric($tid) || empty($val))
 		{
-			echo 1;exit;
+			echo 0;exit;
 		}
 		$info = $this->uploadbatch_model->update_info(array('content'=>$val),$tid);
 		if($info)
@@ -137,6 +137,31 @@ class uploadbatch extends MY_Controller{
 					}
 			}
 		}
+	}
+
+	public function editClass()
+	{
+		$tid=$this->input->post('id');
+		$val=$this->input->post('val');
+		$class=$this->input->post('class');
+		if(!is_numeric($tid) || empty($val) || !is_numeric($class))
+		{
+			echo 0;exit;
+		}
+		$data = array();
+		if($class == 3){
+			$data['tags']	= $val;
+		}
+		elseif($class == 2){
+			$data['s_catalog']	= $val;
+		}elseif($class == 1){
+			$data['f_catalog']	= $val;
+		}
+		$info = $this->uploadbatch_model->update_info($data,$tid);
+		if($info)
+			echo 1;
+		else echo 0;
+
 	}
 
 }

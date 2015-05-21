@@ -38,9 +38,9 @@
                     <th width="40">原始名称</th>
                     <!--<th width="60">UID</th>-->
                     <th width="40">类型</th>
-                    <th width="60">一级分类(单击编辑)</th>
-                    <th width="60">二级分类(单击编辑)</th>
-                    <th width="60">Tag(单击编辑)</th>
+                    <th width="60">一级分类</th>
+                    <th width="60">二级分类(</th>
+                    <th width="60">Tag</th>
                     <th width="120">描述(双击编辑)</th>
                 </tr>
                 </thead>
@@ -55,7 +55,7 @@
                         素描
                     </td>
                     <td align="center">
-                        <select id="class_1_<{$row['tid']}>" title="<{$row['tid']}>" name="class_1" form="carform">
+                        <select onchange="add_select(<{$row['tid']}>,1)" id="class_1_<{$row['tid']}>" title="<{$row['tid']}>" name="class_1" form="carform">
                                 <option value="0">暂无</option>
                             <{foreach from=$class_1 item=cla1}>
                                  <option <{if $cla1['id']==$row['f_catalog'] }>selected = "selected"<{/if}> value="<{$cla1['id']}>"><{$cla1['name']}></option>
@@ -63,11 +63,11 @@
                         </select>
                     </td>
                     <td align="center">
-                        <select id="class_2_<{$row['tid']}>" title="<{$row['tid']}>" name="class_2" form="carform">
+                        <select onchange="add_select(<{$row['tid']}>,2)" id="class_2_<{$row['tid']}>" title="<{$row['tid']}>" name="class_2" form="carform">
                             <option value="0">暂无</option>
                         </select></td>
                     <td align="center">
-                        <select id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3" form="carform">
+                        <select onchange="add_select(<{$row['tid']}>,3)" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3" form="carform">
                             <option value="0">暂无</option>
                     </select></td>
                     <td width="220" align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
@@ -157,6 +157,21 @@
                     })
                 },
                 function(){});
+    }
+
+    function add_select(id,classid)
+    {
+        var val;
+        if(classid == 3)
+        {
+            val = $("#class_3_"+id).find("option:selected").text();
+        }else{
+            val = $("#class_"+classid+"_"+id).val();
+        }
+        $.post("<{site_url url='/uploadbatch/uploadbatch/editClass/'}>/",{id:id,val:val,class:classid},function(result){
+            if(result != 1)
+                alert("修改失败");
+        });
     }
 
     //-->
