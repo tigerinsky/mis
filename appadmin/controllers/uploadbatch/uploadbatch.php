@@ -95,11 +95,13 @@ class uploadbatch extends MY_Controller{
 		else echo 0;
 	}
 
-	public function addClass($id,$tag = null)
+	public function addClass()
 	{
+		$id=$this->input->post('id');
+		$tag=$this->input->post('tag');
 		if(empty($id)) return "";
 		$arr = array();
-		if($tag == null)
+		if($tag = "")
 		{
 			foreach(self::$cls as $key=>$value)
 			{
@@ -109,7 +111,7 @@ class uploadbatch extends MY_Controller{
 					{
 						array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
 					}
-					return $arr;
+					echo json_encode($arr);
 				}
 			}
 		}
@@ -124,7 +126,7 @@ class uploadbatch extends MY_Controller{
 							array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
 						}
 					}
-					return $arr;
+					echo json_encode($arr);
 			}
 		}
 	}

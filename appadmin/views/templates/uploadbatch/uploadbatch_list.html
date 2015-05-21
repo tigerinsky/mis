@@ -102,9 +102,13 @@
     //动态修改数据
     $(document).ready(function(){
         $("select[id=class_2]").each(function(){
-            $(this).change(function(){
-                var tid = $(this).attr('title');
-                alert(tid);
+            $(this).click(function(){
+                var tid = $("#class_1_"+$(this).attr('title')).val();
+                $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
+                    if(result)
+                        $(this).html(result);
+
+                });
             });
         })
         $("tr td:nth-child(7)").each(function(){
