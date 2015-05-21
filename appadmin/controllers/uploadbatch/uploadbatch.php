@@ -173,7 +173,7 @@ class uploadbatch extends MY_Controller{
 		{
 				foreach($value['catalog'] as $k=>$v)
 				{
-					if($id == $value['id'])
+					if($id == $v['id'])
 					{
 						return $v['name'];
 						break;
