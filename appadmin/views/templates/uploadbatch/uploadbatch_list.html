@@ -65,6 +65,8 @@
                     <td align="center">
                         <select id="class_2" name="class_2" form="carform">
                             <option value="saab">test</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
                         </select></td>
                     <td align="center">
                         <select name="carlist" form="carform">
@@ -100,7 +102,7 @@
     //动态修改数据
     $(document).ready(function(){
         $("select[id=class_2]").each(function(){
-            $(this).click(function(){
+            $(this).change(function(){
                 alert(1);
             });
         })
