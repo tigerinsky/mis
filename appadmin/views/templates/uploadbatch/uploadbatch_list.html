@@ -103,14 +103,14 @@
     $(document).ready(function(){
         $("select[name=class_2]").each(function(){
             $(this).click(function(){
-                var tid = $("#class_1_"+$(this).attr('title')).val();
+                var tt = $(this).attr('title');
+                var tid = $("#class_1_"+tt).val();
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
                     if(result)
                     {
-                        alert($("#class_2_"+tid).val());
-                        $("#class_2_"+tid).empty();
+                        $("#class_2_"+tt).empty();
                         $.each( result, function(index,item){
-                            $("#class_2_"+tid).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
+                            $("#class_2_"+tt).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
                         });
                     }
                 });
