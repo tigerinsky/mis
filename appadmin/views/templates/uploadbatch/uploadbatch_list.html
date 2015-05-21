@@ -100,7 +100,7 @@
     //动态修改数据
     $(document).ready(function(){
         $("select[name=class_1]").each(function(){
-            $(this).click(function(){
+            $(this).change(function(){
                 var tt = $(this).attr('title');
                 var tid = $("#class_1_"+tt).val();
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
