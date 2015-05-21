@@ -65,6 +65,7 @@ class uploadbatch extends MY_Controller{
 				$list_data[$key]['s_catalog'] = $this->getClassName($list_data[$key]['s_catalog']);
 			}
 		}
+		var_dump($this->getClassName(119));
 		//一二三级分类
 		$class_1 = array();
 		foreach(self::$cls as $k=>$v)
@@ -170,7 +171,6 @@ class uploadbatch extends MY_Controller{
 	{
 		foreach(self::$cls as $key=>$value)
 		{
-
 				foreach($value['catalog'] as $k=>$v)
 				{
 					if($id == $value['id'])
