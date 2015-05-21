@@ -106,8 +106,13 @@
                 var tid = $("#class_1_"+$(this).attr('title')).val();
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
                     if(result)
+                    {
+                        var html = "";
+                        $.each( result, function(index,item){
+                            html += '<option value="'+item.id+'">'+item.name+'</option>';
+                        });
                         $(this).html(result);
-
+                    }
                 });
             });
         })
