@@ -14,8 +14,8 @@ class uploadbatch extends MY_Controller{
 		// $this->mis_imgmgr['imgmgr_level_1']
 		//获取分类
 		$this->load->helper('extends');
-		$class = curl_get_contents("http://182.92.212.76/catalog/get");
-		self::$cls = json_decode($class['data'],true);
+		$class = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"),true);
+		self::$cls = $class['data'];
 
 		$this->load->library('redis');
 		$this->key_img = 'mis_img_timestamp';
