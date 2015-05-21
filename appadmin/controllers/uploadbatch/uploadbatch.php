@@ -4,7 +4,7 @@
  */
 class uploadbatch extends MY_Controller{
 
-	private static $cls;
+	public static $cls;
 
 	function __construct(){
 		parent::__construct();
