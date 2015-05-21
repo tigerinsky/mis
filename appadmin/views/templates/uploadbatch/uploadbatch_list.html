@@ -108,12 +108,11 @@
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
                     if(result)
                     {
+                        var dataObj = eval("("+result+")");
                         $("#class_2_"+tt).empty();
-                            for(var i=0,l=result.length;i<l;i++){
-                                for(var key in result[i]){
-                                    $("#class_2_"+tt).prepend("<option value='"+result[i][id]+"'>"+result[i][name]+"</option>");
-                                }
-                            }
+                        $.each( dataObj, function(index,item){
+                            $("#class_2_"+tt).prepend("<option value='"+item.id+"'>"+item.name+"</option>");
+                        });
                     }
                 });
             });
