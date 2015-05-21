@@ -55,9 +55,10 @@
                         素描
                     </td>
                     <td align="center">
-                        <select name="carlist" form="carform">
-                            <option value="volvo">test</option>
-                            <option value="saab">test</option>
+                        <select id="class_1" name="class_1" form="carform">
+                            <{foreach from=$class_1 item=cla1}>
+                                <option value="<{$cla1['id']}>"><{$cla1['name']}></option>
+                            <{/foreach}>
                         </select>
                     </td>
                     <td align="center">

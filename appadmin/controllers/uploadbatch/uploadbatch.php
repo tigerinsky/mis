@@ -4,12 +4,19 @@
  */
 class uploadbatch extends MY_Controller{
 
+	private static $cls;
+
 	function __construct(){
 		parent::__construct();
 		$this->dbr=$this->load->database('dbr',TRUE);
 //		$this->load->config('mis_imgmgr',TRUE);
 //		$this->mis_imgmgr = $this->config->item('mis_imgmgr');
 		// $this->mis_imgmgr['imgmgr_level_1']
+		//获取分类
+		$this->load->helper('extends');
+		$class = curl_get_contents("http://182.92.212.76/catalog/get");
+		self::$cls = json_decode($class['data'],true);
+
 		$this->load->library('redis');
 		$this->key_img = 'mis_img_timestamp';
 		$this->load->model('uploadbatch/uploadbatch_model','uploadbatch_model');
@@ -57,14 +64,19 @@ class uploadbatch extends MY_Controller{
 				$list_data[$key]['img'] = json_decode(stripslashes($value['img']),true);
 			}
 		}
-		 $this->addClass();
+		//一级分类
+		$class_1 = array();
+		foreach(self::$cls as $k=>$v)
+		{
+			array_push($class_1,array('id'=>$v['id'],'name'=>$v['name']));
+		}
 		$this->load->library('form');
-		//$img_type_list=array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
 		$this->smarty->assign('img_type_list',$img_type_list);
 		$this->smarty->assign('list_data',$list_data);
 		$this->smarty->assign('pages',$pages);
+		$this->smarty->assign('class_1',$class_1);
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->display('uploadbatch/uploadbatch_list.html');
 	}
@@ -83,11 +95,38 @@ class uploadbatch extends MY_Controller{
 		else echo 0;
 	}
 
-	private function addClass()
+	public function addClass($id,$tag = null)
 	{
-		$this->load->helper('extends');
-		$class = curl_get_contents("http://182.92.212.76/catalog/get");
-		var_dump($class);
+		if(empty($id)) return "";
+		$arr = array();
+		if($tag == null)
+		{
+			foreach(self::$cls as $key=>$value)
+			{
+				if($id == $value['id'])
+				{
+					foreach($value['catalog'] as $k=>$v)
+					{
+						array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
+					}
+					return $arr;
+				}
+			}
+		}
+		else
+		{
+			foreach(self::$cls as $key=>$value)
+			{
+					foreach($value['catalog'] as $k=>$v)
+					{
+						if($id == $v['id'])
+						{
+							array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
+						}
+					}
+					return $arr;
+			}
+		}
 	}
 
 }
