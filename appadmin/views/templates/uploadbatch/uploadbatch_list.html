@@ -63,7 +63,7 @@
                         </select>
                     </td>
                     <td align="center">
-                        <select id="class_2" title="<{$row['tid']}>" name="class_2" form="carform">
+                        <select id="class_2_<{$row['tid']}>" title="<{$row['tid']}>" name="class_2" form="carform">
                             <option value="saab">test</option>
                             <option value="2">2</option>
                             <option value="1">1</option>
@@ -101,15 +101,15 @@
 <script type="text/javascript">
     //动态修改数据
     $(document).ready(function(){
-        $("select[id=class_2]").each(function(){
+        $("select[name=class_2]").each(function(){
             $(this).click(function(){
                 var tid = $("#class_1_"+$(this).attr('title')).val();
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:''},function(result){
                     if(result)
                     {
-                        $(this).empty();
+                        $("#class_2_"+$(this).attr('title')).empty();
                         $.each( result, function(index,item){
-                            $(this).append("<option value='"+item.id+"'>"+item.name+"</option>");
+                            $("#class_2_"+$(this).attr('title')).append("<option value='"+item.id+"'>"+item.name+"</option>");
                         });
                     }
                 });
