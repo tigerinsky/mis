@@ -109,7 +109,8 @@ class uploadbatch extends MY_Controller{
 				{
 					foreach($value['catalog'] as $k=>$v)
 					{
-						array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
+//						array_push($arr,array('id'=>$v['id'],'name'=>$v['name']));
+						$arr[]	= array('id'=>$v['id'],'name'=>$v['name']);
 					}
 					echo json_encode($arr);
 				}
