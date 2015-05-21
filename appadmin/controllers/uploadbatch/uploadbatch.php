@@ -101,7 +101,7 @@ class uploadbatch extends MY_Controller{
 		$tag=$this->input->post('tag');
 		if(empty($id)) return "";
 		$arr = array();
-		if($tag = "")
+		if($tag == "")
 		{
 			foreach(self::$cls as $key=>$value)
 			{
