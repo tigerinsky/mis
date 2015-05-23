@@ -210,13 +210,49 @@ class push extends MY_Controller{
 		$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"',$utype);
 
 		$type_list=array('1'=>'app首页','2'=>'wap页面','3'=>'帖子详情页','4'=>'新的好友列表页','5'=>'私信详情页','6'=>'跳转到系统通知列表页');
-		$type_sel=Form::select($type_list,$info['push_type'],'id="push_type" name="push_type"');
+		if($info['type'] == 0)
+		{
+			$type = "暂无";
+		}elseif($info['type']==1)
+		{
+			$type = "app首页";
+		}elseif($info['type']==2)
+		{
+			$type = "wap页面";
+		}elseif($info['type']==3)
+		{
+			$type = "帖子详情页";
+		}elseif($info['type']==4)
+		{
+			$type = "新的好友列表页";
+		}elseif($info['type']==5)
+		{
+			$type = "私信详情页";
+		}elseif($info['type']==6)
+		{
+			$type = "跳转到系统通知列表页";
+		}
+		$type_sel=Form::select($type_list,$info['push_type'],'id="push_type" name="push_type"',$type);
 
 		$plat_list=array('0'=>'全平台','1'=>'Android','2'=>'Ios');
-		$plat_sel=Form::select($plat_list,$info['device_type'],'id="device_type" name="device_type"');
+		if($info['device_type'] == 0)
+		{
+			$palt = "全平台";
+		}elseif($info['device_type'] == 1)
+		{
+			$palt = "Android";
+		}elseif($info['device_type'] == 2)
+		{
+			$palt = 'IOS';
+		}
+		$plat_sel=Form::select($plat_list,$info['device_type'],'id="device_type" name="device_type"',$palt);
 
-		$is_broadcast_sel_list=array('0'=>'全平台','1'=>'Android','2'=>'Ios');
-		$is_broadcast_sel=Form::select($is_broadcast_sel_list,$info['is_broadcast'],'id="is_broadcast" name="is_broadcast"');
+		$is_broadcast_sel_list=array('0'=>'否','1'=>'是');
+		if($info['is_broadcast'] = 0)
+		{
+			$brodcast = "否";
+		}else $brodcast = "是";
+		$is_broadcast_sel=Form::select($is_broadcast_sel_list,$info['is_broadcast'],'id="is_broadcast" name="is_broadcast"',$brodcast);
 
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
