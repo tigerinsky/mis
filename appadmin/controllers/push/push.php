@@ -81,9 +81,22 @@ class push extends MY_Controller{
 		//学校
 		$school_type_list=$this->getSchool();
 		$school_type_sel=Form::select($school_type_list,$info['school'],'id="school" name="school"','目标学校（多选）');
+
+
+		$type_list=array('1'=>'app首页','2'=>'wap页面','3'=>'帖子详情页','4'=>'新的好友列表页','5'=>'私信详情页','6'=>'跳转到系统通知列表页');
+		$type_sel=Form::select($type_list,$info['push_type'],'id="push_type" name="push_type"');
+
+		$plat_list=array('0'=>'全平台','1'=>'Android','2'=>'Ios');
+		$plat_sel=Form::select($plat_list,$info['device_type'],'id="device_type" name="device_type"');
+
+		$is_broadcast_sel_list=array('0'=>'否','1'=>'是');
+		$is_broadcast_sel=Form::select($is_broadcast_sel_list,$info['is_broadcast'],'id="is_broadcast" name="is_broadcast"');
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('city_type_sel', $city_type_sel);
 		$this->smarty->assign('school_type_sel', $school_type_sel);
+		$this->smarty->assign('type_sel',$type_sel);
+		$this->smarty->assign('plat_sel',$plat_sel);
+		$this->smarty->assign('is_broadcast_sel',$is_broadcast_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
