@@ -55,8 +55,27 @@
 				}
 			}
 		});
+		$("#content").blur(function(){
+			var len = getByteLen($(this).val());
+			if(len > 40)
+			{
+				alert("内容长度不能大于40");
+				$(this).attr('value',"");
+				$(this).focus();
+			}
+		})
 	});
 	//-->
+		function getByteLen(val) {
+			var len = 0;
+			for (var i = 0; i < val.length; i++) {
+				if (val[i].match(/[^\x00-\xff]/ig) != null) //全角
+					len += 2;
+				else
+					len += 1;
+			}
+			return len;
+		}
 </script>
 
 <div class="pad_10">
@@ -84,7 +103,7 @@
 				</tr>
 				<tr>
 					<td width="80">内容</td>
-					<td><input type="text" name="content"  class="input-text wid300" id="content" value="<{$info['title']}>"></td>
+					<td><input type="text" name="content"  class="input-text wid300" id="content" value="<{$info['content']}>"></td>
 				</tr>
 				<tr>
 					<td width="80">url</td>
