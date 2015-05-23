@@ -205,10 +205,14 @@ class push extends MY_Controller{
 		$utype = ($info['user_type']==0)?"未认证":"认证";
 		$img_type_sel=Form::select($img_type_list,$info['user_type'],'id="user_type" name="user_type"',$utype);
 
+		$type_list=array('1'=>'app首页','2'=>'wap页面','3'=>'帖子详情页','4'=>'新的好友列表页','5'=>'私信详情页','6'=>'跳转到系统通知列表页');
+		$type_sel=Form::select($type_list,$info['push_type'],'id="push_type" name="push_type"');
+
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
 		$this->smarty->assign('info',$info);
 		$this->smarty->assign('img_type_sel',$img_type_sel);
+		$this->smarty->assign('type_sel',$type_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
