@@ -101,6 +101,10 @@ class push extends MY_Controller{
 				'school'	=> json_encode($this->input->post('school')),
 				'wap_url'		=> $this->input->post('wap_url'),
 				'content'		=> $this->input->post('content'),
+				'type'		=> $this->input->post('push_type'),
+				'tid'		=> $this->input->post('tid'),
+				'device_type'		=> $this->input->post('device_type'),
+				'is_broadcast'		=> $this->input->post('is_broadcast'),
 				'title'		=> $this->input->post('title'),
 				'time_push'	=> strtotime($this->input->post('push_time')),
 				'time_create'	=> time(),
@@ -208,11 +212,19 @@ class push extends MY_Controller{
 		$type_list=array('1'=>'app首页','2'=>'wap页面','3'=>'帖子详情页','4'=>'新的好友列表页','5'=>'私信详情页','6'=>'跳转到系统通知列表页');
 		$type_sel=Form::select($type_list,$info['push_type'],'id="push_type" name="push_type"');
 
+		$plat_list=array('0'=>'全平台','1'=>'Android','2'=>'Ios');
+		$plat_sel=Form::select($plat_list,$info['device_type'],'id="device_type" name="device_type"');
+
+		$is_broadcast_sel_list=array('0'=>'全平台','1'=>'Android','2'=>'Ios');
+		$is_broadcast_sel=Form::select($is_broadcast_sel_list,$info['is_broadcast'],'id="is_broadcast" name="is_broadcast"');
+
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
 		$this->smarty->assign('info',$info);
 		$this->smarty->assign('img_type_sel',$img_type_sel);
 		$this->smarty->assign('type_sel',$type_sel);
+		$this->smarty->assign('plat_sel',$plat_sel);
+		$this->smarty->assign('is_broadcast_sel',$is_broadcast_sel);
 		$this->smarty->assign('random_version', rand(100,999));
 		$this->smarty->assign('show_dialog','true');
 		$this->smarty->assign('show_validator','true');
@@ -243,6 +255,10 @@ class push extends MY_Controller{
 				'school'	=> json_encode($this->input->post('school')),
 				'wap_url'		=> $this->input->post('wap_url'),
 				'content'		=> $this->input->post('content'),
+				'type'		=> $this->input->post('push_type'),
+				'tid'		=> $this->input->post('tid'),
+				'device_type'		=> $this->input->post('device_type'),
+				'is_broadcast'		=> $this->input->post('is_broadcast'),
 				'title'		=> $this->input->post('title'),
 				'time_push'	=> strtotime($this->input->post('push_time')),
 				'time_create'	=> time(),
