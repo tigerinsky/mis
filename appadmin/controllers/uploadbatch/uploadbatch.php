@@ -151,7 +151,8 @@ class uploadbatch extends MY_Controller{
 		}
 		$data = array();
 		if($class == 3){
-			$data['tags']	= $val;
+			$one = $this->uploadbatch_model->get_info_by_id($tid);
+			$data['tags']	= $one['tag'].",".$val;
 		}
 		elseif($class == 2){
 			$data['s_catalog']	= $val;

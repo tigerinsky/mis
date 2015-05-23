@@ -25,6 +25,7 @@
             <input type="hidden" value="1" name="show">
             <input type="hidden" value="ok" name="dosearch">
             <input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
+            <input type="submit" id="setData" class="button" value="同步" />
         </form>
     </div>
 
@@ -69,7 +70,8 @@
                     <td align="center">
                         <select onchange="add_select(<{$row['tid']}>,3)" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3" form="carform">
                             <{if $row['tags']}><option value="0"><{$row['tags']}></option><{else}><option value="0">暂无</option><{/if}>
-                    </select></td>
+                    </select>
+                    </td>
                     <td width="220" align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
                 </tr>
                 <{foreachelse}>

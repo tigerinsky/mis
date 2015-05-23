@@ -18,7 +18,7 @@ class Uploadbatch_model extends CI_Model {
 	 * @return int $data 分会符合条件二维数组
 	 */
 	public function get_data_by_parm($where,$limit){
-		$query_data="SELECT `tid`, `uid`, `type`, `f_catalog`, `content`, `ctime`, `img`, `s_catalog`, `tags`, `img_oname` FROM ci_tweet {$where} ORDER BY tid ASC {$limit}";
+		$query_data="SELECT `tid`, `uid`, `type`, `f_catalog`, `content`, `ctime`, `img`, `s_catalog`, `tags`, `img_oname` FROM ci_tweet_offline {$where} ORDER BY tid ASC {$limit}";
 		$result_data=$this->dbr->query($query_data);
 		$list_data=$result_data->result_array();
 		return $list_data;
@@ -30,7 +30,7 @@ class Uploadbatch_model extends CI_Model {
 	 * @return int $data 返回数据的条数
 	 */
 	public function get_count_by_parm($where){
-		$query_data="SELECT count(tid) as nums FROM ci_tweet {$where}";
+		$query_data="SELECT count(tid) as nums FROM ci_tweet_offline {$where}";
 		$result_data=$this->dbr->query($query_data);
 		$row_data=$result_data->row_array();
 		return $row_data['nums'];
@@ -42,10 +42,10 @@ class Uploadbatch_model extends CI_Model {
 	 * @return int $data 返回数据内容
 	 */
 	public function get_info_by_id($id){
-		$query_data="SELECT `id`, `img_type`, `cell`, `listorder`, `title`, `img_url`, `is_deleted` FROM ci_mis_imgmgr WHERE id=?";
+		$query_data="SELECT tags,tid FROM ci_tweet_offline WHERE tid=?";
 		$result_data=$this->dbr->query($query_data,array($id));
 		$row_data=$result_data->row_array();
-		if($row_data['id']>0){
+		if($row_data['tid']>0){
 			$result=$row_data;
 		}else{
 			$result='';
@@ -113,10 +113,24 @@ class Uploadbatch_model extends CI_Model {
 	 */
 	public function update_info($info,$id){
 		$where="tid={$id}";
-		$update_rule=$this->db->update_string('ci_tweet', $info, $where);
+		$update_rule=$this->db->update_string('ci_tweet_offline', $info, $where);
 		if($this->db->query($update_rule)){
 			return true;
 		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 向数据表中写入一行数据
+	 * @param arr $info 需要插入的数据
+	 * @param bool 是否成功执行
+	 */
+	public function offline_create_info($info){
+		$insert_query=$this->db->insert_string('ci_tweet',$info);
+		if($this->db->query($insert_query)){
+			return true;
+		} else {
 			return false;
 		}
 	}
