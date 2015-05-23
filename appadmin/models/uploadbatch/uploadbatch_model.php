@@ -43,7 +43,7 @@ class Uploadbatch_model extends CI_Model {
 	 */
 	public function get_info_by_id($id){
 		$query_data="SELECT tags,tid FROM ci_tweet_offline WHERE tid=?";
-		$result_data=$this->dbr->query($query_data,array($id));
+		$result_data=$this->dbr->query($query_data);
 		$row_data=$result_data->row_array();
 		if($row_data['tid']>0){
 			$result=$row_data;
