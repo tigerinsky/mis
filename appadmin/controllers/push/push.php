@@ -105,7 +105,10 @@ class push extends MY_Controller{
 				'time_push'	=> strtotime($this->input->post('push_time')),
 				'time_create'	=> time(),
 			);
-
+			if(strlen($data['content']) > 40)
+			{
+				show_tips('内容字符长度不能超过40');
+			}
 			if( $data['citys']!='' && count($this->input->post('citys')) > 0 && count($this->input->post('school')) > 0 && $data['title']!='' && $data['time_push'] != ''){
 
 				if($this->push_model->create_info($data)){
@@ -241,6 +244,11 @@ class push extends MY_Controller{
 				'time_create'	=> time(),
 			);
 			$id = $this->input->post('id');
+
+			if(strlen($data['content']) > 40)
+			{
+				show_tips('内容字符长度不能超过40');
+			}
 
 			if( $data['citys']!='' && count($this->input->post('citys')) > 0 && count($this->input->post('school')) > 0 && $data['title']!='' && $data['time_push'] != ''){
 
