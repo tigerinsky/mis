@@ -68,9 +68,9 @@ function setDB($arr,$file)
 	{
 		die('Could not connect: ' . mysql_error());
 	}
-	mysql_select_db("amytian", $con);
-	echo "INSERT INTO ci_tweet (uid, img, img_oname) VALUES (0, '$arr',)";
-	mysql_query("INSERT INTO ci_tweet (uid, img, img_oname) VALUES (0, '$arr','$file')");
+	mysql_select_db("myb", $con);
+	echo "INSERT INTO ci_tweet_offline (uid, img, img_oname) VALUES (0, '$arr',)";
+	mysql_query("INSERT INTO ci_tweet_offline (uid, img, img_oname) VALUES (0, '$arr','$file')");
 
 	mysql_close($con);
 }
