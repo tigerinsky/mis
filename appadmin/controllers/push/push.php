@@ -100,6 +100,7 @@ class push extends MY_Controller{
 				'citys'		=> json_encode($this->input->post('citys')),
 				'school'	=> json_encode($this->input->post('school')),
 				'wap_url'		=> $this->input->post('wap_url'),
+				'content'		=> $this->input->post('content'),
 				'title'		=> $this->input->post('title'),
 				'time_push'	=> strtotime($this->input->post('push_time')),
 				'time_create'	=> time(),
