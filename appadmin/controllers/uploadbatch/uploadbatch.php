@@ -189,7 +189,10 @@ class uploadbatch extends MY_Controller{
 	{
 		//获取原始数据
 		$list = $this->uploadbatch_model->get_data_by_parm(array('is_ok'=>1));
-		var_dump($list);
+		if(!empty($list))
+		{
+
+		}
 	}
 
 }

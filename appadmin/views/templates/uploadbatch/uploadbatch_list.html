@@ -168,7 +168,7 @@
         {
             val = $("#class_3_"+id).find("option:selected").text();
         }else{
-            val = $("#class_"+classid+"_"+id).val();
+            val = $("#class_"+classid+"_"+id).find("option:selected").text();
         }
         $.post("<{site_url url='/uploadbatch/uploadbatch/editClass/'}>/",{id:id,val:val,class:classid},function(result){
             if(result != 1)

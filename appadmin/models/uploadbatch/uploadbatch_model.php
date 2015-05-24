@@ -17,8 +17,8 @@ class Uploadbatch_model extends CI_Model {
 	 * @param str $limit 条数筛选
 	 * @return int $data 分会符合条件二维数组
 	 */
-	public function get_data_by_parm($where,$limit){
-		$query_data="SELECT `tid`, `uid`, `type`, `f_catalog`, `content`, `ctime`, `img`, `s_catalog`, `tags`, `img_oname` FROM ci_tweet_offline {$where} ORDER BY tid ASC {$limit}";
+	public function get_data_by_parm($where){
+		$query_data="SELECT `tid`, `uid`, `type`, `f_catalog`, `content`, `ctime`, `img`, `s_catalog`, `tags`, `img_oname` FROM ci_tweet_offline {$where} ORDER BY tid ASC";
 		$result_data=$this->dbr->query($query_data);
 		$list_data=$result_data->result_array();
 		return $list_data;
