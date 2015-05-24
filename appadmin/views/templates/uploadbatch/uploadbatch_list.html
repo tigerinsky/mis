@@ -130,7 +130,7 @@
                         $.each( dataObj, function(index){
                             select += "<select id='s3_"+tt+"' onchange='add_select("+tt+")'><option value='1'>"+index+"类</option>";
                             var inx = dataObj[index];
-                            $(inx).each(function(ind) {
+                            $(inx).each(function(x,ind) {
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select><br>";
                         });
