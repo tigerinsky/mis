@@ -124,12 +124,12 @@
                     if(result)
                     {
                         var dataObj = eval("("+result+")");
-                        $("#class_3_"+tt).empty();
+//                        $("#class_3_"+tt).empty();
                         var select = "";
                         $.each( dataObj, function(index,item){
                             select = $("<select id='s3_"+tt+"' onchange='add_select("+tt+")'><option value='1'>"+index+"</option></option>");
-                            $.each( dataObj, function(item,it){
-                                $("#s3_"+tt).append("<option value='"+item.name+"'>"+item.name+"</option>");
+                            $.each( item, function(ix,it){
+                                $("#s3_"+tt).append("<option value='"+it.name+"'>"+it.name+"</option>");
                             })
                         });
                         $("#class_3_"+tt).html(select);
