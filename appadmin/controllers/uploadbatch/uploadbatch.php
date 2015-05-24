@@ -129,10 +129,10 @@ class uploadbatch extends MY_Controller{
 						{
 							foreach($v['tag_group'] as $kn=>$vn)
 							{
-								array_push($arr[$kn],array('key'=>$vn['name']));
+								$arr[$vn['name']] = array();
 								foreach($vn['tag'] as $kl=>$vl)
 								{
-									array_push($arr[$kn],array('name'=>$vl));
+									array_push($arr[$vn['name']],array('name'=>$vl));
 								}
 							}
 							echo json_encode($arr);
