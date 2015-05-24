@@ -28,7 +28,7 @@
         </form>
     </div>
     <div class="content-menu ib-a blue line-x">
-        <a class="add fb" href="javascript:window.top.art.dialog({id:'add',iframe:'http://182.92.212.76:8081/admin.php/push/push/push_add?', title:'添加系统推送', width:'800', height:'600', lock:true}, function(){var d = window.top.art.dialog({id:'add'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.top.art.dialog({id:'add'}).close()});void(0);"><em>同步</em></a> </div>
+        <a class="add fb" href="javascript:_push();void(0);"><em>同步</em></a> </div>
     <!--<form name="myform" id="myform" action="" method="post" >-->
 
         <div class="table-list">
@@ -173,6 +173,14 @@
         $.post("<{site_url url='/uploadbatch/uploadbatch/editClass/'}>/",{id:id,val:val,class:classid},function(result){
             if(result != 1)
                 alert("修改失败");
+        });
+    }
+
+    function _push()
+    {
+        $.post("<{site_url url='/uploadbatch/uploadbatch/pushData/'}>/",{},function(result){
+            if(result != 1)
+                alert("同步失败");
         });
     }
 

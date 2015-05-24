@@ -134,6 +134,7 @@ class Uploadbatch_model extends CI_Model {
 			return false;
 		}
 	}
+
 }
 /* End of file this file */
 ?>
