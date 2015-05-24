@@ -175,6 +175,12 @@
         $.post("<{site_url url='/uploadbatch/uploadbatch/editClass/'}>/",{id:id,val:val,class:classid},function(result){
             if(result != 1)
                 alert("修改失败");
+            else {
+                if(classid == 3)
+                {
+                    $("#class_3_"+id).html(val);
+                }
+            }
         });
     }
 
