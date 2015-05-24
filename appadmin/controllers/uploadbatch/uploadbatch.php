@@ -203,7 +203,7 @@ class uploadbatch extends MY_Controller{
 					'f_catalog'	=> $value['f_catalog'],
 					'content'	=> '',
 					'ctime'		=> $value['ctime'],
-					'img'		=> $img,
+					'img'		=> json_encode($img),
 					's_catalog'	=> $value['s_catalog'],
 					'tags'		=> $value['tags']
 				);
