@@ -142,6 +142,62 @@ class product extends MY_Controller{
 
     }
     
+    /**
+     * 测试接口
+     *
+     */
+    function get_product_by_tid(){
+    	header("Content-type:text/html;charset=utf-8");
+    	$request = $this->request_array;
+    	$response = $this->response_array;
+    	
+    	$tid = $request['tid'];
+    	$info = $this->product_model->get_info_by_tid($tid);
+    	
+    	print_r($info);
+    	$f_catalog = $info['f_catalog'];
+    	$s_catalog = $info['s_catalog'];
+    	
+    	//$info = $this->format_one($info);
+    	//获取分类
+    	$this->load->helper('extends');
+    	$catalog_data = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"), true);
+    	$catalog_data = $catalog_data['data'];
+    	//$catalog_data = json_encode($catalog_data);
+    	
+    	foreach ($catalog_data as $key1=>$value1) {
+    		if ($value1['name'] == $f_catalog) {
+    			$catalog_data_2 = $value1['catalog'];
+    			foreach ($catalog_data_2 as $key2=>$value2) {
+    				if ($value2['name'] == $s_catalog) {
+    					$tag_group = $value2['tag_group'];
+    					goto end;
+    				}
+    			}
+    		}
+    	}
+    	
+    	end:
+    	// 处理tag
+    	$tag_group = json_encode($tag_group);
+    	//print_r($tag_group);
+//     	foreach ($tag_group as $k=>$v) {
+//     		$tag = $v['tag'];
+//     		print_r($tag);
+//     	}
+    	
+    	
+//     	$result = array();
+    	
+//     	$result = $catalog_data;
+    	
+//     	$response['errno'] = 0;
+//     	$response['data']['content'] = $result;
+    	
+//     	$this->renderJson($response['errno'], $response['data']);
+    	
+    }
+    
     
     //对要闻进行单条推荐
     function sug_one_ajax(){
@@ -315,6 +371,9 @@ class product extends MY_Controller{
     	$format_info['title'] = $info['s_catalog'];
     	
     	$radio_data = array();
+    	
+    	/*
+    	
     	$tag_list = explode(',', $info['tags']);
     	if (in_array("男", $tag_list)) {
     		$radio_data['sex'] = "男";
@@ -337,7 +396,7 @@ class product extends MY_Controller{
     	} elseif (in_array("3/4", $tag_list)) {
     		$radio_data['angle'] = "3/4";
     	}
-    	
+    	 */
     	$format_info['radio_data'] = $radio_data;
     	
     	
@@ -349,15 +408,52 @@ class product extends MY_Controller{
     function product_edit(){
         $this->load->library('form');
         $tid = $this->input->get('id');
+        
+//     	$request = $this->request_array;
+//     	$response = $this->response_array;
+//         $tid = $request['id'];
+        
         $info = $this->product_model->get_info_by_tid($tid);
+        
+        $f_catalog = $info['f_catalog'];
+        $s_catalog = $info['s_catalog'];
+        $tag_list = explode(',', $info['tags']);
+        
         $info = $this->format_one($info);
-		//$info['img'] = !empty($info['img']) ? json_decode($info['img']) : array();
+        //echo json_encode($info);
+        
+        
+        //获取分类
+        $this->load->helper('extends');
+        $catalog_data = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"), true);
+        $catalog_data = $catalog_data['data'];
+        //$catalog_data = json_encode($catalog_data);
+         
+        foreach ($catalog_data as $key1=>$value1) {
+        	if ($value1['name'] == $f_catalog) {
+        		$catalog_data_2 = $value1['catalog'];
+        		foreach ($catalog_data_2 as $key2=>$value2) {
+        			if ($value2['name'] == $s_catalog) {
+        				$tag_group = $value2['tag_group'];
+        				goto end;
+        			}
+        		}
+        	}
+        }
+        
+        end:
+        // 处理tag
+        $tag_group = $tag_group;
+        $tag_count = count($tag_group);
 
         //$img_type_list = array('1'=>'素描','2'=>'色彩','3'=>'速写','4'=>'设计','5'=>'创作','6'=>'照片');
         $img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
 
         $img_type_sel=Form::select($img_type_list, $info['img_type'], 'id="img_type" name="info[img_type]"', '一级分类');
         $this->smarty->assign('info',$info);
+        $this->smarty->assign('tag_group',$tag_group);
+        $this->smarty->assign('tag_count',$tag_count);
+        $this->smarty->assign('tag_list',$tag_list);
         $this->smarty->assign('img_type_sel',$img_type_sel);
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
@@ -367,19 +463,29 @@ class product extends MY_Controller{
     
     //执行修改作品操作
     function product_edit_do(){
-    	$this->redis->set($this->key_img, time());
         $tid = $this->input->post('tid');
-        $sex = $this->input->post('sex');
-        $age = $this->input->post('age');
-        $angle = $this->input->post('angle');
+//         $sex = $this->input->post('sex');
+//         $age = $this->input->post('age');
+//         $angle = $this->input->post('angle');
         $info = $this->input->post('info');
+        
+        $tag_array = array();
+        $tag_count = $this->input->post('tag_count');
+        $data_list = range(1,intval($tag_count));
+        foreach ($data_list as $index) {
+        	$item = "tag".strval($index);
+        	$tmp_tag = $this->input->post($item);
+        	if ($tmp_tag != '-1') {
+        		array_push($tag_array, $tmp_tag);
+        	}
+        }
+        
         
         $new_info['f_catalog'] = $this->mis_imgmgr['imgmgr_level_1'][$info['img_type']];
         $new_info['s_catalog'] = $info['title'];
         $new_info['type'] = $info['type'];
         
-        $tag_list = array($sex, $age, $angle);
-        $new_info['tags'] = implode(',', $tag_list);
+        $new_info['tags'] = implode(',', $tag_array);
         
         if($new_info['f_catalog'] != '' && $new_info['s_catalog'] != '') {
             if($this->product_model->update_info($new_info, $tid)){
@@ -390,6 +496,7 @@ class product extends MY_Controller{
         }else{
             show_tips('数据不完整，请检测');
         }
+        
     }
     
     

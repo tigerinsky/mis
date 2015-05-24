@@ -44,7 +44,7 @@
             <th width="60">二级分类</th>
             <th width="120">详情</th>
             <th width="120">标签</th>
-            <th width="40">是否为素材</th>
+            <th width="60">是否为素材</th>
             <th width="80">发布时间</th>
             <th width="100">管理操作</th>
             </tr>
@@ -67,7 +67,7 @@
 			<td align="center"><{$row['type']}></td>
             <td align="center"><{$row['ctime']}></td>
             <td align="center">
-                <a href="javascript:edit(<{$row['tid']}>,'<{$row['type']}>')">修改</a> | 
+                <a href="javascript:edit('<{$row['tid']}>','<{$row['type']}>')">修改</a> | 
 			    <a href="javascript:;" onclick="del_one(this,'<{$row['tid']}>')">删除</a>
             </td>
             </tr>
@@ -157,6 +157,7 @@ function change_more_clear_del(){
 }
 
 function edit(id, img_type) {
+	console.log(id);
 	window.top.art.dialog({id:'edit'}).close();
 	window.top.art.dialog({title:'编辑信息',id:'edit',iframe:'<{site_url url='/product/product/product_edit/'}>?id='+id,width:'800',height:'600'}, function(){var d = window.top.art.dialog({id:'edit'}).data.iframe;d.document.getElementById('dosubmit').click();return false;}, function(){window.top.art.dialog({id:'edit'}).close()});
 }
