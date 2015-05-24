@@ -160,7 +160,6 @@ class uploadbatch extends MY_Controller{
 		}elseif($class == 1){
 			$data['f_catalog']	= $val;
 		}
-		$data['is_ok'] = 1;
 		$info = $this->uploadbatch_model->update_info($data,$tid);
 		if($info)
 			echo 1;
@@ -188,7 +187,7 @@ class uploadbatch extends MY_Controller{
 	public function pushData()
 	{
 		//获取原始数据
-		$list = $this->uploadbatch_model->get_data_by_parm(array('is_ok'=>1));
+		$list = $this->uploadbatch_model->get_data_by_parm(array('is_ok'=>0));
 		if(!empty($list))
 		{
 
@@ -207,9 +206,13 @@ class uploadbatch extends MY_Controller{
 					's_catalog'	=> $value['s_catalog'],
 					'tags'		=> $value['tags']
 				);
+				if($this->uploadbatch_model->offline_create_info($data))
+				{
+					$this->uploadbatch_model->update_info(array('is_ok'=>1),$value['tid']);
+				}
 			}
-			$this->uploadbatch_model->offline_create_info($data);
 		}
+		echo 1;
 	}
 
 }
