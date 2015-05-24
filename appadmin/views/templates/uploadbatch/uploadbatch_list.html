@@ -67,7 +67,7 @@
                         <select onchange="add_select(<{$row['tid']}>,2)" id="class_2_<{$row['tid']}>" title="<{$row['tid']}>" name="class_2" form="carform">
                             <{if $row['s_catalog']}><option value="0"><{$row['s_catalog']}></option><{else}><option value="0">暂无</option><{/if}>
                         </select></td>
-                    <td align="center" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3">
+                    <td align="center" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>">
 
                     </td>
                     <td width="220" align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
@@ -123,15 +123,16 @@
                 $.post("<{site_url url='/uploadbatch/uploadbatch/addClass/'}>/",{id:tid,tag:1},function(result){
                     if(result)
                     {
-                        alert(result);
                         var dataObj = eval("("+result+")");
                         $("#class_3_"+tt).empty();
+                        var select = "";
                         $.each( dataObj, function(index,item){
-                            $.each( item, function(inx,it){
-                                $("#class_3_"+tt).append('<input name="'+it.name+'" type="checkbox" value="'+it.name+'" />');
-                            }
-                            $("#class_3_"+tt).append("<br>---------------------------------");
+                            select = $("<select id='s3_"+tt+"' onchange='add_select("+tt+")'><option value='1'>"+index+"</option></option>");
+                            $.each( dataObj, function(item,it){
+                                $("#s3_"+tt).prepend("<option value='"+item.name+"'>"+item.name+"</option>");
+                            })
                         });
+                        $("#class_3_"+tt).html(select);
                     }
                 });
             });
