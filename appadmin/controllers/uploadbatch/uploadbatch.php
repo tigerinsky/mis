@@ -64,7 +64,6 @@ class uploadbatch extends MY_Controller{
 			foreach($list_data as $key => $value)
 			{
 				$list_data[$key]['img'] = json_decode(stripslashes($value['img']),true);
-				$list_data[$key]['s_catalog'] = $this->getClassName($list_data[$key]['s_catalog']);
 			}
 		}
 		//一二三级分类
@@ -75,7 +74,6 @@ class uploadbatch extends MY_Controller{
 		}
 		$this->load->library('form');
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
-		var_dump($list_data);
 		$this->smarty->assign('img_type_list',$img_type_list);
 		$this->smarty->assign('list_data',$list_data);
 		$this->smarty->assign('pages',$pages);
