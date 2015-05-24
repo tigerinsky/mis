@@ -75,7 +75,7 @@ class uploadbatch extends MY_Controller{
 		}
 		$this->load->library('form');
 		$img_type_list = $this->mis_imgmgr['imgmgr_level_1'];
-
+		var_dump($list_data);
 		$this->smarty->assign('img_type_list',$img_type_list);
 		$this->smarty->assign('list_data',$list_data);
 		$this->smarty->assign('pages',$pages);
@@ -154,7 +154,8 @@ class uploadbatch extends MY_Controller{
 		}
 		$data = array();
 		if($class == 3){
-			$data['tags']	= str_replace("undefined","",$val);
+			$tag = str_replace("undefined","",$val);
+			$data['tags']	= substr($tag,0,strlen($tag)-1);;
 		}
 		elseif($class == 2){
 			$data['s_catalog']	= $val;
