@@ -132,7 +132,7 @@
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select>&nbsp;&nbsp;&nbsp;";
                         });
-                        select += '<a class="add fb" href="javascript:add_select("'+tt+'",3);void(0);"><em>保存Tag</em></a>';
+                        select += '<br><button type="button" value="保存Tag" onclick="add_select('+tt+',3);"';
                         $("#class_3_"+tt).html(select);
                     }
                 });
