@@ -127,10 +127,10 @@
 //                        $("#class_3_"+tt).empty();
                         var select = "";
                         $.each( dataObj, function(index,item){
-                            select += "<select id='s3_"+tt+"' onchange='add_select("+tt+")'><option value='1'>"+index+"类</option>";
+                            select += "<select id='s3_"+tt+"' onchange='add_select("+tt+",3)'><option value='1'>"+index+"</option>";
                             $(item).each(function(x,ind) {
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
-                            select += "</select><br>";
+                            select += "</select>&nbsp;&nbsp;&nbsp;";
                         });
                         $("#class_3_"+tt).html(select);
                     }
