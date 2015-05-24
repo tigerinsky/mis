@@ -197,7 +197,6 @@ class uploadbatch extends MY_Controller{
 				$img = json_decode($value['img'],true);
 				$img['content'] = $value['content'];
 				$data = array(
-					'tid'		=> $value['tid'],
 					'uid'		=> $value['uid'],
 					'type'		=> $value['type'],
 					'f_catalog'	=> $value['f_catalog'],
