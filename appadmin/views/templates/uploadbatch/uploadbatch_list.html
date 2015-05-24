@@ -129,7 +129,10 @@
                         var dataObj = eval("("+result+")");
                         $("#class_3_"+tt).empty();
                         $.each( dataObj, function(index,item){
-                            $("#class_3_"+tt).prepend("<option value='"+item.name+"'>"+item.name+"</option>");
+                            $.each( item, function(inx,it){
+                                $("#class_3_"+tt).append('<input name="'+it.name+'" type="checkbox" value="'+it.name+'" />');
+                            }
+                            $("#class_3_"+tt).append("<br>---------------------------------");
                         });
                     }
                 });
