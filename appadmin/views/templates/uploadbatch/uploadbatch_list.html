@@ -128,9 +128,8 @@
                         var select = "";
                         $.each( dataObj, function(index,item){
                             select += "<select id='s3_"+tt+"' onchange='add_select("+tt+")'><option value='1'>"+index+"类</option>";
-                            $.each( index, function(ix,it){
-                                select += "<option value='"+it.name+"'>"+it.name+"</option>";
-                            })
+                            $(item.index).each(function(ind) {
+                                select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select><br>";
                         });
                         $("#class_3_"+tt).html(select);
