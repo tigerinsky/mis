@@ -142,6 +142,29 @@ class product extends MY_Controller{
 
     }
     
+    /**
+     * 测试接口
+     *
+     */
+    function get_product_by_tid(){
+    	$request = $this->request_array;
+    	$response = $this->response_array;
+    	
+    	$tid = $this->input->get('tid');
+    	$info = $this->product_model->get_info_by_tid($tid);
+    	$info = $this->format_one($info);
+    	
+    	$result = array();
+    	
+    	$result = $info;
+    	
+    	$response['errno'] = 0;
+    	$response['data']['content'] = $result;
+    
+    	$this->renderJson($response['errno'], $response['data']);
+    
+    }
+    
     
     //对要闻进行单条推荐
     function sug_one_ajax(){
