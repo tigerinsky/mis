@@ -152,7 +152,7 @@ class uploadbatch extends MY_Controller{
 		$data = array();
 		if($class == 3){
 			$one = $this->uploadbatch_model->get_info_by_id($tid);
-			if(!$one) $one['tags'] = "";
+			if(!$one['tags']) $one['tags'] = "";
 			$data['tags']	= $one['tags'].",".$val;
 		}
 		elseif($class == 2){
@@ -192,6 +192,23 @@ class uploadbatch extends MY_Controller{
 		if(!empty($list))
 		{
 
+			foreach($list as $key=>$value)
+			{
+				$img = json_decode($value['img'],true);
+				$img['content'] = $value['content'];
+				$data = array(
+					'tid'		=> $value['tid'],
+					'uid'		=> $value['uid'],
+					'type'		=> $value['type'],
+					'f_catalog'	=> $value['f_catalog'],
+					'content'	=> '',
+					'ctime'		=> $value['ctime'],
+					'img'		=> $img,
+					's_catalog'	=> $value['s_catalog'],
+					'tags'		=> $value['tags']
+				);
+			}
+			$this->uploadbatch_model->offline_create_info($data);
 		}
 	}
 
