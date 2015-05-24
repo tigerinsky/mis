@@ -132,7 +132,7 @@
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select>&nbsp;&nbsp;&nbsp;";
                         });
-                        select += '<br><button type="button" value="" onclick="add_select('+tt+',3);">保存Tag</button>';
+                        select += '<br><br><button type="button" value="" onclick="add_select('+tt+',3);">保存Tag</button>';
                         $("#class_3_"+tt).html(select);
                     }
                 });
@@ -167,12 +167,13 @@
 
     function add_select(id,classid)
     {
-        var val;
+        var val = "";
         if(classid == 3)
         {
             $("#class_3_"+id+" select").each(function(){
                 val += $(this).find("option:selected").text()+",";
             })
+            val.replace("undefined","");
         }else{
             val = $("#class_"+classid+"_"+id).find("option:selected").text();
         }
