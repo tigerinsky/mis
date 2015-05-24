@@ -67,10 +67,8 @@
                         <select onchange="add_select(<{$row['tid']}>,2)" id="class_2_<{$row['tid']}>" title="<{$row['tid']}>" name="class_2" form="carform">
                             <{if $row['s_catalog']}><option value="0"><{$row['s_catalog']}></option><{else}><option value="0">暂无</option><{/if}>
                         </select></td>
-                    <td align="center">
-                        <select onchange="add_select(<{$row['tid']}>,3)" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3" form="carform">
-                            <{if $row['tags']}><option value="0"><{$row['tags']}></option><{else}><option value="0">暂无</option><{/if}>
-                    </select>
+                    <td align="center" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>" name="class_3">
+
                     </td>
                     <td width="220" align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
                 </tr>
