@@ -161,6 +161,7 @@ class uploadbatch extends MY_Controller{
 		}elseif($class == 1){
 			$data['f_catalog']	= $val;
 		}
+		$data['ctime']	= time();
 		$info = $this->uploadbatch_model->update_info($data,$tid);
 		if($info)
 			echo 1;
