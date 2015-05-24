@@ -173,7 +173,6 @@
             $("#class_3_"+id+" select").each(function(){
                 val += $(this).find("option:selected").text()+",";
             })
-            val.replace("undefined","");
         }else{
             val = $("#class_"+classid+"_"+id).find("option:selected").text();
         }

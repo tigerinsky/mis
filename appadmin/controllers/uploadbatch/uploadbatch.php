@@ -154,7 +154,7 @@ class uploadbatch extends MY_Controller{
 		}
 		$data = array();
 		if($class == 3){
-			$data['tags']	= $val;
+			$data['tags']	= str_replace("undefined","",$val);
 		}
 		elseif($class == 2){
 			$data['s_catalog']	= $val;
