@@ -68,7 +68,7 @@
                             <{if $row['s_catalog']}><option value="0"><{$row['s_catalog']}></option><{else}><option value="0">暂无</option><{/if}>
                         </select></td>
                     <td align="center" id="class_3_<{$row['tid']}>" title="<{$row['tid']}>">
-
+                        <{$row['tags']}>
                     </td>
                     <td align="center" title="<{$row['tid']}>" id="desc"><{$row['content']}></td>
                 </tr>
