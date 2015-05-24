@@ -14,8 +14,10 @@ class uploadbatch extends MY_Controller{
 		// $this->mis_imgmgr['imgmgr_level_1']
 		//获取分类
 		$this->load->helper('extends');
-		$class = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"),true);
-		self::$cls = $class['data'];
+		if(!self::$cls){
+			$class = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"),true);
+			self::$cls = $class['data'];
+		}
 
 		$this->load->library('redis');
 		$this->key_img = 'mis_img_timestamp';
@@ -127,9 +129,10 @@ class uploadbatch extends MY_Controller{
 						{
 							foreach($v['tag_group'] as $kn=>$vn)
 							{
+								array_push($arr[$kn],array('key'=>$vn['name']));
 								foreach($vn['tag'] as $kl=>$vl)
 								{
-									array_push($arr,array('name'=>$vl));
+									array_push($arr[$kn],array('name'=>$vl));
 								}
 							}
 							echo json_encode($arr);
