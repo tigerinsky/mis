@@ -129,7 +129,7 @@
                         $.each( dataObj, function(index,item){
                             select = $("<select id='s3_"+tt+"' onchange='add_select("+tt+")'><option value='1'>"+index+"</option></option>");
                             $.each( dataObj, function(item,it){
-                                $("#s3_"+tt).prepend("<option value='"+item.name+"'>"+item.name+"</option>");
+                                $("#s3_"+tt).append("<option value='"+item.name+"'>"+item.name+"</option>");
                             })
                         });
                         $("#class_3_"+tt).html(select);
