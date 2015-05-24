@@ -127,11 +127,12 @@
 //                        $("#class_3_"+tt).empty();
                         var select = "";
                         $.each( dataObj, function(index,item){
-                            select += "<select id='s3_"+tt+"' onchange='add_select("+tt+",3)'><option value='1'>"+index+"</option>";
+                            select += "<select id='s3_"+tt+"'><option value='1'>"+index+"</option>";
                             $(item).each(function(x,ind) {
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select>&nbsp;&nbsp;&nbsp;";
                         });
+                        select += '<a class="add fb" href="javascript:add_select("'+tt+'",3);void(0);"><em>保存Tag</em></a>';
                         $("#class_3_"+tt).html(select);
                     }
                 });
@@ -169,7 +170,9 @@
         var val;
         if(classid == 3)
         {
-            val = $("#class_3_"+id).find("option:selected").text();
+            $("#class_3_"+id+" select").each(function(){
+                val += $(this).find("option:selected").text()+",";
+            })
         }else{
             val = $("#class_"+classid+"_"+id).find("option:selected").text();
         }
