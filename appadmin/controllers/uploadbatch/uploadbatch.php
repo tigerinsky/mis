@@ -130,6 +130,7 @@ class uploadbatch extends MY_Controller{
 								$arr[$vn['name']] = array();
 								foreach($vn['tag'] as $vp)
 								{
+									if($vp)
 									array_push($arr[$vn['name']],array('name'=>$vp));
 								}
 							}
@@ -155,8 +156,14 @@ class uploadbatch extends MY_Controller{
 		}
 		$data = array();
 		if($class == 3){
-			$tag = str_replace("undefined","",$val);
-			$data['tags']	= substr($tag,0,strlen($tag)-1);;
+			if($val != ',')
+			{
+				$tag = str_replace("undefined","",$val);
+				$data['tags']	= substr($tag,0,strlen($tag)-1);
+			}else{
+				$data['tags'] = "";
+			}
+
 		}
 		elseif($class == 2){
 			$data['s_catalog']	= $val;
