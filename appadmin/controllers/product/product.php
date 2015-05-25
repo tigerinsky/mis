@@ -147,6 +147,12 @@ class product extends MY_Controller{
      *
      */
     function get_product_by_tid(){
+    	
+    	// 获取tweet id
+//     	$this->load->library('uidclient');
+//     	$tid = strval($this->uidclient->get_id());
+//     	echo $tid;
+    	
     	header("Content-type:text/html;charset=utf-8");
     	$request = $this->request_array;
     	$response = $this->response_array;
@@ -154,7 +160,6 @@ class product extends MY_Controller{
     	$tid = $request['tid'];
     	$info = $this->product_model->get_info_by_tid($tid);
     	
-    	print_r($info);
     	$f_catalog = $info['f_catalog'];
     	$s_catalog = $info['s_catalog'];
     	
