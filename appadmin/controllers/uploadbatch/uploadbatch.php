@@ -18,7 +18,7 @@ class uploadbatch extends MY_Controller{
 			$class = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"),true);
 			self::$cls = $class['data'];
 		}
-
+		$this->load->library('uidclient');
 		$this->load->library('redis');
 		$this->key_img = 'mis_img_timestamp';
 		$this->load->model('uploadbatch/uploadbatch_model','uploadbatch_model');
@@ -203,9 +203,8 @@ class uploadbatch extends MY_Controller{
 		{
 			foreach($list as $key=>$value)
 			{
-				if($value['content'] && $value['f_catalog'] && $value['s_catalog'] && $value['tags'])
+				if($value['content'] !="" && $value['f_catalog']!="" && $value['s_catalog']!="" && $value['tags']!="")
 				{
-					$this->load->library('uidclient');
 					$tid = strval($this->uidclient->get_id());
 					$img = json_decode($value['img'],true);
 					$img['content'] = $value['content'];
