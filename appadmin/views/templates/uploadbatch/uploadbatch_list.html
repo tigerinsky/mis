@@ -123,7 +123,8 @@
 //                        $("#class_3_"+tt).empty();
                         var select = "";
                         $.each( dataObj, function(index,item){
-                            select += "<select id='s3_"+tt+"'><option value='1'>"+index+"</option>";
+                            if(index) select += index+":";
+                            select += "<select id='s3_"+tt+"'>";
                             $(item).each(function(x,ind) {
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select>&nbsp;&nbsp;&nbsp;";
@@ -167,7 +168,9 @@
         if(classid == 3)
         {
             $("#class_3_"+id+" select").each(function(){
-                val += $(this).find("option:selected").text()+",";
+                var sval = $(this).find("option:selected").text();
+                if(sval)
+                    val += sval+",";
             })
         }else{
             val = $("#class_"+classid+"_"+id).find("option:selected").text();
