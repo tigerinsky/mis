@@ -168,7 +168,9 @@
         if(classid == 3)
         {
             $("#class_3_"+id+" select").each(function(){
-                val += $(this).find("option:selected").text()+",";
+                var sval = $(this).find("option:selected").text();
+                if(sval)
+                    val += sval+",";
             })
         }else{
             val = $("#class_"+classid+"_"+id).find("option:selected").text();
