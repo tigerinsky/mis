@@ -201,24 +201,29 @@ class uploadbatch extends MY_Controller{
 		$list = $this->uploadbatch_model->get_data_by_parm(array('is_ok'=>0));
 		if(!empty($list))
 		{
-
 			foreach($list as $key=>$value)
 			{
-				$img = json_decode($value['img'],true);
-				$img['content'] = $value['content'];
-				$data = array(
-					'uid'		=> $value['uid'],
-					'type'		=> $value['type'],
-					'f_catalog'	=> $value['f_catalog'],
-					'content'	=> '',
-					'ctime'		=> $value['ctime'],
-					'img'		=> json_encode($img),
-					's_catalog'	=> $value['s_catalog'],
-					'tags'		=> $value['tags']
-				);
-				if($this->uploadbatch_model->offline_create_info($data))
+				if($value['content'] && $value['f_catalog'] && $value['s_catalog'] && $value['tags'])
 				{
-					$this->uploadbatch_model->update_info(array('is_ok'=>1),$value['tid']);
+					$this->load->library('uidclient');
+					$tid = strval($this->uidclient->get_id());
+					$img = json_decode($value['img'],true);
+					$img['content'] = $value['content'];
+					$data = array(
+						'tid'		=> $tid,
+						'uid'		=> $value['uid'],
+						'type'		=> $value['type'],
+						'f_catalog'	=> $value['f_catalog'],
+						'content'	=> '',
+						'ctime'		=> $value['ctime'],
+						'img'		=> json_encode($img),
+						's_catalog'	=> $value['s_catalog'],
+						'tags'		=> $value['tags']
+					);
+					if($this->uploadbatch_model->offline_create_info($data))
+					{
+						$this->uploadbatch_model->update_info(array('is_ok'=>1),$value['tid']);
+					}
 				}
 			}
 		}
