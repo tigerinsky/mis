@@ -123,7 +123,8 @@
 //                        $("#class_3_"+tt).empty();
                         var select = "";
                         $.each( dataObj, function(index,item){
-                            select += "<select id='s3_"+tt+"'><option value='1'>"+index+"</option>";
+                            select += index+":";
+                            select += "<select id='s3_"+tt+"'>";
                             $(item).each(function(x,ind) {
                                 select += "<option value='"+ind.name+"'>"+ind.name+"</option>";                                           });
                             select += "</select>&nbsp;&nbsp;&nbsp;";
