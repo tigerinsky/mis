@@ -198,7 +198,7 @@ class uploadbatch extends MY_Controller{
 	public function pushData()
 	{
 		//获取原始数据
-		$list = $this->uploadbatch_model->get_data_by_parm(array('is_ok'=>0));
+		$list = $this->uploadbatch_model->get_data_by_parm("'is_ok' = 0");
 		if(!empty($list))
 		{
 			foreach($list as $key=>$value)
