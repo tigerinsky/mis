@@ -36,7 +36,7 @@ class uploadbatch extends MY_Controller{
 		$dosearch=$this->input->get('dosearch');
 
 		$search_arr['is_del']=0;
-		$where_array[]="is_del=0";
+		$where_array[]="is_ok=0";
 
 		if($dosearch=='ok'){
 
