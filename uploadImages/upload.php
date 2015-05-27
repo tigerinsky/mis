@@ -69,6 +69,7 @@ function setDB($arr,$file)
 		die('Could not connect: ' . mysql_error());
 	}
 	mysql_select_db("myb", $con);
+	mysql_query("set names 'utf8mb4'");
 	echo "INSERT INTO ci_tweet_offline (uid, img, img_oname) VALUES (0, '$arr',)";
 	mysql_query("INSERT INTO ci_tweet_offline (uid, img, img_oname) VALUES (0, '$arr','$file')");
 
