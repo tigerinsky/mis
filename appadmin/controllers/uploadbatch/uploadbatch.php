@@ -204,7 +204,7 @@ class uploadbatch extends MY_Controller{
 		         {
 		             foreach($list as $key=>$value)
 			             {
-			                 if( $value['f_catalog']!="" && $value['s_catalog']!="" && $value['tags']!="")
+			                 if( $value['f_catalog']!="" && $value['s_catalog']!="")
 				                 {
 				                     $tid = strval($this->uidclient->get_id());
                      $img = json_decode($value['img'],true);
