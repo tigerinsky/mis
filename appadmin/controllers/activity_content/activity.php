@@ -9,7 +9,7 @@ class activity extends MY_Controller{
         $this->dbr=$this->load->database('dbr',TRUE);
         $this->load->library('redis');
         $this->key_img = 'mis_img_timestamp';
-        $this->load->model('activity/activity_model', 'activity_model');
+        $this->load->model('activity_content/activity_model', 'activity_model');
     }
     
     //默认调用控制器
