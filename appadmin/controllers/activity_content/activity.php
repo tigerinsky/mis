@@ -24,7 +24,7 @@ class activity extends MY_Controller{
         $page = max(intval($page),1);
         $dosearch = $this->input->get('dosearch');
         
-        $where_array[] = "";
+        $where_array = array();
         
         if($dosearch == 'ok'){
             
