@@ -260,7 +260,7 @@ class activity extends MY_Controller{
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
         $this->smarty->assign('show_validator','true');
-        $this->smarty->display('activity/activity_add.html');
+        $this->smarty->display('activity_content/activity_add.html');
     }
     
     // 执行添加活动操作
@@ -300,7 +300,7 @@ class activity extends MY_Controller{
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
         $this->smarty->assign('show_validator','true');
-        $this->smarty->display('activity/activity_edit.html');
+        $this->smarty->display('activity_content/activity_edit.html');
     }
     
     // 执行修改活动操作
