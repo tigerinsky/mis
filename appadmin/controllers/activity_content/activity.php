@@ -24,8 +24,7 @@ class activity extends MY_Controller{
         $page = max(intval($page),1);
         $dosearch = $this->input->get('dosearch');
         
-        $search_arr['is_deleted'] = 1;
-        $where_array[] = "is_deleted=1";
+        $where_array[] = "";
         
         if($dosearch == 'ok'){
             
@@ -33,7 +32,7 @@ class activity extends MY_Controller{
 
             if($keywords != ''){
                 $search_arr['keywords'] = $keywords;
-                $where_array[] = "name like '%{$keywords}%'";        
+                $where_array[] = "title like '%{$keywords}%'";
             }
 
         }
