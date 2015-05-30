@@ -38,7 +38,7 @@ class activity extends MY_Controller{
         }
 
         if(is_array($where_array) and count($where_array)>0){
-            $where = ' WHERE '.join(' AND ',$where_array);
+            $where = ' WHERE '. join(' AND ',$where_array);
         }
 
         $pagesize = 10;
