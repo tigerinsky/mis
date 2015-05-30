@@ -32,7 +32,7 @@ class activity extends MY_Controller{
 
             if($keywords != ''){
                 $search_arr['keywords'] = $keywords;
-                $where_array[] = "title like '%{$keywords}%'";
+                 $where_array[] = "title like '%{$keywords}%'";
             }
 
         }
