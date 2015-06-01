@@ -131,8 +131,8 @@
         arr.push(UE.getEditor('editor').getPlainTxt());
         alert(arr.join('\n'))
     }
-    function setContent(isAppendTo) {
-        UE.getEditor('editor').setContent("<{$info['content']}>", isAppendTo);
+    function setContent() {
+        UE.getEditor('editor').setContent("<{$info['content']}>");
     }
     setContent();
     function setDisabled() {
