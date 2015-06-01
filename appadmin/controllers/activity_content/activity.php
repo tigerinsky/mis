@@ -53,7 +53,7 @@ class activity extends MY_Controller{
         $this->smarty->assign('search_arr',$search_arr);
         $this->smarty->assign('list_data',$list_data);
         $this->smarty->assign('pages',$pages);
-         $this->smarty->assign('show_dialog','true');
+          $this->smarty->assign('show_dialog','true');
         $this->smarty->display('activity_content/activity_list.html');
     }
 
