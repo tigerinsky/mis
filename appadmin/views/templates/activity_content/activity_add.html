@@ -77,9 +77,10 @@
                     <td width="80">内容</td>
                     <td>
                         <script id="editor" type="text/plain" style="width:670px;height:250px;"></script>
-                        <input type="hidden" id="_content" value="" name="info[content]" />
+
                     </td>
                 </tr>
+                <input type="hidden" id="s_content" value="" name="info[content]" />
 			</table>
 		    <div class="bk15"></div>
 		    <input type="submit" class="dialog" id="dosubmit" name="dosubmit" value="提交"/>
@@ -95,7 +96,7 @@
 
     function doBlur(){
         um.blur();
-        $("#_content").val(editor.getContent());
+        $("#s_content").val(editor.getContent());
     }
 
     function isFocus(e){
