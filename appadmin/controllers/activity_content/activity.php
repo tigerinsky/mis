@@ -299,18 +299,11 @@ class activity extends MY_Controller{
     // 执行修改活动操作
     function activity_edit_do(){
     	$this->redis->set($this->key_img, time());
-        $id = $this->input->post('id');
         $info = $this->input->post('info');
-		$this->load->library('oss');
-		$pic = $this->input->post('pic');
-        $info['img_url'] = $pic[0];
+        $id = $this->input->post('id');
+        $info['content'] = $this->input->post('editorValue');
         
-        $online_time = strtotime($this->input->post('online_time'));
-        $offline_time = strtotime($this->input->post('offline_time'));
-        $info['online_time'] = $online_time;
-        $info['offline_time'] = $offline_time;
-        
-        if($info['name'] != '' && $info['jump_url'] != '') {
+        if($info['title'] != '' && $info['content'] != '') {
             if($this->activity_model->update_info($info, $id)){
                 show_tips('操作成功','','','edit');
             }else{
