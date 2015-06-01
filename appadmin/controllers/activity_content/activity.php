@@ -268,7 +268,7 @@ class activity extends MY_Controller{
     	$this->redis->set($this->key_img, time());
     	
         $info = $this->input->post('info');
-        var_dump($info);exit;
+        var_dump($_POST);exit;
     	$online_time = strtotime($this->input->post('online_time'));
     	$offline_time = strtotime($this->input->post('offline_time'));
     	$info['online_time'] = $online_time;
