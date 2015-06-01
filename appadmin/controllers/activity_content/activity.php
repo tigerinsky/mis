@@ -268,19 +268,11 @@ class activity extends MY_Controller{
     	$this->redis->set($this->key_img, time());
     	
         $info = $this->input->post('info');
-        var_dump($_POST);exit;
-    	$online_time = strtotime($this->input->post('online_time'));
-    	$offline_time = strtotime($this->input->post('offline_time'));
-    	$info['online_time'] = $online_time;
-    	$info['offline_time'] = $offline_time;
-    	
-        $pic  = $this->input->post('pic');
-        log_message('debug', '*****************[test]******************img_add_do');
-        log_message('debug', $pic[0]);
+        $info['content'] = $this->input->post('editorValue');
+
+
 		
-        $info['img_url'] = $pic[0];
-		
-        if( $info['name']!='' && $info['jump_url'] != ''){
+        if( $info['title']!='' && $info['content'] != ''){
             if($this->activity_model->create_info($info)){
                 show_tips('操作成功','','','add');
             }else{
