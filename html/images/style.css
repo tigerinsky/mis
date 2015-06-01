@@ -12,7 +12,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 body {
     line-height: 1;
-    width: 640px;
+    width: 100%;
 }
 
 ol, ul {
@@ -75,7 +75,7 @@ a {
 }
 
 .order {
-    width: 620px;
+    width: 98%;
     height: auto;
     border: 1px solid #e3e3e3;
     margin: 0 10px 0 10px;
@@ -91,13 +91,14 @@ a {
 
 .order ul li .img {
     float: left;
-    width: 214px;
+    width: 35%;
+    overflow: hidden;
 }
 
 .order ul li .desc {
     float: left;
-    padding-left: 20px;
-    width: 340px;
+    padding-left: 4%;
+    width: 60%;
 }
 
 .order ul li .desc h1 {
@@ -121,9 +122,9 @@ a {
 }
 
 #header ul li {
-    width: 620px;
-    height: 160px;
+    width: 100%;
     margin-bottom: 20px;
     overflow: hidden;
     display: block;
 }
+#header ul li  a img{ width: 100%;}
