@@ -107,8 +107,7 @@
         UE.dom.domUtils.preventDefault(e)
     }
     function insertHtml() {
-        var value = prompt("<{$info['content']}>", '');
-        UE.getEditor('editor').execCommand('insertHtml', value)
+        UE.getEditor('editor').execCommand('insertHtml', "<{$info['content']}>")
     }
     function createEditor() {
         enableBtn();
@@ -145,7 +144,6 @@
         UE.getEditor('editor').setEnabled();
         enableBtn();
     }
-    insertHtml();
     function getText() {
         //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
         var range = UE.getEditor('editor').selection.getRange();
