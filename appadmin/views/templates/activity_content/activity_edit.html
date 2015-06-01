@@ -57,6 +57,7 @@
 
 <div class="pad_10">
     <div class="common-form">
+        <script>setContent();</script>
         <form name="myform" action="<{site_url url='/activity_content/activity/activity_edit_do/'}>" enctype="multipart/form-data"  method="post" id="myform">
             <input type="hidden" name="id" value="<{$info['id']}>">
             <table width="100%" class="table_form contentWrap">
@@ -134,9 +135,8 @@
     }
     function setContent(isAppendTo) {
         var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
+        arr.push("<{$info['content']}>");
+        UE.getEditor('editor').setContent(arr, isAppendTo);
     }
     function setDisabled() {
         UE.getEditor('editor').setDisabled('fullscreen');
