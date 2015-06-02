@@ -328,12 +328,6 @@ class push extends MY_Controller{
 			if( $data['citys']!='' && count($this->input->post('citys')) > 0 && count($this->input->post('school')) > 0 && $data['title']!='' && $data['time_push'] != ''){
 
 				if($this->push_model->edit_info($data,$id)){
-					$this->load->library('offclient');
-					$data['url'] = $data['wap_url'];
-					$data['send_time'] = $data['time_push'];
-					$data['city'] = $data['citys'];
-					$data['ukind_verify'] = $data['user_type'];
-					$this->offclient->MisPushEvent($data);
 					show_tips('操作成功','','','add');
 				}else{
 					show_tips('操作异常');
