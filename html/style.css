@@ -94,6 +94,9 @@ a {
     padding-bottom: 20px;
 
 }
+
+.rich_media_thumb{  width: 100%;
+    margin-bottom: 6px;}
 .rich_media_thumb_wrp .list-paddingleft-2 {
     padding-left: 30px;
 }
