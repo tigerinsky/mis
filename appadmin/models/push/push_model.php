@@ -193,6 +193,18 @@ class Push_model extends CI_Model {
 			return false;
 		}
 	}
+
+	public function get_info_by_lastid(){
+		$query_data="SELECT id FROM ci_app_push order by id DESC limit 1";
+		$result_data=$this->dbr->query($query_data);
+		$row_data=$result_data->row_array();
+		if($row_data['id']>0){
+			$result=$row_data;
+		}else{
+			$result='';
+		}
+		return $result;
+	}
 }
 /* End of file this file */
 ?>
