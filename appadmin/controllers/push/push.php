@@ -146,7 +146,7 @@ class push extends MY_Controller{
 					$this->offclient->MisPushEvent($data);
 					show_tips('操作成功','','','add');
 				}else{
-					show_tips('操作异常');
+					 show_tips('操作异常');
 				}
 			}else{
 				show_tips('数据不完整，请检测');
