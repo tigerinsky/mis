@@ -135,7 +135,7 @@ class push extends MY_Controller{
 					$data['send_time'] = $data['time_push'];
 					$data['push_task_id'] = $id['id'];
 					$data['ukind_verify'] = $data['user_type'];
-					$data['city'] = $data['school'] = array();
+					$data['city'] = $data['school'] = "";
 					foreach(json_decode($id['citys'],true) as $val)
 					{
 						$data['city'] .= $this->getCity($val).",";
