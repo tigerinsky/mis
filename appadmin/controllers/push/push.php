@@ -136,7 +136,8 @@ class push extends MY_Controller{
 					$data['push_task_id'] = $id['id'];
 					$data['ukind_verify'] = $data['user_type'];
 					$data['city'] = $data['school'] = "";
-					var_dump(json_decode($id['citys']),true);exit;
+					var_dump($id);
+					var_dump(json_decode($id['citys']),true);;
 					var_dump(json_decode($id['school']),true);exit;
 					foreach(json_decode($id['citys'],true) as $val)
 					{
