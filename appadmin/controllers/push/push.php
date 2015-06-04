@@ -144,7 +144,6 @@ class push extends MY_Controller{
 					{
 						$data['school'] .= $this->getSchool($val).",";
 					}
-					var_dump($data);exit;
 					$this->offclient->MisPushEvent($data);
 					show_tips('操作成功','','','add');
 				}else{
