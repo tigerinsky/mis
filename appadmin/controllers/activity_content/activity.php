@@ -327,4 +327,19 @@ class activity extends MY_Controller{
         echo $ret;
     }
 
+    function detail()
+    {
+        $tweet_id=intval($this->input->get('id'));
+        if($tweet_id>0) {
+            if($rs = $this->activity_model->get_info_by_id($tweet_id)){
+                $this->smarty->assign('data',$rs);
+                $this->smarty->display('activity_content/activity_content.html');
+            }else{
+                echo 0;
+            }
+        } else {
+            echo 0;
+        }
+    }
+
 }
