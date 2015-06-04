@@ -336,10 +336,10 @@ class activity extends MY_Controller{
                 $this->smarty->assign('data',$rs);
                 $this->smarty->display('activity_content/activity_content.html');
             }else{
-                echo 2;
+                echo 0;
             }
         } else {
-            echo 3;
+            echo 0;
         }
     }
 
