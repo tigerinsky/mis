@@ -107,7 +107,7 @@
         UE.dom.domUtils.preventDefault(e)
     }
     function insertHtml() {
-        var value = prompt("<{$info['content']}>", '');
+        var value = prompt('<{$info['content']}>', '');
         UE.getEditor('editor').execCommand('insertHtml', value)
     }
     function createEditor() {
