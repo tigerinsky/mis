@@ -135,14 +135,15 @@ class push extends MY_Controller{
 					$data['send_time'] = $data['time_push'];
 					$data['push_task_id'] = $id['id'];
 					$data['ukind_verify'] = $data['user_type'];
-					foreach($this->input->post('citys') as $val)
+					foreach(json_decode($id['citys'],true) as $val)
 					{
 						$data['city'] .= $this->getCity($val).",";
 					}
-					foreach($this->input->post('school') as $val)
+					foreach(json_decode($id['school'],true) as $val)
 					{
 						$data['school'] .= $this->getSchool($val).",";
 					}
+					var_dump($data);exit;
 					$this->offclient->MisPushEvent($data);
 					show_tips('操作成功','','','add');
 				}else{
