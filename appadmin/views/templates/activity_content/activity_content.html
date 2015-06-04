@@ -15,14 +15,14 @@
     <link rel="stylesheet" type="text/css" href="<{site_url url='/public/css/style.css'}>"/>
 </head>
 <body>
-<div class="rich_media_title"><{$title}></div>
+<div class="rich_media_title"><{$data['title']}></div>
 <div class="rich_media_meta_list">
     <!--<em id="post-date" class="rich_media_meta rich_media_meta_text">2015-05-30</em>-->
-    <em class="rich_media_meta rich_media_meta_text"><{$author}></em>
+    <em class="rich_media_meta rich_media_meta_text"><{$data['author']}></em>
     <!--<a class="rich_media_meta rich_media_meta_link rich_media_meta_nickname" href="javascript:void(0);" id="post-user">风笑痴</a>-->
 </div>
 <div class="rich_media_thumb_wrp">
-    <{$content}>
+    <{$data['content']}>
 </div>
 </body>
 </html>
