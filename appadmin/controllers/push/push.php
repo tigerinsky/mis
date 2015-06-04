@@ -128,7 +128,6 @@ class push extends MY_Controller{
 			}
 			if( $data['citys']!='' && count($this->input->post('citys')) > 0 && count($this->input->post('school')) > 0 && $data['title']!='' && $data['time_push'] != ''){
 				if($this->push_model->create_info($data)){
-					var_dump($data);exit;
 					$id = $this->push_model->get_info_by_lastid();
 					$this->load->library('offclient');
 					$data['url'] = $data['wap_url'];
