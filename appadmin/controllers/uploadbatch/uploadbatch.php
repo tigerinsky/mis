@@ -206,7 +206,8 @@ class uploadbatch extends MY_Controller{
 			             {
 			                 if( $value['f_catalog']!="" && $value['s_catalog']!="")
 				                 {
-				                     $tid = strval($this->uidclient->get_id());
+                                     $tid = strval($this->uidclient->get_id("tweet"));
+                                     $res_id = strval($this->uidclient->get_id("resource"));
                      $img = json_decode($value['img'],true);
                      $img['content'] = $value['content'];
                      $img = array($img);
@@ -218,13 +219,24 @@ class uploadbatch extends MY_Controller{
                          'f_catalog' => $value['f_catalog'],
                          'content'   => '',
                          'ctime'     => $value['ctime'],
-                         'img'       => json_encode($img,JSON_UNESCAPED_UNICODE),
+                         //'img'       => json_encode($img,JSON_UNESCAPED_UNICODE),
                          's_catalog' => $value['s_catalog'],
-                         'tags'      => $value['tags']
+                         'tags'      => $value['tags'],
+                         'resource_id'  => $res_id
                      );
-                     if($this->uploadbatch_model->offline_create_info($data))
-					                    {
-					                         $num++;
+                     $b_tweet = $this->uploadbatch_model->offline_create_info($data);
+                     if (!$b_tweet) {
+                         log_message('error', 'offline_create_info error.');
+                         return ;
+                     }
+                     $arr_res = array(
+                         'rid'  => $res_id,
+                         'img'  => $value['img'],
+                         'description'  => $value['content'],
+                     );
+                     $b_res = $this->uploadbatch_model->insert_resource_info($arr_res);
+                     if($b_tweet && $b_res) {
+					     $num++;
                          $this->uploadbatch_model->update_info(array('is_ok'=>1),$value['tid']);
                      }
                  }
