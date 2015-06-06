@@ -361,7 +361,7 @@ class activity extends MY_Controller{
         $get_url = 'http://182.92.212.76:8081/admin.php/activity/activity/get_activity_list';
         $this->load->library('http2');
         $ret = $this->http2->get($get_url);
-        var_dump($ret);
+         var_dump($ret);
         $this->smarty->assign('data',$ret);
         $this->smarty->display('activity/index.html');
     }
