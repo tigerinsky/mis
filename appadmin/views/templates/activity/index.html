@@ -19,48 +19,25 @@
 <div id="container"  style="height:auto;overflow:hidden;">
     <div id="header">
         <ul>
-            <li><a href="news.html" ><img src="./images/demo.png" /></a></li>
-            <li><a href="news.html" ><img src="./images/demo.png" /></a></li>
-            <li><a href="news.html" ><img src="./images/demo.png" /></a></li>
+            <{foreach from=$top item=row}>
+            <li><a href="<{$row['jump_url']}>" ><img src="<{$row['img_url']}>" /></a></li>
+            <{/foreach}>
         </ul>
         <div class="clear"></div>
     </div>
     <div class="order">
         <ul>
-            <li onclick="location.href='news.html'">
+            <{foreach from=$botm item=row}>
+            <li onclick="location.href='<{$row['jump_url']}>'">
 
-        <div class="img"><a href="news.html" ><img src="images/2.png" width="105" height="80" /></a></div>
+        <div class="img"><a href="<{$row['jump_url']}>" ><img src="<{$row['img_url']}>" width="105" height="80" /></a></div>
                 <div class="desc">
-                    <h1><a href="news.html">标题 习近平：让中日人民友好时代相传</a></h1>
-                    <p style="padding-top: 4px;">时间：2015年12月12日</p>
+                    <h1><a href="<{$row['jump_url']}>"><{$row['name']}></a></h1>
+                    <p style="padding-top: 4px;">时间：<{$row['online_time']}></p>
                     <p>地点：酒仙桥</p>
                 </div>
             </li>
-            <li onclick="location.href='news.html'">
-            <div class="img"><a href="news.html" ><img src="images/2.png" width="105" height="80" /></a></div>
-                <div class="desc">
-                    <h1><a href="news.html">标题 习近平：让中日人民友好时代相传</a></h1>
-                    <p style="padding-top: 4px;">时间：2015年12月12日</p>
-                    <p>地点：酒仙桥</p>
-                </div>
-            </li>
-            <li onclick="location.href='news.html'">
-
-            <div class="img"><a href="news.html" ><img src="images/2.png" width="105" height="80"  /></a></div>
-                <div class="desc">
-                    <h1><a href="news.html">标题 习近平：让中日人民友好时代相传</a></h1>
-                    <p style="padding-top: 4px;">时间：2015年12月12日</p>
-                    <p>地点：酒仙桥</p>
-                </div>
-            </li>
-            <li onclick="location.href='news.html'">
-                <div class="img"><a href="news.html" ><img src="images/2.png" width="105" height="80" /></a></div>
-                 <div class="desc">
-                    <h1><a href="news.html">标题 习近平：让中日人民友好时代相传</a></h1>
-                    <p style="padding-top: 4px;">时间：2015年12月12日</p>
-                    <p>地点：酒仙桥</p>
-                </div>
-            </li>
+            <{/foreach}>
         </ul>
     </div>
 </div>
