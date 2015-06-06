@@ -59,3 +59,5 @@ define('TIPS_MATERIAL_POSITION', 4);
 define('TIPS_FOCUS_STAGE',       5);
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
+define('ULR_PROX',       'http://182.92.212.76:8081');
+

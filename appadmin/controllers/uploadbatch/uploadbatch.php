@@ -213,7 +213,7 @@ class uploadbatch extends MY_Controller{
                      $img = array($img);
                      $data = array(
 					      'tid'       => $tid,
-                         'uid'       => $value['uid'],
+                         'uid'       => 1,
                          //'type'        => $value['type'],
                          'type'      => 1,
                          'f_catalog' => $value['f_catalog'],

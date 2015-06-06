@@ -54,7 +54,9 @@ class push extends MY_Controller{
 			{
 				$list_data[$key]['user_type'] = ($value['user_type'] == 1)?"认证":"未认证";
 				$list_data[$key]['time_push'] = date("Y-m-d H:i:s",$value['time_push']);
+				 if($value['citys'])
 				$list_data[$key]['citys']	= $this->arrJson($value['citys'],'citys');
+				if($value['school'])
 				$list_data[$key]['school']	= $this->arrJson($value['school'],'school');
 			}
 		}

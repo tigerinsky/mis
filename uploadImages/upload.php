@@ -2,7 +2,7 @@
 @ini_set('post_max_size', '2020M');
 @ini_set('upload_max_filesize', '500M');
 $path = '/home/meihua/athena/app/amytian/admin.amytian.com/uploadImages/images/';
-$req = 'http://182.92.212.76/upload/tweet_pic';
+$req = 'http://api.meiyuanbang.com/upload/tweet_pic';
 
 upImg($path,$req);
 
@@ -63,7 +63,7 @@ function upload_file($url,$filename){
 
 function setDB($arr,$file)
 {
-	$con = @mysql_connect("rdsjn2362jctbdvwi63h9.mysql.rds.aliyuncs.com","nvshen","MhxzKhl2014");
+	$con = @mysql_connect("rdsa3ztcm25jcbq937ryh.mysql.rds.aliyuncs.com","myb","MhxzKhl");
 	if (!$con)
 	{
 		die('Could not connect: ' . mysql_error());

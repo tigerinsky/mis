@@ -12,7 +12,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 body {
     line-height: 1;
-    width: 100%;
+    width: 98%;
 }
 
 ol, ul {
@@ -50,90 +50,12 @@ html {
 }
 
 body {
-    padding: 0;
+    padding: 0 1%;
     font-size: 12px;
     margin: 0 auto;
-    background-color: #ccc;
+    background-color: #fff;
 }
 
-.home {
-    height: 100%;
-    background-color: #eeeeee;
-}
-
-body#page {
-    height: auto;
-}
-
-.clear {
-    clear: both;
-}
-
-a {
-    text-decoration: none;
-    color: #8A50C1;
-}
-
-.order {
-    height: auto;
-    border: 1px solid #e3e3e3;
-    margin: 0 10px 0 10px;
-    background: #fff;
-}
-
-.order ul li {
-    display: block;
-    padding: 20px;
-    border-bottom: solid 1px #e3e3e3;
-    overflow: hidden;
-}
-
-.order ul li:active{
-
-    filter:alpha(opacity=50);
-    -moz-opacity:0.5;
-    -khtml-opacity: 0.5;
-    opacity: 0.5;
-}
-
-.order ul li .img {
-    float: left;
-    width: 35%;
-    overflow: hidden;
-}
-
-.order ul li .desc {
-    float: left;
-    padding-left: 4%;
-    width: 60%;
-}
-
-.order ul li .desc h1 {
-    font-size: 15px;
-    font-weight: normal;
-}
-
-.order ul li .desc h1 a {
-    color: #2b2b2b;
-}
-
-.order ul li .desc p {
-    font-size: 12px;
-    color: #b5b5b5;
-    line-height: 24px;
-}
-
-#header {
-    padding: 20px 10px 0 10px;
-}
-
-#header ul li {
-    width: 100%;
-    margin-bottom: 20px;
-    overflow: hidden;
-    display: block;
-}
-#header ul li  a img{ width: 100%;}
 .rich_media_title {
     padding-bottom: 10px;
     margin-bottom: 14px;
