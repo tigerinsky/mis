@@ -90,6 +90,7 @@ a {
 }
 
 .order ul li:active{
+
     filter:alpha(opacity=50);
     -moz-opacity:0.5;
     -khtml-opacity: 0.5;
