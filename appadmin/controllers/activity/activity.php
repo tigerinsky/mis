@@ -358,7 +358,7 @@ class activity extends MY_Controller{
      */
     function activityList()
     {
-        $get_url = 'http://182.92.212.76:8081/admin.php/activity/activity/get_activity_list';
+        $get_url = ULR_PROX.'/admin.php/activity/activity/get_activity_list';
         $this->load->library('http2');
         $ret = json_decode($this->http2->get($get_url),true);
         if($ret['errno'] == 0)
