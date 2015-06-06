@@ -133,8 +133,16 @@ class Uploadbatch_model extends CI_Model {
 		} else {
 			return false;
 		}
-	}
+    }
 
+    public function insert_resource_info($query) {
+        $insert_query = $this->db->insert_string('ci_resource', $query);
+        if (!$this->db->query($insert_query)) {
+            return false;
+        }
+
+        return true;
+    }
 }
 /* End of file this file */
 ?>

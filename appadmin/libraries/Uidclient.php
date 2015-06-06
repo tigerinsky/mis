@@ -42,9 +42,9 @@ class UidClient {
         $this->socket = null;
     }
 
-    public function get_id() {
+    public function get_id($prefix) {
         try {
-            $ps_request = "tweet";
+            $ps_request = $prefix;
             $this->connect();
             $res = $this->client->get_id($ps_request);
             return $res;

@@ -62,7 +62,128 @@ final class SysMsgType {
   );
 }
 
-class PostServiceRequest {
+class ResourceStruct {
+  static $_TSPEC;
+
+  /**
+   * @var int
+   */
+  public $rid = null;
+  /**
+   * @var string
+   */
+  public $description = null;
+  /**
+   * @var string
+   */
+  public $img = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'rid',
+          'type' => TType::I64,
+          ),
+        2 => array(
+          'var' => 'description',
+          'type' => TType::STRING,
+          ),
+        3 => array(
+          'var' => 'img',
+          'type' => TType::STRING,
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['rid'])) {
+        $this->rid = $vals['rid'];
+      }
+      if (isset($vals['description'])) {
+        $this->description = $vals['description'];
+      }
+      if (isset($vals['img'])) {
+        $this->img = $vals['img'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'ResourceStruct';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I64) {
+            $xfer += $input->readI64($this->rid);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->description);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->img);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('ResourceStruct');
+    if ($this->rid !== null) {
+      $xfer += $output->writeFieldBegin('rid', TType::I64, 1);
+      $xfer += $output->writeI64($this->rid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->description !== null) {
+      $xfer += $output->writeFieldBegin('description', TType::STRING, 2);
+      $xfer += $output->writeString($this->description);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->img !== null) {
+      $xfer += $output->writeFieldBegin('img', TType::STRING, 3);
+      $xfer += $output->writeString($this->img);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class TweetStruct {
   static $_TSPEC;
 
   /**
@@ -81,10 +202,6 @@ class PostServiceRequest {
    * @var string
    */
   public $content = "";
-  /**
-   * @var string
-   */
-  public $img = "";
   /**
    * @var string
    */
@@ -109,6 +226,10 @@ class PostServiceRequest {
    * @var int
    */
   public $dtime = null;
+  /**
+   * @var \offhub\ResourceStruct[]
+   */
+  public $resources = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -130,32 +251,37 @@ class PostServiceRequest {
           'type' => TType::STRING,
           ),
         5 => array(
-          'var' => 'img',
-          'type' => TType::STRING,
-          ),
-        6 => array(
           'var' => 'tags',
           'type' => TType::STRING,
           ),
-        7 => array(
+        6 => array(
           'var' => 'type',
           'type' => TType::I32,
           ),
-        8 => array(
+        7 => array(
           'var' => 'f_catalog',
           'type' => TType::STRING,
           ),
-        9 => array(
+        8 => array(
           'var' => 's_catalog',
           'type' => TType::STRING,
           ),
-        10 => array(
+        9 => array(
           'var' => 'ctime',
           'type' => TType::I64,
           ),
-        11 => array(
+        10 => array(
           'var' => 'dtime',
           'type' => TType::I64,
+          ),
+        11 => array(
+          'var' => 'resources',
+          'type' => TType::LST,
+          'etype' => TType::STRUCT,
+          'elem' => array(
+            'type' => TType::STRUCT,
+            'class' => '\offhub\ResourceStruct',
+            ),
           ),
         );
     }
@@ -171,9 +297,6 @@ class PostServiceRequest {
       }
       if (isset($vals['content'])) {
         $this->content = $vals['content'];
-      }
-      if (isset($vals['img'])) {
-        $this->img = $vals['img'];
       }
       if (isset($vals['tags'])) {
         $this->tags = $vals['tags'];
@@ -193,11 +316,14 @@ class PostServiceRequest {
       if (isset($vals['dtime'])) {
         $this->dtime = $vals['dtime'];
       }
+      if (isset($vals['resources'])) {
+        $this->resources = $vals['resources'];
+      }
     }
   }
 
   public function getName() {
-    return 'PostServiceRequest';
+    return 'TweetStruct';
   }
 
   public function read($input)
@@ -245,49 +371,60 @@ class PostServiceRequest {
           break;
         case 5:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->img);
-          } else {
-            $xfer += $input->skip($ftype);
-          }
-          break;
-        case 6:
-          if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->tags);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 7:
+        case 6:
           if ($ftype == TType::I32) {
             $xfer += $input->readI32($this->type);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 8:
+        case 7:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->f_catalog);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 9:
+        case 8:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->s_catalog);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 10:
+        case 9:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->ctime);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 11:
+        case 10:
           if ($ftype == TType::I64) {
             $xfer += $input->readI64($this->dtime);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 11:
+          if ($ftype == TType::LST) {
+            $this->resources = array();
+            $_size0 = 0;
+            $_etype3 = 0;
+            $xfer += $input->readListBegin($_etype3, $_size0);
+            for ($_i4 = 0; $_i4 < $_size0; ++$_i4)
+            {
+              $elem5 = null;
+              $elem5 = new \offhub\ResourceStruct();
+              $xfer += $elem5->read($input);
+              $this->resources []= $elem5;
+            }
+            $xfer += $input->readListEnd();
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -304,7 +441,7 @@ class PostServiceRequest {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('PostServiceRequest');
+    $xfer += $output->writeStructBegin('TweetStruct');
     if ($this->tid !== null) {
       $xfer += $output->writeFieldBegin('tid', TType::I64, 1);
       $xfer += $output->writeI64($this->tid);
@@ -325,39 +462,131 @@ class PostServiceRequest {
       $xfer += $output->writeString($this->content);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->img !== null) {
-      $xfer += $output->writeFieldBegin('img', TType::STRING, 5);
-      $xfer += $output->writeString($this->img);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->tags !== null) {
-      $xfer += $output->writeFieldBegin('tags', TType::STRING, 6);
+      $xfer += $output->writeFieldBegin('tags', TType::STRING, 5);
       $xfer += $output->writeString($this->tags);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->type !== null) {
-      $xfer += $output->writeFieldBegin('type', TType::I32, 7);
+      $xfer += $output->writeFieldBegin('type', TType::I32, 6);
       $xfer += $output->writeI32($this->type);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->f_catalog !== null) {
-      $xfer += $output->writeFieldBegin('f_catalog', TType::STRING, 8);
+      $xfer += $output->writeFieldBegin('f_catalog', TType::STRING, 7);
       $xfer += $output->writeString($this->f_catalog);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->s_catalog !== null) {
-      $xfer += $output->writeFieldBegin('s_catalog', TType::STRING, 9);
+      $xfer += $output->writeFieldBegin('s_catalog', TType::STRING, 8);
       $xfer += $output->writeString($this->s_catalog);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->ctime !== null) {
-      $xfer += $output->writeFieldBegin('ctime', TType::I64, 10);
+      $xfer += $output->writeFieldBegin('ctime', TType::I64, 9);
       $xfer += $output->writeI64($this->ctime);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->dtime !== null) {
-      $xfer += $output->writeFieldBegin('dtime', TType::I64, 11);
+      $xfer += $output->writeFieldBegin('dtime', TType::I64, 10);
       $xfer += $output->writeI64($this->dtime);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->resources !== null) {
+      if (!is_array($this->resources)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('resources', TType::LST, 11);
+      {
+        $output->writeListBegin(TType::STRUCT, count($this->resources));
+        {
+          foreach ($this->resources as $iter6)
+          {
+            $xfer += $iter6->write($output);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class PostServiceRequest {
+  static $_TSPEC;
+
+  /**
+   * @var \offhub\TweetStruct
+   */
+  public $tweet_info = null;
+
+  public function __construct($vals=null) {
+    if (!isset(self::$_TSPEC)) {
+      self::$_TSPEC = array(
+        1 => array(
+          'var' => 'tweet_info',
+          'type' => TType::STRUCT,
+          'class' => '\offhub\TweetStruct',
+          ),
+        );
+    }
+    if (is_array($vals)) {
+      if (isset($vals['tweet_info'])) {
+        $this->tweet_info = $vals['tweet_info'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'PostServiceRequest';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRUCT) {
+            $this->tweet_info = new \offhub\TweetStruct();
+            $xfer += $this->tweet_info->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('PostServiceRequest');
+    if ($this->tweet_info !== null) {
+      if (!is_object($this->tweet_info)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('tweet_info', TType::STRUCT, 1);
+      $xfer += $this->tweet_info->write($output);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -827,14 +1056,14 @@ class SysMsgRequest {
         case 3:
           if ($ftype == TType::LST) {
             $this->to_uid = array();
-            $_size0 = 0;
-            $_etype3 = 0;
-            $xfer += $input->readListBegin($_etype3, $_size0);
-            for ($_i4 = 0; $_i4 < $_size0; ++$_i4)
+            $_size7 = 0;
+            $_etype10 = 0;
+            $xfer += $input->readListBegin($_etype10, $_size7);
+            for ($_i11 = 0; $_i11 < $_size7; ++$_i11)
             {
-              $elem5 = null;
-              $xfer += $input->readI32($elem5);
-              $this->to_uid []= $elem5;
+              $elem12 = null;
+              $xfer += $input->readI32($elem12);
+              $this->to_uid []= $elem12;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -879,9 +1108,9 @@ class SysMsgRequest {
       {
         $output->writeListBegin(TType::I32, count($this->to_uid));
         {
-          foreach ($this->to_uid as $iter6)
+          foreach ($this->to_uid as $iter13)
           {
-            $xfer += $output->writeI32($iter6);
+            $xfer += $output->writeI32($iter13);
           }
         }
         $output->writeListEnd();
@@ -1332,14 +1561,14 @@ class SetPushTagRequest {
         case 4:
           if ($ftype == TType::LST) {
             $this->tag_list = array();
-            $_size7 = 0;
-            $_etype10 = 0;
-            $xfer += $input->readListBegin($_etype10, $_size7);
-            for ($_i11 = 0; $_i11 < $_size7; ++$_i11)
+            $_size14 = 0;
+            $_etype17 = 0;
+            $xfer += $input->readListBegin($_etype17, $_size14);
+            for ($_i18 = 0; $_i18 < $_size14; ++$_i18)
             {
-              $elem12 = null;
-              $xfer += $input->readString($elem12);
-              $this->tag_list []= $elem12;
+              $elem19 = null;
+              $xfer += $input->readString($elem19);
+              $this->tag_list []= $elem19;
             }
             $xfer += $input->readListEnd();
           } else {
@@ -1382,9 +1611,9 @@ class SetPushTagRequest {
       {
         $output->writeListBegin(TType::STRING, count($this->tag_list));
         {
-          foreach ($this->tag_list as $iter13)
+          foreach ($this->tag_list as $iter20)
           {
-            $xfer += $output->writeString($iter13);
+            $xfer += $output->writeString($iter20);
           }
         }
         $output->writeListEnd();

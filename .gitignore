@@ -1,5 +1,6 @@
 /codeigniter
 /.settings
+/ueditor/php/upload/image/
 admin.php
 CLI_LJSRV_CONFIG
 CLI_LJSRV_DEV_CONFIG
