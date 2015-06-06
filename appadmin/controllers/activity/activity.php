@@ -353,4 +353,17 @@ class activity extends MY_Controller{
         echo $ret;
     }
 
+    /*
+     * 对外提供活动列表
+     */
+    function activityList()
+    {
+        $get_url = 'http://182.92.212.76:8081/admin.php/activity/activity/get_activity_list';
+        $this->load->library('http2');
+        $ret = $this->http2->get($get_url);
+        var_dump($get_url);
+        $this->smarty->assign('data',$ret);
+        $this->smarty->display('activity/index.html');
+    }
+
 }
