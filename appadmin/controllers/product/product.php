@@ -10,8 +10,6 @@ class product extends MY_Controller{
         $this->load->config('mis_imgmgr',TRUE);
         $this->mis_imgmgr = $this->config->item('mis_imgmgr');
         // $this->mis_imgmgr['imgmgr_level_1']
-        $this->load->library('redis');
-        $this->key_img = 'mis_img_timestamp';
         $this->load->model('product/product_model', 'product_model');
         $this->load->model('imgmgr/imgmgr_model', 'imgmgr_model');
     }
@@ -158,7 +156,11 @@ class product extends MY_Controller{
     	$response = $this->response_array;
     	
     	$tid = $request['tid'];
+    	
+    	
     	$info = $this->product_model->get_info_by_tid($tid);
+    	print_r($info);
+    	exit;
     	
     	$f_catalog = $info['f_catalog'];
     	$s_catalog = $info['s_catalog'];
@@ -195,6 +197,30 @@ class product extends MY_Controller{
 //     	$result = array();
     	
 //     	$result = $catalog_data;
+    	
+//     	$response['errno'] = 0;
+//     	$response['data']['content'] = $result;
+    	
+//     	$this->renderJson($response['errno'], $response['data']);
+    	
+    }
+    
+    
+    /**
+     * 测试接口
+     *
+     */
+    function get_product_by_rid(){
+    	header("Content-type:text/html;charset=utf-8");
+    	$request = $this->request_array;
+    	$response = $this->response_array;
+    	
+    	$rid = $request['rid'];
+    	
+    	
+    	$info = $this->product_model->get_data_by_rid($rid);
+    	print_r($info);
+    	exit;
     	
 //     	$response['errno'] = 0;
 //     	$response['data']['content'] = $result;
