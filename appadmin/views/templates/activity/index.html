@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon.png" />
+    <link rel="apple-touch-startup-image" href="images/apple-touch-startup-image.png" />
+    <meta name="author" content="sun" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css"/>
+</head>
+<body class="home">
+<!-- Hide Mobiles Browser Navigation Bar -->
+<div id="container"  style="height:auto;overflow:hidden;">
+    <div id="header">
+        <ul>
+            <{foreach from=$top item=row}>
+            <li><a href="<{$row['jump_url']}>" ><img src="<{$row['img_url']}>" height="80" /></a></li>
+            <{/foreach}>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="order">
+        <ul>
+            <{foreach from=$botm item=row}>
+            <li onclick="location.href='<{$row['jump_url']}>'">
+
+        <div class="img"><a href="<{$row['jump_url']}>" ><img src="<{$row['img_url']}>" width="105" height="80" /></a></div>
+                <div class="desc">
+                    <h1><a href="<{$row['jump_url']}>"><{$row['name']}></a></h1>
+                    <p style="padding-top: 4px;">时间：<{$row['online_time']}></p>
+                    <p>地点：酒仙桥</p>
+                </div>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

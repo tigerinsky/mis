@@ -353,4 +353,31 @@ class activity extends MY_Controller{
         echo $ret;
     }
 
+    /*
+     * 对外提供活动列表
+     */
+    function activityList()
+    {
+        $get_url = 'http://182.92.212.76:8081/admin.php/activity/activity/get_activity_list';
+        $this->load->library('http2');
+        $ret = json_decode($this->http2->get($get_url),true);
+        if($ret['errno'] == 0)
+        {
+            $top = $botm = array();
+            foreach($ret['data']['content'] as $key=>$value)
+            {
+                $ret['data']['content'][$key]['online_time'] = date('Y-m-d H:i:S',$value['online_time']);
+                if($value['type'] == 1)
+                {
+                    $top[]  = $ret['data']['content'][$key];
+                }else {
+                    $botm[] = $ret['data']['content'][$key];
+                }
+            }
+            $this->smarty->assign('top',$top);
+            $this->smarty->assign('botm',$botm);
+            $this->smarty->display('activity/index.html');
+        }
+    }
+
 }
