@@ -36,6 +36,8 @@
             <th width="16"><input type="checkbox" value="" id="check_box" onclick="selectall('ids[]');"></th>
             <th width="40">活动ID</th>
             <th width="60">活动名称</th>
+            <th width="60">活动类型</th>
+            <th width="60">活动地点</th>
             <th width="120">活动图</th>
             <th width="120">跳转地址</th>
             <th width="120">上线时间</th>
@@ -50,6 +52,8 @@
             <td align="center"><input class="inputcheckbox " name="ids[]" value="<{$row['tid']}>" type="checkbox"></td>
             <td width="60" align="center"><{$row['id']}></td>
             <td align="center"><{$row['name']}></td>
+            <td align="center"><{$type_list[$row['type']]}></td>
+            <td align="center"><{$row['position']}></td>
 			<td width="120" align="center"><a target="_blank" href="<{$row['img_url']}>" ><{if $row['img_url']}><{$row['name']}><{else}>[无图片]<{/if}></a></td>
 			<td width="120" align="center"><a target="_blank" href="<{$row['jump_url']}>" ><{if $row['jump_url']}><{$row['jump_url']}><{else}>[无地址]<{/if}></a></td>
             <td align="center"><{$row['online_time']|date_format:'%Y-%m-%d %H:%M:%S'}></td>
