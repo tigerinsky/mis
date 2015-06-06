@@ -168,7 +168,7 @@ class product extends MY_Controller{
     	//$info = $this->format_one($info);
     	//获取分类
     	$this->load->helper('extends');
-    	$catalog_data = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"), true);
+    	$catalog_data = json_decode(curl_get_contents("http://api.meiyuanbang.com/catalog/get"), true);
     	$catalog_data = $catalog_data['data'];
     	//$catalog_data = json_encode($catalog_data);
     	
@@ -456,7 +456,7 @@ class product extends MY_Controller{
         
         //获取分类
         $this->load->helper('extends');
-        $catalog_data = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"), true);
+        $catalog_data = json_decode(curl_get_contents("http://api.meiyuanbang.com/catalog/get"), true);
         $catalog_data = $catalog_data['data'];
         //$catalog_data = json_encode($catalog_data);
          
