@@ -19,7 +19,7 @@ class Product_model extends CI_Model {
      * @return int $data 分会符合条件二维数组
      */
     public function get_data_by_parm($where,$limit){
-        $query_data = "SELECT `tid`, `uid`, `type`, `f_catalog`, `s_catalog`, `img`, `content`, `tags`, `ctime`, `is_del`, `dtime` FROM {$this->table_name} {$where} ORDER BY ctime DESC,tid DESC {$limit}";
+        $query_data = "SELECT `tid`, `uid`, `type`, `f_catalog`, `s_catalog`, `img`, `content`, `tags`, `resource_id`, `ctime`, `is_del`, `dtime` FROM {$this->table_name} {$where} ORDER BY ctime DESC,tid DESC {$limit}";
         $result_data = $this->dbr->query($query_data);
         $list_data = $result_data->result_array();
         // 格式化数据
@@ -38,7 +38,7 @@ class Product_model extends CI_Model {
     		$tmp_item = array();
     		$tmp_item['tid'] = $item['tid'];
     		if ($item['uid'] == 0 || $item['uid'] == '0') {
-    			$tmp_item['uid'] = "dashan";
+    			$tmp_item['uid'] = "无效用户";
     		} else {
     			$tmp_item['uid'] = $item['uid'];
     		}
@@ -51,28 +51,23 @@ class Product_model extends CI_Model {
     		$tmp_item['s_catalog'] = $item['s_catalog'];
     		
     		$tmp_item['img_list'] = array();
-    		if (isset($item['img'])) {
-    			try {
-	    			$json_data_array = json_decode($item['img'], true);
-	    			if (!is_array($json_data_array)) {
-	    				$json_data_array = array();
-	    			}
-	    			$index = 1;
-	    			foreach($json_data_array as $img_data) {
-	    				$img_url = isset($img_data['n']['url']) ? $img_data['n']['url'] : '';
-	    				$tmp_item_mis = array(
-				    					'img_index' => 'pc'.$index,
-				    					'img_url'   => $img_url,
-	    							);
-	    				$tmp_item['img_list'][] = $tmp_item_mis;
-	    				$index++;
-	    			}
-    			} catch (Exception $e) {
-    				echo $e->getMessage(),"\n";
+    		
+    		if (isset($item['resource_id'])) {
+    			$rid_array = explode(',', $item['resource_id']);
+    			$index = 1;
+    			foreach ($rid_array as $rid) {
+    				$data = $this->get_data_by_rid($rid);
+    				$json_data = json_decode($data['img'], true);
+    				$img_url = isset($json_data['n']['url']) ? $json_data['n']['url'] : '';
+    				$tmp_item_mis = array(
+    						'img_index' => 'pc'.$index,
+    						'img_url'   => $img_url,
+    				);
+    				$tmp_item['img_list'][] = $tmp_item_mis;
+    				$index++;
     			}
     		}
     		
-    		$tmp_item['content'] = $item['content'];
     		$tmp_item['tags'] = $item['tags'];
     		$tmp_item['ctime'] = date("Y-m-d H:i:s", $item['ctime']);
     		
@@ -80,6 +75,56 @@ class Product_model extends CI_Model {
     	}
     	return $format_list_data;
     }
+    
+    
+//     private function format_product_data($list_data) {
+//     	$format_list_data = array();
+//     	foreach ($list_data as $item) {
+//     		$tmp_item = array();
+//     		$tmp_item['tid'] = $item['tid'];
+//     		if ($item['uid'] == 0 || $item['uid'] == '0') {
+//     			$tmp_item['uid'] = "无效用户";
+//     		} else {
+//     			$tmp_item['uid'] = $item['uid'];
+//     		}
+//     		if ($item['type'] == 1 || $item['type'] == '1') {
+//     			$tmp_item['type'] = "是";
+//     		} else {
+//     			$tmp_item['type'] = "否";
+//     		}
+//     		$tmp_item['f_catalog'] = $item['f_catalog'];
+//     		$tmp_item['s_catalog'] = $item['s_catalog'];
+    		
+//     		$tmp_item['img_list'] = array();
+//     		if (isset($item['img'])) {
+//     			try {
+// 	    			$json_data_array = json_decode($item['img'], true);
+// 	    			if (!is_array($json_data_array)) {
+// 	    				$json_data_array = array();
+// 	    			}
+// 	    			$index = 1;
+// 	    			foreach($json_data_array as $img_data) {
+// 	    				$img_url = isset($img_data['n']['url']) ? $img_data['n']['url'] : '';
+// 	    				$tmp_item_mis = array(
+// 				    					'img_index' => 'pc'.$index,
+// 				    					'img_url'   => $img_url,
+// 	    							);
+// 	    				$tmp_item['img_list'][] = $tmp_item_mis;
+// 	    				$index++;
+// 	    			}
+//     			} catch (Exception $e) {
+//     				echo $e->getMessage(),"\n";
+//     			}
+//     		}
+    		
+//     		$tmp_item['content'] = $item['content'];
+//     		$tmp_item['tags'] = $item['tags'];
+//     		$tmp_item['ctime'] = date("Y-m-d H:i:s", $item['ctime']);
+    		
+//     		$format_list_data[] = $tmp_item;
+//     	}
+//     	return $format_list_data;
+//     }
     
     /**
      * 计算出筛选条件下的数据的条数
@@ -99,7 +144,7 @@ class Product_model extends CI_Model {
      * @return int $data 返回数据内容
      */
     public function get_info_by_tid($tid){
-        $query_data = "SELECT `tid`, `uid`, `type`, `f_catalog`, `s_catalog`, `img`, `content`, `tags`, `ctime`, `is_del`, `dtime` FROM {$this->table_name} WHERE tid=?";
+        $query_data = "SELECT `tid`, `uid`, `type`, `f_catalog`, `s_catalog`, `img`, `content`, `tags`, `resource_id`, `ctime`, `is_del`, `dtime` FROM {$this->table_name} WHERE tid=?";
         $result_data = $this->dbr->query($query_data, array($tid));
         $row_data = $result_data->row_array();
         if($row_data['tid']>0){
@@ -109,7 +154,24 @@ class Product_model extends CI_Model {
         }
         return $result;
     }
-
+    
+    /**
+     * 根据resourceid获取对应的数据
+     * @param int $id 数据ID编号
+     * @return int $data 返回数据内容
+     */
+    public function get_data_by_rid($rid){
+        $query_data = "SELECT `rid`, `img`, `description` FROM ci_resource WHERE rid=?";
+        $result_data = $this->dbr->query($query_data, array($rid));
+        $row_data = $result_data->row_array();
+        if($row_data['rid']>0){
+            $result = $row_data;
+        }else{
+            $result = '';
+        }
+        return $result;
+    }
+	
     
     /**
      * 对要闻进行单条推荐或取消推荐
