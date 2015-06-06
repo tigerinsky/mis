@@ -3,7 +3,6 @@
 /ueditor/php/upload/image/*
 /uploadImages/images/*
 !.gitkeep
-admin.php
 CLI_LJSRV_CONFIG
 CLI_LJSRV_DEV_CONFIG
 .project
