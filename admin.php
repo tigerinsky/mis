@@ -62,7 +62,7 @@ if (defined('ENVIRONMENT'))
 }
 
 //$system_path = './codeigniter/system';
-$system_path = '/data/mis/ci';
+$system_path = $_SERVER['LJSRV_CI'];
 
 if (realpath($system_path) !== FALSE)
 {
