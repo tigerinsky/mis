@@ -7,8 +7,7 @@ class activity extends MY_Controller{
     function __construct(){
         parent::__construct();
         $this->dbr=$this->load->database('dbr',TRUE);
-        $this->load->library('redis');
-        $this->key_img = 'mis_img_timestamp';
+        $this->activity_type = array('1'=>'只有图片', '2'=>'图文并茂');
         $this->load->model('activity/activity_model', 'activity_model');
     }
     
@@ -46,12 +45,15 @@ class activity extends MY_Controller{
         $offset = $pagesize*($page-1);
         $limit = "LIMIT $offset,$pagesize";
         
+        $type_list = $this->activity_type;
+        
         $user_num = $this->activity_model->get_count_by_parm($where);
         $pages = pages($user_num,$page,$pagesize);
         $list_data = $this->activity_model->get_data_by_parm($where,$limit);
 
         $this->load->library('form');
         $this->smarty->assign('search_arr',$search_arr);
+        $this->smarty->assign('type_list', $type_list);
         $this->smarty->assign('list_data',$list_data);
         $this->smarty->assign('pages',$pages);
         $this->smarty->assign('show_dialog','true');
@@ -84,6 +86,9 @@ class activity extends MY_Controller{
     		foreach($list_data as $img_data) {
     			$tmp_array = array(
     					'name' => $img_data['name'],
+    					'type' => $img_data['type'],
+    					'online_time' => $img_data['online_time'],
+    					'position' => $img_data['position'],
     					'img_url' => $img_data['img_url'],
     					'jump_url' => $img_data['jump_url'],
     					);
@@ -258,6 +263,11 @@ class activity extends MY_Controller{
     // 添加活动
     function activity_add(){
         $this->load->library('form');
+        
+        $type_list = $this->activity_type;
+        $type_sel=Form::select($type_list, 1, 'name="info[type]"');
+        $this->smarty->assign('type_sel', $type_sel);
+        
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
         $this->smarty->assign('show_validator','true');
@@ -266,8 +276,6 @@ class activity extends MY_Controller{
     
     // 执行添加活动操作
     function activity_add_do(){
-    	$this->redis->set($this->key_img, time());
-    	
         $info = $this->input->post('info');
     	$online_time = strtotime($this->input->post('online_time'));
     	$offline_time = strtotime($this->input->post('offline_time'));
@@ -296,7 +304,11 @@ class activity extends MY_Controller{
         $this->load->library('form');
         $activity_id = $this->input->get('id');
         $info = $this->activity_model->get_info_by_id($activity_id);
-
+		
+        $type_list = $this->activity_type;
+        $type_sel = Form::select($type_list, $info['type'], 'name="info[type]"');
+        $this->smarty->assign('type_sel', $type_sel);
+        
         $this->smarty->assign('info',$info);
         $this->smarty->assign('random_version', rand(100,999));
         $this->smarty->assign('show_dialog','true');
@@ -306,7 +318,6 @@ class activity extends MY_Controller{
     
     // 执行修改活动操作
     function activity_edit_do(){
-    	$this->redis->set($this->key_img, time());
         $id = $this->input->post('id');
         $info = $this->input->post('info');
 		$this->load->library('oss');
