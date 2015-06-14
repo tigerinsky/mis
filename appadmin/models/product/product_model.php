@@ -6,10 +6,28 @@ class Product_model extends CI_Model {
     
     private $dbr = null;
     private $table_name = 'ci_tweet';
+    private $table_name_user = 'ci_user_detail';
     function __construct() {
         parent::__construct();
         $this->dbr = $this->load->database('dbr',TRUE,FALSE);
         $this->load->library('http2');
+    }
+    
+    /**
+     * 根据用户id获取用户姓名
+     * @param str $uid 用户id
+     * @return str $sname 用户姓名
+     */
+    public function get_user_by_uid($uid){
+    	$query_data = "SELECT `uid`, `sname`, `avatar`, `province`, `city`, `school` FROM {$this->table_name_user} WHERE uid=?";
+        $result_data = $this->dbr->query($query_data, array($uid));
+        $row_data = $result_data->row_array();
+        if($row_data['uid']>0){
+            $result = $row_data;
+        }else{
+            $result = '';
+        }
+        return $result;
     }
     
     /**
@@ -37,10 +55,11 @@ class Product_model extends CI_Model {
     	foreach ($list_data as $item) {
     		$tmp_item = array();
     		$tmp_item['tid'] = $item['tid'];
-    		if ($item['uid'] == 0 || $item['uid'] == '0') {
-    			$tmp_item['uid'] = "无效用户";
+    		$tmp_user = $this->get_user_by_uid($item['uid']);
+    		if (isset($tmp_user)) {
+    			$tmp_item['uid'] = $tmp_user['sname'];
     		} else {
-    			$tmp_item['uid'] = $item['uid'];
+    			$tmp_item['uid'] = "无效用户";
     		}
     		if ($item['type'] == 1 || $item['type'] == '1') {
     			$tmp_item['type'] = "是";
@@ -64,6 +83,7 @@ class Product_model extends CI_Model {
     						'img_url'   => $img_url,
     				);
     				$tmp_item['img_list'][] = $tmp_item_mis;
+    				$tmp_item['img_url'] = $img_url;
     				$index++;
     			}
     		}

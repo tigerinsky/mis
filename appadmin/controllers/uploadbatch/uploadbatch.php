@@ -15,7 +15,7 @@ class uploadbatch extends MY_Controller{
 		//获取分类
 		$this->load->helper('extends');
 		if(!self::$cls){
-			$class = json_decode(curl_get_contents("http://182.92.212.76/catalog/get"),true);
+			$class = json_decode(curl_get_contents("http://api.meiyuanbang.com/catalog/get"),true);
 			self::$cls = $class['data'];
 		}
 		$this->load->library('uidclient');
