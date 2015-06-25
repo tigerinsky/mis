@@ -43,7 +43,8 @@ class user extends MY_Controller {
         $query     = $this->dbr->query($sql_ct);
         $log_num   = $query->num_rows();
         $pages     = pages($log_num, $page, $pagesize);
-        $sql       = "SELECT id, sname, avatar, umobile, province, city, intro, school, ukind, ukind_verify, ukind_info, locked, lock_time, create_time, login_time FROM ci_user, ci_user_detail $where $order $limit";
+        //$sql       = "SELECT id, sname, avatar, umobile, province, city, intro, school, ukind, ukind_verify, ukind_info, locked, lock_time, create_time, login_time FROM ci_user, ci_user_detail $where $order $limit";
+        $sql       = "SELECT id, sname, avatar, umobile, province, city, intro, school, ukind, ukind_verify, create_time FROM ci_user, ci_user_detail $where $order $limit";
         $result    = $this->dbr->query($sql);
         $list_data = $result->result_array();
         //debug_show($list_data, 'list_data');
@@ -85,7 +86,7 @@ class user extends MY_Controller {
     public function user_view() {
         $this->load->library('form');
         $aid = intval($this->input->get('id'));
-        $sql = "SELECT id, uname, sname, avatar, sex, age, umobile, gold, ukind, status, locked, lock_num, lock_time, create_time FROM {$this->table_name} WHERE id={$aid}";
+        $sql = "SELECT id, sname, avatar, umobile, province, city, intro, school, ukind, ukind_verify, create_time FROM ci_user, ci_user_detail WHERE id={$aid}";
         $result = $this->db->query($sql);
         $info = $result->row_array();
         //$this->load->library('mcrypt_3des');
@@ -103,7 +104,8 @@ class user extends MY_Controller {
     public function user_edit() {
         $this->load->library('form');
         $aid = intval($this->input->get('id'));
-        $sql = "SELECT id, uname, sname, avatar, sex, age, gold, uemail, integral, ukind, status, locked, lock_num, lock_time, create_time FROM {$this->table_name} WHERE id={$aid}";
+        //$sql = "SELECT id, uname, sname, avatar, sex, age, gold, uemail, integral, ukind, status, locked, lock_num, lock_time, create_time FROM {$this->table_name} WHERE id={$aid}";
+        $sql = "SELECT id, sname, avatar, umobile, province, city, intro, school, ukind, ukind_verify, create_time FROM ci_user, ci_user_detail WHERE id={$aid}";
         $result = $this->db->query($sql);
         $info = $result->row_array();
         
@@ -155,7 +157,9 @@ class user extends MY_Controller {
 	public function user_del_one_ajax() {
 		$aid = intval($this->input->get('uid'));
         if($aid>0) {
-            $del_query = "UPDATE {$this->table_name} SET `status` = -1 WHERE id={$aid} AND `status` != 1";
+            $del_query = "DELETE FROM ci_user WHERE id={$aid}";
+            $this->db->query($del_query);
+            $del_query = "DELETE FROM ci_user_detail WHERE uid={$aid}";
             $this->db->query($del_query);
             echo 1;
         } else {

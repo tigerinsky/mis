@@ -43,10 +43,7 @@
             <th width="50">城市</th>
             <th width="50">目标学校</th>
             <th width="50">是否认证</th>
-            <th width="50">认证信息</th>
-            <th width="50">锁定状态</th>
             <th width="120">注册时间</th>
-            <th width="120">最后登录时间</th>
             <th width="140">管理操作</th>
             </tr>
         </thead>
@@ -63,16 +60,20 @@
             <td align="center"><{$row['city']}></td>
             <td align="center"><{$row['school']}></td>
             <td align="center"><{if $row['ukind']==1}><font color="#D75145">是</font><{else}><font color="#008000">否</font><{/if}></td>
-            <td align="center"><{$row['ukind_info']}></td>
             <!-- 
             <td align="center"><{$identify_arr[$row['ukind']]}></td>
 			<td align="center" id="user_status"><{if $row['status'] == 1}><font color="#008000">已通过</font><{elseif $row['status'] == 2}><font color="#D75145">未通过</font><{elseif $row['status'] == 0}>未审核<{elseif $row['status'] == -1}>已删除<{/if}></td>
 			<td align="center"><{if $row['ukind_verify'] == 1}><span style="color:green"></span><{else}><span style="color:red">未认证</span><{/if}></td>
              -->
-            <td align="center"><{if $row['locked']==1}><font color="#D75145">锁定</font><{else}><font color="#008000">正常</font><{/if}></td>
             <td align="center"><{date("Y-m-d H:i:s", $row['create_time'])}></td>
-            <td align="center"><{date("Y-m-d H:i:s", $row['login_time'])}></td>
-            <td align="center"><a href="javascript:edit(<{$row['id']}>,'<{$row['uname']}>')">修改</a> | <{if $row['status']==1 || $row['status']==-1}><font color="#cccccc">删除</font><{else}><a href="javascript:;" onclick="delete_one(this,'<{$row['id']}>')">删除</a><{/if}> | <a href="javascript:view(<{$row['id']}>,'<{$row['uname']}>')">查看详情</a>
+            <td align="center">
+            	<!-- 
+                <a href="javascript:edit(<{$row['id']}>,'<{$row['uname']}>')">修改</a> | 
+                 -->
+			    <a href="javascript:;" onclick="del_one(this,'<{$row['id']}>')">删除</a>
+			    <!-- 
+			    <a href="javascript:view(<{$row['id']}>,'<{$row['uname']}>')">查看详情</a>
+			     -->
             </td>
             </tr>
             <{foreachelse}>
@@ -86,11 +87,6 @@
     	<label for="check_box">全选/取消</label>
 		<input type="hidden" value="<{$admin_session['wb_hash']}>" name="wb_hash">
 		<input type="hidden" value="1" name="dosubmit">
-		<input type="button" class="button" value="审核已通过" onclick="myform.action='<{site_url url='/member/user/user_status/?status=1'}>';myform.submit();"/>
-        <input type="button" class="button" value="审核未通过" onclick="myform.action='<{site_url url='/member/user/user_status/?status=2'}>';myform.submit();"/>
-        <input type="button" class="button" value="锁定" onclick="myform.action='<{site_url url='/member/user/user_locked/?locked=1'}>';myform.submit();"/>
-        <input type="button" class="button" value="解锁" onclick="myform.action='<{site_url url='/member/user/user_locked/?locked=0'}>';myform.submit();"/>
-        <input type="button" class="button" value="删除" onclick="delete_more();myform.action='<{site_url url='/member/user/user_delete/'}>';"/>
 	</div>
     <div id="pages"><{$pages}></div>
 </div>
@@ -99,6 +95,7 @@
 <script type="text/javascript"> 
 <!--
 
+/*
 function delete_one(obj,aid){
 	window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
 	function(){
@@ -107,6 +104,17 @@ function delete_one(obj,aid){
 			})
 	},function(){});
 };
+*/
+
+function del_one(obj,aid) {
+    window.top.art.dialog({content:'确认删除吗？', fixed:true, style:'confirm',id:'delete_one'}, 
+    function(){
+    $.get('<{site_url url='/member/user/user_del_one_ajax/'}>?&uid='+aid+'&wb_hash='+wb_hash,function(data){
+                if(data == 1) $(obj).parent().parent().fadeOut("slow");
+            })
+         },
+    function(){});
+}
 
 function delete_more(){
 	if(confirm('确认删除吗？')) $('#myform').submit();
