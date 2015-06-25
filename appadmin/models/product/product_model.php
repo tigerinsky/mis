@@ -76,7 +76,13 @@ class Product_model extends CI_Model {
     			$index = 1;
     			foreach ($rid_array as $rid) {
     				$data = $this->get_data_by_rid($rid);
+    				if (!isset($data['img'])) {
+    					continue;
+    				}
     				$json_data = json_decode($data['img'], true);
+    				if (!is_array($json_data) || count($json_data) < 1) {
+    					continue;
+    				}
     				$img_url = isset($json_data['n']['url']) ? $json_data['n']['url'] : '';
     				$tmp_item_mis = array(
     						'img_index' => 'pc'.$index,
