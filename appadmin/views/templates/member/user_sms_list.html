@@ -43,7 +43,6 @@
             <th width="80">状态</th>
             <th width="80">发送短信成功后置为有效</th>
             <th width="80">IP地址字符串</th>
-            <th width="80">创建时间</th>
             </tr>
         </thead>
         
@@ -59,7 +58,6 @@
             <td align="center"><{$row['status']}></td>
             <td align="center"><{$row['valid']}></td>
             <td align="center"><{$row['ip']}></td>
-            <td align="center"><{date('Y-m-d H:i:s', $row['ctime'])}></td>
             </tr>
             <{foreachelse}>
 			<tr>
