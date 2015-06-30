@@ -200,11 +200,11 @@ class user extends MY_Controller {
         $pagesize = 10;
         $offset = $pagesize*($page-1);                                                                                               
         $limit = " LIMIT $offset,$pagesize";
-        $sql_ct = "SELECT id FROM ci_user_verify_sms $where";
+        $sql_ct = "SELECT sid FROM ci_user_sms $where";
         $query = $this->dbr->query($sql_ct);
         $log_num = $query->num_rows();
         $pages = pages($log_num, $page, $pagesize);
-        $sql = "SELECT `id`, `uid`, `mobile`, `smscode`, `identifier`, `operate`, `valid`, `ip`, `time_keep`, `time_yday`, `time_brithdy` FROM ci_user_verify_sms $where  ORDER BY time_brithdy DESC $limit";
+        $sql = "SELECT `sid`, `uid`, `mobile`, `verifycode`, `identifier`, `operate`, `status`, `valid`, `ip`, `ip_long`, `ctime_keep` FROM ci_user_sms $where  ORDER BY ctime DESC $limit";
         $result = $this->dbr->query($sql);
         $list_data = $result->result_array();                                                                                        
         $this->smarty->assign('search_arr', $search_arr);

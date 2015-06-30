@@ -34,16 +34,15 @@
 	<table width="100%" cellspacing="0">
         <thead>
             <tr>
-            <th width="80">ID</th>
+            <th width="80">SID</th>
             <th width="80">UID</th>
             <th width="80">手机号</th>
             <th width="80">短信校验码</th>
             <th width="80">短信自增标识</th>
             <th width="80">验证成功后操作</th>
+            <th width="80">状态</th>
             <th width="80">发送短信成功后置为有效</th>
             <th width="80">IP地址字符串</th>
-            <th width="80">失效时间</th>
-            <th width="80">创建天数</th>
             <th width="80">创建时间</th>
             </tr>
         </thead>
@@ -51,17 +50,16 @@
         <tbody>
         	<{foreach from=$list_data item=row}>		
             <tr>
-            <td align="center"><{$row['id']}></td>
+            <td align="center"><{$row['sid']}></td>
             <td align="center"><{$row['uid']}></td>
             <td align="center"><{$row['mobile']}></td>
-            <td align="center"><{$row['smscode']}></td>
+            <td align="center"><{$row['verifycode']}></td>
             <td align="center"><{$row['identifier']}></td>
             <td align="center"><{$row['operate']}></td>
+            <td align="center"><{$row['status']}></td>
             <td align="center"><{$row['valid']}></td>
             <td align="center"><{$row['ip']}></td>
-            <td align="center"><{date('Y-m-d H:i:s', $row['time_keep'])}></td>
-            <td align="center"><{$row['time_yday']}></td>
-            <td align="center"><{if $row['time_brithdy']>0}> <{date('Y-m-d H:i:s',$row['time_brithdy'])}> <{else}>时间不详<{/if}></td>
+            <td align="center"><{date('Y-m-d H:i:s', $row['ctime'])}></td>
             </tr>
             <{foreachelse}>
 			<tr>
