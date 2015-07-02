@@ -23,7 +23,7 @@ class UidClient {
     }
 
     public function connect() {
-        $this->socket = new TSocket('mhback1', 6060);
+        $this->socket = new TSocket('myb-ol-back2', 6060);
         $this->socket->setSendTimeout(10000);
         $this->socket->setRecvTimeout(20000);
 
